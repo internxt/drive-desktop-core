@@ -1,0 +1,52 @@
+{
+  "name": "drive-desktop-core",
+  "version": "1.0.0",
+  "author": "Internxt <hello@internxt.com>",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "========== Code style ==========": "",
+    "lint": "eslint src tests",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write",
+    "type-check": "tsc",
+    "========== Testing ==========": "",
+    "test": "vitest",
+    "test:once": "npm run test -- --run",
+    "test:one": "npm run test -- related x",
+    "========== Other ==========": "",
+    "swagger_dev": "openapi-typescript http://localhost:3004/api-json -o ./src/backend/infra/drive-server-wip/schema.ts",
+    "swagger_prod": "openapi-typescript https://gateway.internxt.com/drive/api-json -o ./src/backend/infra/drive-server-wip/schema.ts",
+    "depcheck": "depcheck"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.81.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^20.19.9",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "depcheck": "^1.4.7",
+    "electron": "^37.2.3",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-unicorn": "^56.0.1",
+    "openapi-typescript": "^7.8.0",
+    "prettier": "^3.6.2",
+    "ts-essentials": "^10.1.1",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "electron-log": "^5.4.1"
+  },
+  "engines": {
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
+  }
+}
