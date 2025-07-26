@@ -16,7 +16,7 @@
     "test": "vitest",
     "test:once": "npm run test -- --run",
     "test:one": "npm run test -- related x",
-    "test:cov": "npm run test -- --coverage",
+    "test:cov": "npm run test:once -- --coverage",
     "========== Other ==========": "",
     "swagger_dev": "openapi-typescript http://localhost:3004/api-json -o ./src/backend/infra/drive-server-wip/schema.ts",
     "swagger_prod": "openapi-typescript https://gateway.internxt.com/drive/api-json -o ./src/backend/infra/drive-server-wip/schema.ts",
