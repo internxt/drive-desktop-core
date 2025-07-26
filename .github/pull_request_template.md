@@ -21,8 +21,9 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Test B
 
 **Test Configuration**:
-* Hardware:
-* SDK version:
+
+- Hardware:
+- SDK version:
 
 # Checklist:
 
@@ -32,4 +33,3 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] My changes generate no new warnings
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] Any dependent changes have been merged and published in downstream modules (for instance, the SDK or the UI components library)
-

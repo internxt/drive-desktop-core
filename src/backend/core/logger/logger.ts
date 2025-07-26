@@ -1,7 +1,7 @@
 import ElectronLog from 'electron-log';
 import { inspect } from 'node:util';
 
-import { paths } from '../HttpClient/schema';
+import { paths } from '@/backend/infra/drive-server-wip/schema';
 
 type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN';
 type TLevel = 'debug' | 'warn' | 'error';
@@ -41,6 +41,8 @@ function getProcessStr(): string {
       return 'w';
     case 'utility':
       return 'u';
+    case 'service-worker':
+      return 's';
   }
 }
 

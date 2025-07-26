@@ -3811,6 +3811,11 @@ export interface components {
     };
     LegacyRecoverAccountDto: {
       /**
+       * @description Base64 encoded temporary auth token
+       * @example temporary_auth_token
+       */
+      token: string;
+      /**
        * @description New user pass hashed
        * @example hashed_password
        */
@@ -3919,11 +3924,37 @@ export interface components {
     FuzzySearchResults: {
       data: components['schemas']['FuzzySearchResult'][];
     };
-    /**
-     * @description Device platform
-     * @enum {string}
-     */
+    /** @enum {string} */
     DevicePlatform: 'win32' | 'darwin' | 'linux' | 'android';
+    DeviceAsFolder: {
+      type: string;
+      id: number;
+      parentId: number;
+      parentUuid: string;
+      name: string;
+      parent: components['schemas']['Folder'];
+      bucket: string;
+      userId: number;
+      encryptVersion: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      uuid: string;
+      plainName: string;
+      size: number;
+      /** Format: date-time */
+      creationTime: string;
+      /** Format: date-time */
+      modificationTime: string;
+      /** @enum {string} */
+      status: 'EXISTS' | 'TRASHED' | 'DELETED';
+      removed: boolean;
+      deleted: boolean;
+      hasBackups: boolean;
+      /** Format: date-time */
+      lastBackupAt: string;
+    };
     DeviceDto: {
       /** @example 7 */
       id: number;
@@ -3951,10 +3982,17 @@ export interface components {
       hostname: string;
       /** @example 077e1ec6-9272-4719-ae1a-2ae35883a09e */
       folderUuid: string;
-      /** @example 2025-07-10T20:14:04.784Z */
+      /**
+       * Format: date-time
+       * @example 2025-07-10T20:14:04.784Z
+       */
       createdAt: string;
-      /** @example 2025-07-10T20:14:04.784Z */
+      /**
+       * Format: date-time
+       * @example 2025-07-10T20:14:04.784Z
+       */
       updatedAt: string;
+      folder: components['schemas']['DeviceAsFolder'] | null;
     };
     CreateDeviceAndFolderDto: {
       /**
@@ -4011,38 +4049,10 @@ export interface components {
     CreateDeviceAsFolderDto: {
       deviceName: string;
     };
-    DeviceAsFolder: {
-      type: string;
-      id: number;
-      parentId: number;
-      parentUuid: string;
-      name: string;
-      parent: components['schemas']['Folder'];
-      bucket: string;
-      userId: number;
-      encryptVersion: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
-      uuid: string;
-      plainName: string;
-      size: number;
-      /** Format: date-time */
-      creationTime: string;
-      /** Format: date-time */
-      modificationTime: string;
-      /** @enum {string} */
-      status: 'EXISTS' | 'TRASHED' | 'DELETED';
-      removed: boolean;
-      deleted: boolean;
-      hasBackups: boolean;
-      /** Format: date-time */
-      lastBackupAt: string;
-    };
-    ItemToTrash: {
+    ItemToTrashDto: {
       /**
-       * @description Id of file or folder
+       * @deprecated
+       * @description Id of file or folder (deprecated in favor of uuid)
        * @example 4
        */
       id: string | null;
@@ -4054,16 +4064,36 @@ export interface components {
       /**
        * @description Type of item: file or folder
        * @example file
+       * @enum {string}
        */
-      type: string;
+      type: 'file' | 'folder';
     };
     MoveItemsToTrashDto: {
       /** @description Array of items with files and folders ids */
-      items: components['schemas']['ItemToTrash'][];
+      items: components['schemas']['ItemToTrashDto'][];
+    };
+    DeleteItemDto: {
+      /**
+       * @deprecated
+       * @description Id of file or folder (deprecated in favor of uuid)
+       * @example 4
+       */
+      id: string | null;
+      /**
+       * @description Uuid of file or folder
+       * @example 79a88429-b45a-4ae7-90f1-c351b6882670
+       */
+      uuid: string;
+      /**
+       * @description Type of item: file or folder
+       * @example file
+       * @enum {string}
+       */
+      type: 'file' | 'folder';
     };
     DeleteItemsDto: {
       /** @description Array of items with files and folders ids */
-      items: string[];
+      items: components['schemas']['DeleteItemDto'][];
     };
     LoginDto: {
       /**
@@ -7290,9 +7320,7 @@ export interface operations {
   };
   UserController_requestLegacyAccountRecovery: {
     parameters: {
-      query: {
-        token: string;
-      };
+      query?: never;
       header?: never;
       path?: never;
       cookie?: never;
@@ -7728,9 +7756,12 @@ export interface operations {
   BackupController_getDevicesAndFolders: {
     parameters: {
       query: {
-        platform: string;
-        key: string;
-        hostname: string;
+        /** @description Device platform */
+        platform?: components['schemas']['DevicePlatform'];
+        /** @description OS Installation unique identifier */
+        key?: string;
+        /** @description Device hostname */
+        hostname?: string;
         limit: number;
         offset: number;
       };

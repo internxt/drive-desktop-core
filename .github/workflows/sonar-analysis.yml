@@ -35,7 +35,7 @@ jobs:
           echo "always-auth=true" >> .npmrc
 
       - name: Install dependencies
-        run: npm run init:ci
+        run: npm ci
 
       - name: Run tests
         run: npm run test:cov
