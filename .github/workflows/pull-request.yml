@@ -34,7 +34,7 @@ jobs:
           echo "always-auth=true" >> .npmrc
 
       - name: Install dependencies
-        run: npm run init:ci
+        run: npm ci
 
       - name: Run TypeScript compiler
         run: npm run type-check
