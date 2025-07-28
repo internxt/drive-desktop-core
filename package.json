@@ -1,16 +1,29 @@
 {
   "name": "drive-desktop-core",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "Internxt <hello@internxt.com>",
   "main": "index.js",
   "license": "MIT",
+  "files": [
+    "build"
+  ],
+  "exports": {
+    "./backend": {
+      "import": "./build/backend/index.js",
+      "types": "./build/backend/index.d.ts"
+    },
+    "./frontend": {
+      "import": "./build/frontend/index.js",
+      "types": "./build/frontend/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build": "rimraf build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "========== Code style ==========": "",
     "lint": "eslint src tests",
     "lint:fix": "npm run lint -- --fix",
-    "format": "prettier src --check",
-    "format:fix": "prettier src --write",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write",
     "type-check": "tsc",
     "========== Testing ==========": "",
     "test": "vitest",
@@ -38,6 +51,7 @@
     "eslint-plugin-unicorn": "^56.0.1",
     "openapi-typescript": "^7.8.0",
     "prettier": "^3.6.2",
+    "rimraf": "^6.0.1",
     "ts-essentials": "^10.1.1",
     "tsc-alias": "^1.8.16",
     "typescript": "^5.8.3",
