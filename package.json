@@ -20,7 +20,7 @@
   "scripts": {
     "build": "rimraf build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "========== Code style ==========": "",
-    "lint": "eslint src tests",
+    "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",

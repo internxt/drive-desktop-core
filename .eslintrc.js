@@ -6,7 +6,7 @@ module.exports = {
     'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
   parser: '@typescript-eslint/parser',
-  ignorePatterns: ['schema.ts', '.eslintrc.js', 'node_modules', 'build'],
+  ignorePatterns: ['schema.ts', '.eslintrc.js', 'node_modules', 'build', 'vitest.config.mts'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -34,6 +34,7 @@ module.exports = {
     'max-len': ['error', { code: 140, ignoreStrings: true, ignoreTemplateLiterals: true }],
     'no-async-promise-executor': 'error',
     'no-await-in-loop': 'off',
+    'no-console': 'error',
     'no-empty': 'off',
     'no-throw-literal': 'error',
     'no-unused-expressions': 'off',

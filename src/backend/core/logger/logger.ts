@@ -63,45 +63,47 @@ function getTagStr(tag?: TTag): string {
   }
 }
 
-export class LoggerService {
-  private prepareBody(level: TLevel, rawBody: TLoggerBody) {
-    const { tag, msg, workspaceId, attributes, ...rest } = rawBody;
+function prepareBody(level: TLevel, rawBody: TLoggerBody) {
+  const { tag, msg, workspaceId, attributes, ...rest } = rawBody;
 
-    const header = `${getLevelStr(level)} - ${getProcessStr()} - ${getTagStr(tag)}`;
+  const header = `${getLevelStr(level)} - ${getProcessStr()} - ${getTagStr(tag)}`;
 
-    rawBody = {
-      header,
-      msg,
-      ...(workspaceId && { workspaceId }),
-      ...rest,
-    };
+  rawBody = {
+    header,
+    msg,
+    ...(workspaceId && { workspaceId }),
+    ...rest,
+  };
 
-    const body = inspect(rawBody, { depth: Infinity, breakLength: Infinity });
-    const coloredBody = inspect(rawBody, { depth: Infinity, breakLength: Infinity, colors: true });
-    return { attributes, body, coloredBody };
-  }
-
-  debug(rawBody: TLoggerBody) {
-    const { body, coloredBody } = this.prepareBody('debug', rawBody);
-    ElectronLog.silly(coloredBody);
-    ElectronLog.debug(body);
-    return new Error(rawBody.msg, { cause: rawBody.exc });
-  }
-
-  warn(rawBody: TLoggerBody) {
-    const { body, coloredBody } = this.prepareBody('warn', rawBody);
-    ElectronLog.silly(coloredBody);
-    ElectronLog.debug(body);
-    return new Error(rawBody.msg, { cause: rawBody.exc });
-  }
-
-  error(rawBody: TLoggerBody) {
-    const { body, coloredBody } = this.prepareBody('error', rawBody);
-    ElectronLog.silly(coloredBody);
-    ElectronLog.debug(body);
-    ElectronLog.info(body);
-    return new Error(rawBody.msg, { cause: rawBody.exc });
-  }
+  const body = inspect(rawBody, { depth: Infinity, breakLength: Infinity });
+  const coloredBody = inspect(rawBody, { depth: Infinity, breakLength: Infinity, colors: true });
+  return { attributes, body, coloredBody };
 }
 
-export const logger = new LoggerService();
+function debug(rawBody: TLoggerBody) {
+  const { body, coloredBody } = prepareBody('debug', rawBody);
+  ElectronLog.silly(coloredBody);
+  ElectronLog.debug(body);
+  return new Error(rawBody.msg, { cause: rawBody.exc });
+}
+
+function warn(rawBody: TLoggerBody) {
+  const { body, coloredBody } = prepareBody('warn', rawBody);
+  ElectronLog.silly(coloredBody);
+  ElectronLog.debug(body);
+  return new Error(rawBody.msg, { cause: rawBody.exc });
+}
+
+function error(rawBody: TLoggerBody) {
+  const { body, coloredBody } = prepareBody('error', rawBody);
+  ElectronLog.silly(coloredBody);
+  ElectronLog.debug(body);
+  ElectronLog.info(body);
+  return new Error(rawBody.msg, { cause: rawBody.exc });
+}
+
+export const logger = {
+  debug,
+  warn,
+  error,
+};
