@@ -1,4 +1,4 @@
-name: SonarCloud analysis
+name: SonarQube analysis
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
       - name: Run tests
         run: npm run test:cov
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
