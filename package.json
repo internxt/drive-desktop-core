@@ -1,22 +1,11 @@
 {
   "name": "@internxt/drive-desktop-core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Internxt <hello@internxt.com>",
-  "main": "index.js",
   "license": "MIT",
   "files": [
     "build"
   ],
-  "exports": {
-    "./backend": {
-      "import": "./build/backend/index.js",
-      "types": "./build/backend/index.d.ts"
-    },
-    "./frontend": {
-      "import": "./build/frontend/index.js",
-      "types": "./build/frontend/index.d.ts"
-    }
-  },
   "scripts": {
     "build": "rimraf build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "========== Code style ==========": "",
