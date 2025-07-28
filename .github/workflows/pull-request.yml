@@ -44,7 +44,7 @@ jobs:
         if: always()
         uses: davelosert/vitest-coverage-report-action@v2
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
