@@ -1,5 +1,5 @@
 {
-  "name": "drive-desktop-core",
+  "name": "@internxt/drive-desktop-core",
   "version": "0.0.1",
   "author": "Internxt <hello@internxt.com>",
   "main": "index.js",
