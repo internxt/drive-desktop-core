@@ -1,9 +1,10 @@
 module.exports = {
-  plugins: ['@typescript-eslint', 'import', 'unicorn', '@tanstack/query'],
+  plugins: ['@typescript-eslint', 'import', 'unicorn', '@tanstack/query', 'sonarjs'],
   extends: [
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:@tanstack/eslint-plugin-query/recommended',
+    'plugin:sonarjs/recommended-legacy',
   ],
   parser: '@typescript-eslint/parser',
   ignorePatterns: ['schema.ts', '.eslintrc.js', 'node_modules', 'build', 'vitest.config.mts'],
@@ -43,6 +44,10 @@ module.exports = {
     'no-use-before-define': ['error', { functions: false }],
     'object-shorthand': 'error',
     'require-await': 'error',
+    'sonarjs/no-commented-code': 'off',
+    'sonarjs/no-empty-test-file': 'off',
+    'sonarjs/no-redundant-optional': 'off',
+    'sonarjs/todo-tag': 'off',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
     'padding-line-between-statements': [
       'error',
