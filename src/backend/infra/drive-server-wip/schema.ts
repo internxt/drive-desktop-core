@@ -1774,6 +1774,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/users/avatar/refresh': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Refresh avatar token */
+    get: operations['UserController_refreshAvatarUser'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/users/password': {
     parameters: {
       query?: never;
@@ -1873,9 +1890,13 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get public key by email */
+    /**
+     * Get public key by email
+     * @deprecated
+     */
     get: operations['UserController_getPublicKeyByEmail'];
-    put?: never;
+    /** Retieve public key (existing users) or pre-create user and retrieve key */
+    put: operations['UserController_getOrPreCreatePublicKeyByEmail'];
     post?: never;
     delete?: never;
     options?: never;
@@ -2247,7 +2268,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/backup/v2/devices/{deviceId}': {
+  '/backup/v2/devices/{key}': {
     parameters: {
       query?: never;
       header?: never;
@@ -2257,11 +2278,11 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    /** Delete device and its linked folder by ID */
+    /** Delete device and its linked folder by key */
     delete: operations['BackupController_deleteDeviceAndFolder'];
     options?: never;
     head?: never;
-    /** Update device */
+    /** Update device by key */
     patch: operations['BackupController_updateDevice'];
     trace?: never;
   };
@@ -3659,6 +3680,10 @@ export interface components {
       /** @description User information */
       user: components['schemas']['RefreshTokenUserResponseDto'];
     };
+    RefreshUserAvatarDto: {
+      /** @description A new avatar URL for the given user */
+      avatar: string;
+    };
     UpdatePasswordDto: {
       /**
        * @description Current password
@@ -3834,6 +3859,18 @@ export interface components {
       asymmetricEncryptedMnemonic: components['schemas']['EncryptedMnemonicDto'];
       /** @description User ecc and kyber keys */
       keys: components['schemas']['NewGeneratedKeysDto'];
+    };
+    GetOrCreatePublicKeysDto: {
+      /**
+       * @description Public ecc key
+       * @example
+       */
+      publicKey: string;
+      /**
+       * @description Public kyber key
+       * @example
+       */
+      publicKyberKey: string;
     };
     CreateAttemptChangeEmailDto: {
       /**
@@ -7190,6 +7227,26 @@ export interface operations {
       };
     };
   };
+  UserController_refreshAvatarUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns a new avatar URL */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RefreshUserAvatarDto'];
+        };
+      };
+    };
+  };
   UserController_updatePassword: {
     parameters: {
       query?: never;
@@ -7355,6 +7412,28 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  UserController_getOrPreCreatePublicKeyByEmail: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        email: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns a public key */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GetOrCreatePublicKeysDto'];
+        };
       };
     };
   };
@@ -7835,7 +7914,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        deviceId: number;
+        key: string;
       };
       cookie?: never;
     };
@@ -7855,7 +7934,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        deviceId: number;
+        key: string;
       };
       cookie?: never;
     };
