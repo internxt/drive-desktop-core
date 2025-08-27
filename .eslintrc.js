@@ -7,7 +7,7 @@ module.exports = {
     'plugin:sonarjs/recommended-legacy',
   ],
   parser: '@typescript-eslint/parser',
-  ignorePatterns: ['schema.ts', '.eslintrc.js', 'node_modules', 'build', 'vitest.config.mts'],
+  ignorePatterns: ['schema.ts', 'node_modules'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],

@@ -1,21 +1,24 @@
 import { ipcMain, shell } from 'electron';
 import ElectronLog from 'electron-log';
+import { join } from 'node:path';
 
 import { logFormatter } from './log-formatter';
 
 type Props = {
   logsPath: string;
-  importantLogsPath: string;
 };
 
-export function setupElectronLog({ logsPath, importantLogsPath }: Props) {
+export function setupElectronLog({ logsPath }: Props) {
   ElectronLog.initialize();
+
+  const defaultLogs = join(logsPath, 'drive.log');
+  const importantLogs = join(logsPath, 'drive-important.log');
 
   ElectronLog.transports.file.resolvePathFn = (_, message) => {
     if (message?.level === 'info') {
-      return importantLogsPath;
+      return importantLogs;
     } else {
-      return logsPath;
+      return defaultLogs;
     }
   };
 
