@@ -2,50 +2,67 @@ import { Payments } from '@internxt/sdk/dist/drive';
 import { Tier } from '@internxt/sdk/dist/drive/payments/types/tiers';
 import { mockDeep } from 'vitest-mock-extended';
 
-import { partialSpyOn } from '@/tests/vitest/utils.helper.test';
+import * as loggerFile from '@/backend/core/logger/logger';
+import { partialSpyOn, mockProps } from '@/tests/vitest/utils.helper.test';
 
 import * as userAvailableProductsMapperFile from '../user-available-products.mapper';
+import * as getPaymentsClientFile from './get-payments-client';
 import { getUserAvailableProducts } from './get-user-available-products';
 
 describe('getUserAvailableProducts', () => {
   const userAvailableProductsMapperMock = partialSpyOn(userAvailableProductsMapperFile, 'userAvailableProductsMapper');
+  const getPaymentsClientMock = partialSpyOn(getPaymentsClientFile, 'getPaymentsClient');
+  const loggerErrorMock = partialSpyOn(loggerFile.logger, 'error');
   const paymentsClientMock = mockDeep<Payments>();
-
-  const getUserTierResponseMock = {
-    featuresPerService: {
-      backups: { enabled: true },
-      antivirus: { enabled: true },
-      cleaner: { enabled: true },
-    },
-  } as Tier;
+  const paymentsClientConfigMock = mockProps<typeof getUserAvailableProducts>({
+    paymentsClientConfig: {},
+  });
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    getPaymentsClientMock.mockReturnValue(paymentsClientMock);
   });
 
   it('should properly fetch for the user available products and map the result to the object domain', async () => {
+    const getUserTierResponseMock = {
+      featuresPerService: {
+        backups: { enabled: true },
+        antivirus: { enabled: true },
+        cleaner: { enabled: true },
+      },
+    } as Tier;
+
     paymentsClientMock.getUserTier.mockResolvedValue(getUserTierResponseMock);
 
-    const mockMappedResult = {
+    const mappedResult = {
       backups: true,
       antivirus: false,
       cleaner: true,
     };
 
-    userAvailableProductsMapperMock.mockReturnValue(mockMappedResult);
+    userAvailableProductsMapperMock.mockReturnValue(mappedResult);
 
-    const result = await getUserAvailableProducts({ paymentsClient: paymentsClientMock });
+    const result = await getUserAvailableProducts(paymentsClientConfigMock);
+
+    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigMock.paymentsClientConfig);
     expect(paymentsClientMock.getUserTier).toHaveBeenCalledTimes(1);
-    expect(userAvailableProductsMapperMock).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(mockMappedResult);
+    expect(userAvailableProductsMapperMock).toHaveBeenCalledWith(getUserTierResponseMock.featuresPerService);
+    expect(result).toEqual(mappedResult);
   });
 
-  it('should propagate errors from paymentsClient.getUserTier', async () => {
+  it('should handle errors from paymentsClient.getUserTier and log them', async () => {
     const mockError = new Error('API Error');
     paymentsClientMock.getUserTier.mockRejectedValue(mockError);
 
-    await expect(getUserAvailableProducts({ paymentsClient: paymentsClientMock })).rejects.toThrow('API Error');
+    const result = await getUserAvailableProducts(paymentsClientConfigMock);
+
+    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigMock.paymentsClientConfig);
     expect(paymentsClientMock.getUserTier).toHaveBeenCalledTimes(1);
     expect(userAvailableProductsMapperMock).not.toHaveBeenCalled();
+    expect(loggerErrorMock).toHaveBeenCalledWith({
+      tag: 'PRODUCTS',
+      msg: 'Failed to get user available products with error:',
+      error: mockError,
+    });
+    expect(result).toBeUndefined();
   });
 });
