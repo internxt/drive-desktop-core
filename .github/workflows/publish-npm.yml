@@ -30,6 +30,14 @@ jobs:
 
       - name: Create .npmrc file
         run: |
+          echo "@internxt:registry=https://npm.pkg.github.com/" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+
+      - name: Publish package to github
+        run: npm publish --scope=@internxt --access public
+
+      - name: Create .npmrc file
+        run: |
           echo "registry=https://registry.npmjs.org/" > .npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
 

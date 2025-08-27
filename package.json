@@ -1,6 +1,6 @@
 {
   "name": "@internxt/drive-desktop-core",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Internxt <hello@internxt.com>",
   "license": "MIT",
   "files": [
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "rimraf build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "========== Code style ==========": "",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
