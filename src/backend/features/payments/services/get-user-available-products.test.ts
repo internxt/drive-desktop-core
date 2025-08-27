@@ -14,7 +14,7 @@ describe('getUserAvailableProducts', () => {
   const getPaymentsClientMock = partialSpyOn(getPaymentsClientFile, 'getPaymentsClient');
   const loggerErrorMock = partialSpyOn(loggerFile.logger, 'error');
   const paymentsClientMock = mockDeep<Payments>();
-  const paymentsClientConfigMock = mockProps<typeof getUserAvailableProducts>({
+  const paymentsClientConfigProps = mockProps<typeof getUserAvailableProducts>({
     paymentsClientConfig: {},
   });
 
@@ -41,21 +41,21 @@ describe('getUserAvailableProducts', () => {
 
     userAvailableProductsMapperMock.mockReturnValue(mappedResult);
 
-    const result = await getUserAvailableProducts(paymentsClientConfigMock);
+    const result = await getUserAvailableProducts(paymentsClientConfigProps);
 
-    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigMock.paymentsClientConfig);
+    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigProps.paymentsClientConfig);
     expect(paymentsClientMock.getUserTier).toHaveBeenCalledTimes(1);
     expect(userAvailableProductsMapperMock).toHaveBeenCalledWith(getUserTierResponseMock.featuresPerService);
-    expect(result).toEqual(mappedResult);
+    expect(result).toStrictEqual(mappedResult);
   });
 
   it('should handle errors from paymentsClient.getUserTier and log them', async () => {
     const mockError = new Error('API Error');
     paymentsClientMock.getUserTier.mockRejectedValue(mockError);
 
-    const result = await getUserAvailableProducts(paymentsClientConfigMock);
+    const result = await getUserAvailableProducts(paymentsClientConfigProps);
 
-    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigMock.paymentsClientConfig);
+    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigProps.paymentsClientConfig);
     expect(paymentsClientMock.getUserTier).toHaveBeenCalledTimes(1);
     expect(userAvailableProductsMapperMock).not.toHaveBeenCalled();
     expect(loggerErrorMock).toHaveBeenCalledWith({
