@@ -6,7 +6,7 @@ import { userAvailableProductsMapper } from './user-available-products.mapper';
 
 describe('userAvailableProductsMapper', () => {
   it('should correctly map an object of Tier["featuresPerService"] into the proper domain object', () => {
-    const mockFeaturesPerService: Tier['featuresPerService'] = mockProps<typeof userAvailableProductsMapper>({
+    const featuresPerServiceProps: Tier['featuresPerService'] = mockProps<typeof userAvailableProductsMapper>({
       drive: {
         enabled: true,
       },
@@ -18,7 +18,7 @@ describe('userAvailableProductsMapper', () => {
       cleaner: { enabled: true },
     });
 
-    const result = userAvailableProductsMapper(mockFeaturesPerService);
+    const result = userAvailableProductsMapper(featuresPerServiceProps);
 
     expect(result).toStrictEqual({
       backups: true,
