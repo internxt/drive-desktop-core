@@ -7,13 +7,19 @@ module.exports = {
     'plugin:sonarjs/recommended-legacy',
   ],
   parser: '@typescript-eslint/parser',
-  ignorePatterns: ['schema.ts', 'node_modules'],
+  ignorePatterns: ['schema.ts', 'node_modules', 'build/**', 'coverage/**'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
       parserOptions: {
         tsconfigRootDir: __dirname,
         project: './tsconfig.json',
+      },
+    },
+    {
+      files: ['**/*.test.ts', '**/*.test.tsx'],
+      rules: {
+        '@typescript-eslint/unbound-method': 'off',
       },
     },
   ],

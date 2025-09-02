@@ -3,7 +3,7 @@ import { inspect } from 'node:util';
 
 import { paths } from '@/backend/infra/drive-server-wip/schema';
 
-type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN';
+type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS';
 type TLevel = 'debug' | 'warn' | 'error';
 
 export type TLoggerBody = {
