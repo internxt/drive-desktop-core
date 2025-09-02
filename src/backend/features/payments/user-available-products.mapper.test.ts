@@ -6,19 +6,13 @@ import { userAvailableProductsMapper } from './user-available-products.mapper';
 
 describe('userAvailableProductsMapper', () => {
   it('should correctly map an object of Tier["featuresPerService"] into the proper domain object', () => {
-    const featuresPerServiceProps: Tier['featuresPerService'] = mockProps<typeof userAvailableProductsMapper>({
-      drive: {
-        enabled: true,
-      },
+    const props = mockProps<typeof userAvailableProductsMapper>({
       backups: { enabled: true },
       antivirus: { enabled: false },
-      meet: { enabled: false, paxPerCall: 0 },
-      mail: { enabled: false, addressesPerUser: 0 },
-      vpn: { enabled: false, featureId: '123' },
       cleaner: { enabled: true },
     });
 
-    const result = userAvailableProductsMapper(featuresPerServiceProps);
+    const result = userAvailableProductsMapper(props);
 
     expect(result).toStrictEqual({
       backups: true,
@@ -28,13 +22,12 @@ describe('userAvailableProductsMapper', () => {
   });
 
   it('should correctly map into the proper domain object even though we recieve incorrect properties', () => {
-    const mockFeaturesPerService: Tier['featuresPerService'] = mockProps<typeof userAvailableProductsMapper>({
-      vpn: { enabled: false, featureId: '123' },
+    const props = mockProps<typeof userAvailableProductsMapper>({
       antivirus: { enabled: null } as unknown as Tier['featuresPerService']['antivirus'],
       backups: { enabled: true },
     });
 
-    const result = userAvailableProductsMapper(mockFeaturesPerService);
+    const result = userAvailableProductsMapper(props);
 
     expect(result).toStrictEqual({
       backups: true,

@@ -2,7 +2,7 @@ import { Payments } from '@internxt/sdk/dist/drive';
 import { Tier } from '@internxt/sdk/dist/drive/payments/types/tiers';
 import { mockDeep } from 'vitest-mock-extended';
 
-import * as loggerFile from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/logger';
 import { partialSpyOn, mockProps } from '@/tests/vitest/utils.helper.test';
 
 import * as userAvailableProductsMapperFile from '../user-available-products.mapper';
@@ -12,9 +12,9 @@ import { getUserAvailableProducts } from './get-user-available-products';
 describe('getUserAvailableProducts', () => {
   const userAvailableProductsMapperMock = partialSpyOn(userAvailableProductsMapperFile, 'userAvailableProductsMapper');
   const getPaymentsClientMock = partialSpyOn(getPaymentsClientFile, 'getPaymentsClient');
-  const loggerErrorMock = partialSpyOn(loggerFile.logger, 'error');
+  const loggerErrorMock = partialSpyOn(logger, 'error');
   const paymentsClientMock = mockDeep<Payments>();
-  const paymentsClientConfigProps = mockProps<typeof getUserAvailableProducts>({
+  const props = mockProps<typeof getUserAvailableProducts>({
     paymentsClientConfig: {},
   });
 
@@ -41,9 +41,9 @@ describe('getUserAvailableProducts', () => {
 
     userAvailableProductsMapperMock.mockReturnValue(mappedResult);
 
-    const result = await getUserAvailableProducts(paymentsClientConfigProps);
+    const result = await getUserAvailableProducts(props);
 
-    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigProps.paymentsClientConfig);
+    expect(getPaymentsClientMock).toHaveBeenCalledWith(props.paymentsClientConfig);
     expect(paymentsClientMock.getUserTier).toHaveBeenCalledTimes(1);
     expect(userAvailableProductsMapperMock).toHaveBeenCalledWith(getUserTierResponseMock.featuresPerService);
     expect(result).toStrictEqual(mappedResult);
@@ -53,9 +53,9 @@ describe('getUserAvailableProducts', () => {
     const mockError = new Error('API Error');
     paymentsClientMock.getUserTier.mockRejectedValue(mockError);
 
-    const result = await getUserAvailableProducts(paymentsClientConfigProps);
+    const result = await getUserAvailableProducts(props);
 
-    expect(getPaymentsClientMock).toHaveBeenCalledWith(paymentsClientConfigProps.paymentsClientConfig);
+    expect(getPaymentsClientMock).toHaveBeenCalledWith(props.paymentsClientConfig);
     expect(paymentsClientMock.getUserTier).toHaveBeenCalledTimes(1);
     expect(userAvailableProductsMapperMock).not.toHaveBeenCalled();
     expect(loggerErrorMock).toHaveBeenCalledWith({

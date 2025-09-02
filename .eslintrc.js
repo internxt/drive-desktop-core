@@ -7,7 +7,7 @@ module.exports = {
     'plugin:sonarjs/recommended-legacy',
   ],
   parser: '@typescript-eslint/parser',
-  ignorePatterns: ['schema.ts', 'node_modules', 'build/**', 'dist/**', 'coverage/**'],
+  ignorePatterns: ['schema.ts', 'node_modules', 'build/**', 'coverage/**'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -17,7 +17,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx', '**/__tests__/**/*.[tj]s?(x)'],
+      files: ['**/*.test.ts', '**/*.test.tsx'],
       rules: {
         '@typescript-eslint/unbound-method': 'off',
       },
