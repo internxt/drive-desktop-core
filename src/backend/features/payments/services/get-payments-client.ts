@@ -9,8 +9,6 @@ export type PaymentsClientConfig = {
   unauthorizedCallback: () => void;
 };
 
-let paymentsClient: Payments;
-
 export function getPaymentsClient({
   paymentsUrl,
   desktopHeader,
@@ -19,20 +17,16 @@ export function getPaymentsClient({
   token,
   unauthorizedCallback,
 }: PaymentsClientConfig) {
-  if (!paymentsClient) {
-    paymentsClient = Payments.client(
-      paymentsUrl,
-      {
-        clientName,
-        clientVersion,
-        desktopHeader,
-      },
-      {
-        unauthorizedCallback,
-        token,
-      },
-    );
-  }
-
-  return paymentsClient;
+  return Payments.client(
+    paymentsUrl,
+    {
+      clientName,
+      clientVersion,
+      desktopHeader,
+    },
+    {
+      unauthorizedCallback,
+      token,
+    },
+  );
 }
