@@ -1,7 +1,7 @@
 import checkDiskSpace from 'check-disk-space';
 import { logger } from '@/backend/core/logger/logger';
 
-export async function getDiskSpace(): Promise<number> {
+export async function getDiskSpace() {
   try {
     const basePath = process.platform === 'win32' ? 'C:\\' : '/';
     const { size } = await checkDiskSpace(basePath);

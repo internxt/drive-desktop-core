@@ -1,6 +1,6 @@
 import { CleanableItem, CleanerSectionKey, CleanerReport, CleanerSectionViewModel, CleanerViewModel } from '../types/cleaner.types';
 
-export function getSelectedItemsForSection(sectionViewModel: CleanerSectionViewModel, sectionItems: CleanableItem[]): CleanableItem[] {
+export function getSelectedItemsForSection(sectionViewModel: CleanerSectionViewModel, sectionItems: CleanableItem[]) {
   if (sectionViewModel.selectedAll) {
     return sectionItems.filter((item) => !sectionViewModel.exceptions.includes(item.fullPath));
   } else {
@@ -12,7 +12,7 @@ export function getAllItemsToDelete(
   viewModel: CleanerViewModel,
   report: CleanerReport,
   cleanerSectionKeys: CleanerSectionKey[],
-): CleanableItem[] {
+) {
   const itemsToDelete: CleanableItem[] = [];
 
   cleanerSectionKeys.forEach((sectionKey) => {

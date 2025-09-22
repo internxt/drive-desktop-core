@@ -1,6 +1,7 @@
 /**
+ * v0.1.1 Esteban Galvis
  * Critical file extensions that should never be deleted from web browser paths
- * Organized by platform for better maintainability
+ * to avoid corrupting user profiles or crashing the browser.
  */
 const CRITICAL_EXTENSIONS = {
   linux: ['.lock', '.pid', '.sock', '.socket', '.tmp', '.sqlite', '.sqlite-wal', '.sqlite-shm', '.db', '.json', '.log'],

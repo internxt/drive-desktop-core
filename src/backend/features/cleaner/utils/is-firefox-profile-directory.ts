@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-export async function isFirefoxProfileDirectory(entry: string, parentPath: string): Promise<boolean> {
+export async function isFirefoxProfileDirectory(entry: string, parentPath: string) {
   const fullPath = path.join(parentPath, entry);
   try {
     const stat = await fs.stat(fullPath);
