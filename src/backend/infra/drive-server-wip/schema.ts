@@ -3046,7 +3046,7 @@ export interface components {
        */
       plainNames: string[];
     };
-    ExistingFoldersDto: {
+    ExistentFoldersDto: {
       existentFolders: components['schemas']['FolderDto'][];
     };
     CheckFileExistenceInFolderDto: {
@@ -4860,7 +4860,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['ExistingFoldersDto'];
+          'application/json': components['schemas']['ExistentFoldersDto'];
         };
       };
     };
