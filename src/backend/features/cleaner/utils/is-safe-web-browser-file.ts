@@ -69,19 +69,11 @@ export function isSafeWebBrowserFile(fileName: string) {
   const criticalExtensions = CRITICAL_EXTENSIONS[platform];
   const criticalFilenames = CRITICAL_FILENAMES[platform];
 
-  if (criticalExtensions.some((ext: string) => lowerName.endsWith(ext))) {
-    return false;
-  }
-
-  if (criticalFilenames.some((filename: string) => filename === lowerName)) {
-    return false;
-  }
-
-  if (isBrowserSpecificCriticalFile(lowerName)) {
-    return false;
-  }
-
-  return true;
+  return !(
+    criticalExtensions.some((ext: string) => lowerName.endsWith(ext)) ||
+    criticalFilenames.some((filename: string) => filename === lowerName) ||
+    isBrowserSpecificCriticalFile(lowerName)
+  );
 }
 
 function isBrowserSpecificCriticalFile(lowerFileName: string) {

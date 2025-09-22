@@ -40,7 +40,7 @@ describe('isInternxtRelated', () => {
   });
 
   it('should return false for non-internxt related names', () => {
-    const nonInternxtNames = ['google-chrome', 'firefox', 'application.log', 'temp-file.txt', 'system-cache', '/tmp/random-file'];
+    const nonInternxtNames = ['google-chrome', 'firefox', 'application.log', 'temp-file.txt', 'system-cache', '/random/random-file'];
 
     nonInternxtNames.forEach((name) => {
       expect(isInternxtRelated(name)).toBe(false);
