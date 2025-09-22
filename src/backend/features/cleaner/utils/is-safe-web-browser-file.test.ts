@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { isSafeWebBrowserFile } from './is-safe-web-browser-file';
 
 describe('isSafeWebBrowserFile', () => {

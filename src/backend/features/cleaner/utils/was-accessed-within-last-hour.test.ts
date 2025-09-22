@@ -1,7 +1,9 @@
 import { Stats } from 'fs';
 import { promises as fs } from 'fs';
-import { wasAccessedWithinLastHour } from './was-accessed-within-last-hour';
+
 import { deepMocked } from '@/tests/vitest/utils.helper.test';
+
+import { wasAccessedWithinLastHour } from './was-accessed-within-last-hour';
 
 vi.mock('fs');
 

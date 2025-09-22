@@ -3,19 +3,7 @@
  * Organized by platform for better maintainability
  */
 const CRITICAL_EXTENSIONS = {
-  linux: [
-    '.lock',
-    '.pid',
-    '.sock',
-    '.socket',
-    '.tmp',
-    '.sqlite',
-    '.sqlite-wal',
-    '.sqlite-shm',
-    '.db',
-    '.json',
-    '.log'
-  ],
+  linux: ['.lock', '.pid', '.sock', '.socket', '.tmp', '.sqlite', '.sqlite-wal', '.sqlite-shm', '.db', '.json', '.log'],
   win32: [
     '.sqlite',
     '.sqlite-wal',
@@ -29,7 +17,7 @@ const CRITICAL_EXTENSIONS = {
     '.json',
     '.pref',
     '.ini',
-    '.cfg'
+    '.cfg',
   ],
 };
 
@@ -48,7 +36,7 @@ const CRITICAL_FILENAMES = {
     'cookies.sqlite',
     'permissions.sqlite',
     'content-prefs.sqlite',
-    'formhistory.sqlite'
+    'formhistory.sqlite',
   ],
   win32: [
     'lock',
@@ -70,8 +58,8 @@ const CRITICAL_FILENAMES = {
     'network action predictor',
     'origin bound certs',
     'certificate revocation lists',
-    'extension cookies'
-  ]
+    'extension cookies',
+  ],
 };
 
 export function isSafeWebBrowserFile(fileName: string) {
@@ -104,7 +92,7 @@ function isBrowserSpecificCriticalFile(lowerFileName: string) {
     'transporter_agent.log',
     'local state',
     'preferences',
-    'secure preferences'
+    'secure preferences',
   ];
 
   const firefoxCriticalFiles = [
@@ -115,22 +103,12 @@ function isBrowserSpecificCriticalFile(lowerFileName: string) {
     'prefs.js',
     'user.js',
     'userchrome.css',
-    'usercontent.css'
+    'usercontent.css',
   ];
 
+  const edgeCriticalFiles = ['local state', 'preferences', 'secure preferences', 'first run'];
 
-  const edgeCriticalFiles = [
-    'local state',
-    'preferences',
-    'secure preferences',
-    'first run'
-  ];
-
-  const allCriticalFiles = [
-    ...chromeCriticalFiles,
-    ...firefoxCriticalFiles,
-    ...edgeCriticalFiles
-  ];
+  const allCriticalFiles = [...chromeCriticalFiles, ...firefoxCriticalFiles, ...edgeCriticalFiles];
 
   return allCriticalFiles.includes(lowerFileName);
 }
