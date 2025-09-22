@@ -74,3 +74,17 @@ export type CleanupProgress = {
   cleaning: boolean;
   cleaningCompleted: boolean;
 };
+
+type BrowserContext = {
+  criticalExtensions: string[];
+  criticalFilenames: string[];
+  specificCriticalFile: {
+    chrome: string[];
+    firefox: string[];
+    edge: string[];
+  };
+};
+
+export type CleanerContext = {
+  browser: BrowserContext;
+};

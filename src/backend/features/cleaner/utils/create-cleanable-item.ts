@@ -3,7 +3,7 @@ import path from 'path';
 
 import { CleanableItem } from '../types/cleaner.types';
 
-export async function createCleanableItem(filePath: string) {
+export async function createCleanableItem({ filePath }: { filePath: string }) {
   const stat = await fs.stat(filePath);
   return {
     fullPath: filePath,

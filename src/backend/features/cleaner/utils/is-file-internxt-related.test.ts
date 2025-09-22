@@ -20,7 +20,7 @@ describe('isInternxtRelated', () => {
     ];
 
     internxtNames.forEach((name) => {
-      expect(isInternxtRelated(name)).toBe(true);
+      expect(isInternxtRelated({ name })).toBe(true);
     });
   });
 
@@ -35,7 +35,7 @@ describe('isInternxtRelated', () => {
     ];
 
     driveDesktopNames.forEach((name) => {
-      expect(isInternxtRelated(name)).toBe(true);
+      expect(isInternxtRelated({ name })).toBe(true);
     });
   });
 
@@ -43,11 +43,11 @@ describe('isInternxtRelated', () => {
     const nonInternxtNames = ['google-chrome', 'firefox', 'application.log', 'temp-file.txt', 'system-cache', '/random/random-file'];
 
     nonInternxtNames.forEach((name) => {
-      expect(isInternxtRelated(name)).toBe(false);
+      expect(isInternxtRelated({ name })).toBe(false);
     });
   });
 
   it('should return false for empty string', () => {
-    expect(isInternxtRelated('')).toBe(false);
+    expect(isInternxtRelated({ name: '' })).toBe(false);
   });
 });

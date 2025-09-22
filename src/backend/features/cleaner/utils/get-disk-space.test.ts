@@ -16,7 +16,7 @@ describe('getDiskSpace', () => {
     const mockDiskSpace = { size: 5000000000 };
     checkDiskSpaceMock.mockResolvedValue(mockDiskSpace);
     // When
-    const result = await getDiskSpace();
+    const result = await getDiskSpace({ mainPath: 'C:\\' });
     // Then
     expect(result).toBe(5000000000);
   });
@@ -26,7 +26,7 @@ describe('getDiskSpace', () => {
     const mockError = new Error('Disk check failed');
     checkDiskSpaceMock.mockRejectedValue(mockError);
     // When
-    const result = await getDiskSpace();
+    const result = await getDiskSpace({ mainPath: '/' });
     // Then
     expect(result).toBe(0);
     expect(loggerMock.error).toHaveBeenCalledWith({ msg: 'Failed to get disk space', error: mockError });

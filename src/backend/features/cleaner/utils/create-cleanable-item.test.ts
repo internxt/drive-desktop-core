@@ -19,7 +19,7 @@ describe('createCleanableItem', () => {
     mockedBasename.mockReturnValue('example.txt');
 
     const filePath = '/mock/path/example.txt';
-    const result = await createCleanableItem(filePath);
+    const result = await createCleanableItem({ filePath });
 
     expect(result).toEqual({
       fullPath: filePath,

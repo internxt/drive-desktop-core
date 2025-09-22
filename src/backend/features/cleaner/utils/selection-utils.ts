@@ -1,6 +1,10 @@
 import { CleanableItem, CleanerSectionKey, CleanerReport, CleanerSectionViewModel, CleanerViewModel } from '../types/cleaner.types';
 
-export function getSelectedItemsForSection(sectionViewModel: CleanerSectionViewModel, sectionItems: CleanableItem[]) {
+type SelectedItemsForSectionProps = {
+  sectionViewModel: CleanerSectionViewModel;
+  sectionItems: CleanableItem[];
+};
+export function getSelectedItemsForSection({ sectionViewModel, sectionItems }: SelectedItemsForSectionProps) {
   if (sectionViewModel.selectedAll) {
     return sectionItems.filter((item) => !sectionViewModel.exceptions.includes(item.fullPath));
   } else {
@@ -8,7 +12,13 @@ export function getSelectedItemsForSection(sectionViewModel: CleanerSectionViewM
   }
 }
 
-export function getAllItemsToDelete(viewModel: CleanerViewModel, report: CleanerReport, cleanerSectionKeys: CleanerSectionKey[]) {
+type AllItemsToDeleteProps = {
+  viewModel: CleanerViewModel;
+  report: CleanerReport;
+  cleanerSectionKeys: CleanerSectionKey[];
+};
+
+export function getAllItemsToDelete({ viewModel, report, cleanerSectionKeys }: AllItemsToDeleteProps) {
   const itemsToDelete: CleanableItem[] = [];
 
   cleanerSectionKeys.forEach((sectionKey) => {
@@ -16,7 +26,7 @@ export function getAllItemsToDelete(viewModel: CleanerViewModel, report: Cleaner
     const sectionViewModel = viewModel[sectionKey];
 
     if (section && sectionViewModel) {
-      const selectedItems = getSelectedItemsForSection(sectionViewModel, section.items);
+      const selectedItems = getSelectedItemsForSection({ sectionViewModel, sectionItems: section.items });
       itemsToDelete.push(...selectedItems);
     }
   });
