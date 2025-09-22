@@ -9,8 +9,8 @@ export function isSafeWebBrowserFile({ ctx, fileName }: Props) {
   const lowerName = fileName.toLowerCase();
 
   return !(
-    ctx.browser.criticalExtensions.some((ext: string) => lowerName.endsWith(ext)) ||
-    ctx.browser.criticalFilenames.some((filename: string) => filename === lowerName) ||
+    ctx.browser.criticalExtensions.some((ext) => lowerName.endsWith(ext)) ||
+    ctx.browser.criticalFilenames.some((filename) => filename === lowerName) ||
     isBrowserSpecificCriticalFile({ ctx, lowerFileName: lowerName })
   );
 }

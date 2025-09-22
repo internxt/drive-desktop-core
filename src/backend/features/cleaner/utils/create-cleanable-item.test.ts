@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { describe, it, expect, vi } from 'vitest';
 
 import { deepMocked } from '@/tests/vitest/utils.helper.test';
 

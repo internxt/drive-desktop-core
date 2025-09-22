@@ -1,5 +1,4 @@
 import checkDiskSpace from 'check-disk-space';
-import { describe, it, expect, vi } from 'vitest';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { deepMocked } from '@/tests/vitest/utils.helper.test';

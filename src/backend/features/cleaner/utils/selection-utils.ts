@@ -25,7 +25,7 @@ export function getAllItemsToDelete({ viewModel, report, cleanerSectionKeys }: A
     const section = report[sectionKey];
     const sectionViewModel = viewModel[sectionKey];
 
-    if (section && sectionViewModel) {
+    if (sectionViewModel) {
       const selectedItems = getSelectedItemsForSection({ sectionViewModel, sectionItems: section.items });
       itemsToDelete.push(...selectedItems);
     }
