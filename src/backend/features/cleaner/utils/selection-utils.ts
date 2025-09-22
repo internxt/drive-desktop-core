@@ -8,11 +8,7 @@ export function getSelectedItemsForSection(sectionViewModel: CleanerSectionViewM
   }
 }
 
-export function getAllItemsToDelete(
-  viewModel: CleanerViewModel,
-  report: CleanerReport,
-  cleanerSectionKeys: CleanerSectionKey[],
-) {
+export function getAllItemsToDelete(viewModel: CleanerViewModel, report: CleanerReport, cleanerSectionKeys: CleanerSectionKey[]) {
   const itemsToDelete: CleanableItem[] = [];
 
   cleanerSectionKeys.forEach((sectionKey) => {
