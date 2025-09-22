@@ -1,9 +1,5 @@
-import { CleanableItem, CLEANER_SECTION_KEYS, CleanerReport, CleanerSectionViewModel, CleanerViewModel } from '../types/cleaner.types';
+import { CleanableItem, CleanerSectionKey, CleanerReport, CleanerSectionViewModel, CleanerViewModel } from '../types/cleaner.types';
 
-/**
- * Get selected items for a specific section based on the view model
- * Duplicated from frontend to avoid cross-process imports
- */
 export function getSelectedItemsForSection(
   sectionViewModel: CleanerSectionViewModel,
   sectionItems: CleanableItem[]
@@ -19,16 +15,14 @@ export function getSelectedItemsForSection(
   }
 }
 
-/**
- * Get all items to delete based on the view model and report
- */
 export function getAllItemsToDelete(
   viewModel: CleanerViewModel,
-  report: CleanerReport
+  report: CleanerReport,
+  cleanerSectionKeys: CleanerSectionKey[]
 ): CleanableItem[] {
   const itemsToDelete: CleanableItem[] = [];
 
-  CLEANER_SECTION_KEYS.forEach((sectionKey) => {
+  cleanerSectionKeys.forEach((sectionKey) => {
     const section = report[sectionKey];
     const sectionViewModel = viewModel[sectionKey];
 

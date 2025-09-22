@@ -11,14 +11,6 @@ type ScanDirectoryProps = {
   customDirectoryFilter?: (folderName: string) => boolean;
 };
 
-/**
- * scan a directory and process the result dirents (directory or file entries)
- * @param dirPath Directory path to scan
- *  @param customFileFilter Optional custom filter function to apply to files.
- *  Return true to skip the directory, false to include it.
- *  @param customDirectoryFilter Optional custom filter function to apply to directories.
- *  Return true to skip the directory, false to include it.
- */
 export async function scanDirectory({
   dirPath,
   customFileFilter,

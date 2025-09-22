@@ -28,14 +28,6 @@ export type CleanerReport = {
 
 export type CleanerSectionKey = keyof CleanerReport;
 
-export const CLEANER_SECTION_KEYS: readonly CleanerSectionKey[] = [
-  'appCache',
-  'logFiles',
-  'trash',
-  'webStorage',
-  'webCache'
-] as const;
-
 export type AppCachePaths = {
   userCache: string;
   tmpDir: string;

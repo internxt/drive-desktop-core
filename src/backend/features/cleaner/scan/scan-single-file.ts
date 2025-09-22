@@ -4,11 +4,6 @@ import { wasAccessedWithinLastHour } from '../utils/was-accessed-within-last-hou
 import { createCleanableItem } from '../utils/create-cleanable-item';
 import { logger } from '@/backend/core/logger/logger';
 
-/**
- * Scan a single file and return it as a CleanableItem if it's safe to delete
- * @param filePath Path to the single file to check
- * @returns Promise<CleanableItem[]> Array with single item if file is safe to delete, empty array otherwise
- */
 export async function scanSingleFile(
   filePath: string
 ): Promise<CleanableItem[]> {

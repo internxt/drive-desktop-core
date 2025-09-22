@@ -11,9 +11,7 @@ type ProcessDirentProps = {
   customDirectoryFilter?: (directoryName: string) => boolean;
   customFileFilter?: (fileName: string) => boolean;
 };
-/**
- * Process a single directory entry (file or subdirectory)
- */
+
 export async function processDirent({
   entry,
   fullPath,

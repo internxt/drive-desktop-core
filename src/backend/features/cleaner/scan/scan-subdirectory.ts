@@ -28,15 +28,6 @@ type ScanSubDirectoryProps = {
   customFileFilter?: (fileName: string) => boolean;
 };
 
-/**
- * Scan subdirectories within a given base directory
- * @param baseDir Base directory containing app folders (e.g., ~/.local/share)
- * @param subPath Sub-path to scan within each app directory (e.g., 'cache')
- *  @param customDirectoryFilter Optional custom filter function to apply to directories.
- *  Return true to skip the directory, false to include it.
- *  @param customFileFilter Optional custom filter function to apply to files.
- *  Return true to skip the directory, false to include it.
- */
 export async function scanSubDirectory({
   baseDir,
   subPath,
