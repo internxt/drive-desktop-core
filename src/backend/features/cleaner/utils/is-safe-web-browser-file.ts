@@ -7,15 +7,11 @@ type Props = {
 
 export function isSafeWebBrowserFile({ ctx, fileName }: Props) {
   const lowerName = fileName.toLowerCase();
+  const allCriticalFiles = Object.values(ctx.browser.specificCriticalFile).flat();
 
   return !(
     ctx.browser.criticalExtensions.some((ext) => lowerName.endsWith(ext)) ||
     ctx.browser.criticalFilenames.some((filename) => filename === lowerName) ||
-    isBrowserSpecificCriticalFile({ ctx, lowerFileName: lowerName })
+    allCriticalFiles.includes(lowerName)
   );
-}
-
-function isBrowserSpecificCriticalFile({ ctx, lowerFileName }: { ctx: CleanerContext; lowerFileName: string }): boolean {
-  const allCriticalFiles = Object.values(ctx.browser.specificCriticalFile).flat();
-  return allCriticalFiles.includes(lowerFileName);
 }
