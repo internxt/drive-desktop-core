@@ -9,8 +9,7 @@ export async function scanSingleFile({ filePath }: { filePath: string }) {
   try {
     const fileStats = await fs.stat(filePath);
 
-    const wasAccessed = wasAccessedWithinLastHour({ fileStats });
-    if (!fileStats.isFile() || wasAccessed) {
+    if (!fileStats.isFile() || wasAccessedWithinLastHour({ fileStats })) {
       return [];
     }
 
