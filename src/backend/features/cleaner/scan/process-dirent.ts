@@ -1,4 +1,4 @@
-import { Dirent } from 'fs';
+import { Dirent, promises as fs } from 'fs';
 
 import { logger } from '@/backend/core/logger/logger';
 
@@ -6,24 +6,30 @@ import { createCleanableItem } from '../utils/create-cleanable-item';
 import { wasAccessedWithinLastHour } from '../utils/was-accessed-within-last-hour';
 import { scanDirectory } from './scan-directory';
 
-type ProcessDirentProps = {
+type Props = {
   entry: Dirent;
   fullPath: string;
   customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
   customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
 };
 
-export async function processDirent({ entry, fullPath, customFileFilter, customDirectoryFilter }: ProcessDirentProps) {
+export async function processDirent({ entry, fullPath, customFileFilter, customDirectoryFilter }: Props) {
   try {
     if (entry.isFile()) {
-      if ((await wasAccessedWithinLastHour({ filePath: fullPath })) || (customFileFilter && customFileFilter({ fileName: entry.name }))) {
+      const fileStats = await fs.stat(fullPath);
+      const wasAccessed = wasAccessedWithinLastHour({ fileStats });
+      const isFiltered = customFileFilter && customFileFilter({ fileName: entry.name });
+
+      if (wasAccessed || isFiltered) {
         return [];
       }
 
-      const item = await createCleanableItem({ filePath: fullPath });
+      const item = createCleanableItem({ filePath: fullPath, stat: fileStats });
       return [item];
     } else if (entry.isDirectory()) {
-      if (customDirectoryFilter && customDirectoryFilter({ folderName: entry.name })) {
+      const isFiltered = customDirectoryFilter && customDirectoryFilter({ folderName: entry.name });
+
+      if (isFiltered) {
         return [];
       }
 
@@ -35,7 +41,9 @@ export async function processDirent({ entry, fullPath, customFileFilter, customD
     }
   } catch {
     logger.warn({
-      msg: `File or Directory with path ${fullPath} cannot be accessed, skipping`,
+      tag: 'CLEANER',
+      msg: 'File or folder with path cannot be accessed, skipping',
+      fullPath,
     });
   }
 

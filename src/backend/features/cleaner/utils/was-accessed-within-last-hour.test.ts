@@ -9,7 +9,6 @@ vi.mock('fs');
 
 describe('wasAccessedWithinLastHour', () => {
   const statMock = deepMocked(fs.stat);
-  const mockFilePath = '/test/file.txt';
 
   beforeEach(() => {
     vi.useFakeTimers();
@@ -20,7 +19,7 @@ describe('wasAccessedWithinLastHour', () => {
     vi.useRealTimers();
   });
 
-  it('should return true when file was accessed within last hour', async () => {
+  it('should return true when file was accessed within last hour', () => {
     const recentTime = new Date('2025-09-19T11:30:00Z');
     const mockStat = {
       atime: recentTime,
@@ -28,12 +27,12 @@ describe('wasAccessedWithinLastHour', () => {
     } as Stats;
     statMock.mockResolvedValue(mockStat);
 
-    const result = await wasAccessedWithinLastHour({ filePath: mockFilePath });
+    const result = wasAccessedWithinLastHour({ fileStats: mockStat });
 
     expect(result).toBe(true);
   });
 
-  it('should return false when file was accessed more than an hour ago', async () => {
+  it('should return false when file was accessed more than an hour ago', () => {
     const oldTime = new Date('2025-09-19T10:30:00Z');
     const mockStat = {
       atime: oldTime,
@@ -41,15 +40,15 @@ describe('wasAccessedWithinLastHour', () => {
     } as Stats;
     statMock.mockResolvedValue(mockStat);
 
-    const result = await wasAccessedWithinLastHour({ filePath: mockFilePath });
+    const result = wasAccessedWithinLastHour({ fileStats: mockStat });
 
     expect(result).toBe(false);
   });
 
-  it('should return true when file access check fails (safety first)', async () => {
+  it('should return true when file access check fails (safety first)', () => {
     statMock.mockRejectedValue(new Error('Permission denied'));
 
-    const result = await wasAccessedWithinLastHour({ filePath: mockFilePath });
+    const result = wasAccessedWithinLastHour({ fileStats: {} as Stats });
 
     expect(result).toBe(true);
   });

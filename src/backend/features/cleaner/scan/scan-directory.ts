@@ -39,9 +39,12 @@ export async function scanDirectory({ dirPath, customFileFilter, customDirectory
     return items;
   } catch (error) {
     logger.warn({
-      msg: `Directory ${dirPath} does not exist or cannot be accessed, skipping`,
+      tag: 'CLEANER',
+      msg: 'Directory does not exist or cannot be accessed, skipping',
+      dirPath,
       error,
     });
-    return [];
   }
+
+  return [];
 }
