@@ -35,7 +35,6 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: { ctx: 
     for (const profileDir of profileDirs) {
       const profileCachePath = path.join(firefoxCacheDir, profileDir);
 
-      // Scan cache2/ directory (main HTTP cache)
       const cache2Path = path.join(profileCachePath, 'cache2');
       scanPromises.push(
         scanDirectory({
@@ -45,7 +44,6 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: { ctx: 
         }),
       );
 
-      // Scan thumbnails cache
       const thumbnailsPath = path.join(profileCachePath, 'thumbnails');
       scanPromises.push(
         scanDirectory({
@@ -55,7 +53,6 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: { ctx: 
         }),
       );
 
-      // Scan startup cache
       const startupCachePath = path.join(profileCachePath, 'startupCache');
       scanPromises.push(
         scanDirectory({
