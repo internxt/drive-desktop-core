@@ -17,8 +17,11 @@ export async function scanSingleFile({ filePath }: { filePath: string }) {
     return [item];
   } catch {
     logger.warn({
-      msg: `Single file with file path ${filePath} cannot be accessed, skipping`,
+      tag: 'CLEANER',
+      msg: `Single file cannot be accessed, skipping`,
+      filePath,
     });
-    return [];
   }
+
+  return [];
 }
