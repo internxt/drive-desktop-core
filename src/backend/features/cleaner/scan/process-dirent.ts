@@ -9,7 +9,7 @@ import { scanDirectory } from './scan-directory';
 type ProcessDirentProps = {
   entry: Dirent;
   fullPath: string;
-  customDirectoryFilter?: (directoryName: string) => boolean;
+  customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
   customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
 };
 
@@ -26,7 +26,7 @@ export async function processDirent({ entry, fullPath, customFileFilter, customD
       const item = await createCleanableItem({ filePath: fullPath });
       return [item];
     } else if (entry.isDirectory()) {
-      if (customDirectoryFilter && customDirectoryFilter(entry.name)) {
+      if (customDirectoryFilter && customDirectoryFilter({ folderName: entry.name })) {
         return [];
       }
 

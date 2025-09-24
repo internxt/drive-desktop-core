@@ -10,7 +10,7 @@ import { processDirent } from './process-dirent';
 type ScanDirectoryProps = {
   dirPath: string;
   customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
-  customDirectoryFilter?: (folderName: string) => boolean;
+  customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
 };
 
 export async function scanDirectory({ dirPath, customFileFilter, customDirectoryFilter }: ScanDirectoryProps) {

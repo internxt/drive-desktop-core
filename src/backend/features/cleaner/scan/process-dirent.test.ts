@@ -90,7 +90,7 @@ describe('processDirent', () => {
     const result = await processDirent({entry: mockDir, fullPath: mockPath, customDirectoryFilter, customFileFilter });
     // Then
     expect(result).toStrictEqual(mockDirectoryItems);
-    expect(customDirectoryFilter).toHaveBeenCalledWith(mockDir.name);
+    expect(customDirectoryFilter).toHaveBeenCalledWith({ folderName: mockDir.name });
     expect(scanDirectoryMock).toHaveBeenCalledWith(
       expect.objectContaining({
         dirPath: mockPath,
