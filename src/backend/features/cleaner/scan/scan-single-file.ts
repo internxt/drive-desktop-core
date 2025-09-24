@@ -7,13 +7,14 @@ import { wasAccessedWithinLastHour } from '../utils/was-accessed-within-last-hou
 
 export async function scanSingleFile({ filePath }: { filePath: string }) {
   try {
-    const stat = await fs.stat(filePath);
+    const fileStats = await fs.stat(filePath);
 
-    if (!stat.isFile() || (await wasAccessedWithinLastHour({ filePath }))) {
+    const wasAccessed = await wasAccessedWithinLastHour({ fileStats });
+    if (!fileStats.isFile() || wasAccessed) {
       return [];
     }
 
-    const item = await createCleanableItem({ filePath });
+    const item = await createCleanableItem({ filePath, stat: fileStats });
     return [item];
   } catch {
     logger.warn({
