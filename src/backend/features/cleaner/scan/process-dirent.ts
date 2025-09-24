@@ -5,20 +5,22 @@ import { logger } from '@/backend/core/logger/logger';
 import { createCleanableItem } from '../utils/create-cleanable-item';
 import { wasAccessedWithinLastHour } from '../utils/was-accessed-within-last-hour';
 import { scanDirectory } from './scan-directory';
+import { CleanerContext } from '../types/cleaner.types';
 
 type ProcessDirentProps = {
+  ctx: CleanerContext;
   entry: Dirent;
   fullPath: string;
   customDirectoryFilter?: (directoryName: string) => boolean;
-  customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
+  customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
 };
 
-export async function processDirent({ entry, fullPath, customFileFilter, customDirectoryFilter }: ProcessDirentProps) {
+export async function processDirent({ ctx, entry, fullPath, customFileFilter, customDirectoryFilter }: ProcessDirentProps) {
   try {
     if (entry.isFile()) {
       if (
         (await wasAccessedWithinLastHour({ filePath: fullPath })) ||
-        (customFileFilter && customFileFilter({ fileName: entry.name }))
+        (customFileFilter && !customFileFilter({ ctx, fileName: entry.name }))
       ) {
         return [];
       }
@@ -31,6 +33,7 @@ export async function processDirent({ entry, fullPath, customFileFilter, customD
       }
 
       return await scanDirectory({
+        ctx,
         dirPath: fullPath,
         customFileFilter,
         customDirectoryFilter,

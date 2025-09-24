@@ -3,7 +3,7 @@ import path from 'path';
 
 import { logger } from '@/backend/core/logger/logger';
 
-import { CleanableItem } from '../types/cleaner.types';
+import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import { isInternxtRelated } from '../utils/is-file-internxt-related';
 import { scanDirectory } from './scan-directory';
 
@@ -26,13 +26,14 @@ async function getFilteredDirectories({ baseDir, customDirectoryFilter }: Filter
 }
 
 type ScanSubDirectoryProps = {
+  ctx: CleanerContext;
   baseDir: string;
   subPath: string;
   customDirectoryFilter?: (directoryName: string) => boolean;
-  customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
+  customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
 };
 
-export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter, customFileFilter }: ScanSubDirectoryProps) {
+export async function scanSubDirectory({ ctx, baseDir, subPath, customDirectoryFilter, customFileFilter }: ScanSubDirectoryProps) {
   const cleanableItems: CleanableItem[] = [];
   try {
     const directories = await getFilteredDirectories({ baseDir, customDirectoryFilter });
@@ -40,6 +41,7 @@ export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter
     const scanPromises = directories.map((directory) => {
       const dirPath = path.join(baseDir, directory.name, subPath);
       return scanDirectory({
+        ctx,
         dirPath,
         customFileFilter,
       });

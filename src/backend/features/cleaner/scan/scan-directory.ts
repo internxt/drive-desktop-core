@@ -3,17 +3,18 @@ import path from 'path';
 
 import { logger } from '@/backend/core/logger/logger';
 
-import { CleanableItem } from '../types/cleaner.types';
+import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import { isInternxtRelated } from '../utils/is-file-internxt-related';
 import { processDirent } from './process-dirent';
 
 type ScanDirectoryProps = {
+  ctx: CleanerContext;
   dirPath: string;
-  customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
+  customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
   customDirectoryFilter?: (folderName: string) => boolean;
 };
 
-export async function scanDirectory({ dirPath, customFileFilter, customDirectoryFilter }: ScanDirectoryProps) {
+export async function scanDirectory({ ctx, dirPath, customFileFilter, customDirectoryFilter }: ScanDirectoryProps) {
   try {
     const stat = await fs.stat(dirPath);
     if (!stat.isDirectory()) {
@@ -28,6 +29,7 @@ export async function scanDirectory({ dirPath, customFileFilter, customDirectory
       if (isInternxtRelated({ name: fullPath })) continue;
 
       const cleanableItems = await processDirent({
+        ctx,
         entry: dirent,
         fullPath,
         customFileFilter,

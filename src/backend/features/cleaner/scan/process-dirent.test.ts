@@ -5,6 +5,7 @@ import * as createCleanableItemMocule from '../utils/create-cleanable-item';
 import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-last-hour';
 import { processDirent } from './process-dirent';
 import * as scanDirectoryModule from './scan-directory';
+import { CleanerContext } from '../types/cleaner.types';
 
 describe('processDirent', () => {
   const wasAccessedWithinLastHourMock = partialSpyOn(wasAccessedWithinLastHourModule, 'wasAccessedWithinLastHour');
@@ -35,7 +36,7 @@ describe('processDirent', () => {
     // Given
     createCleanableItemMock.mockResolvedValue(mockCleanableItem);
     // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath });
+    const result = await processDirent({ ctx: {} as CleanerContext, entry: mockFileDirent, fullPath: mockFullpath });
     // Then
     expect(result).toStrictEqual([mockCleanableItem]);
     expect(wasAccessedWithinLastHourMock).toHaveBeenCalledWith({ filePath: mockFullpath });
@@ -46,7 +47,7 @@ describe('processDirent', () => {
     // Given
     wasAccessedWithinLastHourMock.mockResolvedValue(true);
     // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath });
+    const result = await processDirent({ ctx: {} as CleanerContext, entry: mockFileDirent, fullPath: mockFullpath });
     // Then
     expect(result).toStrictEqual([]);
     expect(createCleanableItemMock).not.toHaveBeenCalled();
@@ -54,13 +55,13 @@ describe('processDirent', () => {
 
   it('should return empty array when custom filter excludes file', async () => {
     // Given
-    const customFileFilter = vi.fn().mockReturnValue(true);
+    const customFileFilter = vi.fn().mockReturnValue(false);
     wasAccessedWithinLastHourMock.mockResolvedValue(false);
     // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath, customFileFilter });
+    const result = await processDirent({ ctx: {} as CleanerContext, entry: mockFileDirent, fullPath: mockFullpath, customFileFilter });
     // Then
     expect(result).toStrictEqual([]);
-    expect(customFileFilter).toHaveBeenCalledWith({ fileName: mockFileDirent.name });
+    expect(customFileFilter).toHaveBeenCalledWith({ ctx: {} as CleanerContext,fileName: mockFileDirent.name });
     expect(createCleanableItemMock).not.toHaveBeenCalled();
   });
 
@@ -71,7 +72,7 @@ describe('processDirent', () => {
     const mockDirectoryItems = [mockCleanableItem];
     scanDirectoryMock.mockResolvedValue(mockDirectoryItems);
     // When
-    const result = await processDirent({ entry: mockDir, fullPath: mockPath });
+    const result = await processDirent({ ctx: {} as CleanerContext, entry: mockDir, fullPath: mockPath });
     // Then
     expect(result).toStrictEqual(mockDirectoryItems);
     expect(scanDirectoryMock).toHaveBeenCalledTimes(1);
@@ -87,7 +88,7 @@ describe('processDirent', () => {
     const mockDirectoryItems = [mockCleanableItem];
     scanDirectoryMock.mockResolvedValue(mockDirectoryItems);
     // When
-    const result = await processDirent({entry: mockDir, fullPath: mockPath, customDirectoryFilter, customFileFilter });
+    const result = await processDirent({ ctx: {} as CleanerContext, entry: mockDir, fullPath: mockPath, customDirectoryFilter, customFileFilter });
     // Then
     expect(result).toStrictEqual(mockDirectoryItems);
     expect(customDirectoryFilter).toHaveBeenCalledWith(mockDir.name);
@@ -104,7 +105,7 @@ describe('processDirent', () => {
     // Given
     wasAccessedWithinLastHourMock.mockRejectedValue(new Error('Permission denied'));
     // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath });
+    const result = await processDirent({ ctx: {} as CleanerContext, entry: mockFileDirent, fullPath: mockFullpath });
     // Then
     expect(result).toStrictEqual([]);
     expect(loggerMock.warn).toHaveBeenCalledWith({

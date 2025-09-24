@@ -1,27 +1,29 @@
-import { isSafeWebBrowserFile } from './is-safe-web-browser-file';
+import { mockProps } from '@/tests/vitest/utils.helper.test';
+import { webBrowserFileFilter } from './is-safe-web-browser-file';
 
-describe('isSafeWebBrowserFile', () => {
-  const ctx = {
-    browser: {
-      criticalExtensions: ['.sqlite', '.db', '.log'],
-      criticalFilenames: ['lock', 'prefs.js', 'local state'],
-      specificCriticalFile: {
-        chrome: ['first run', 'local state', 'preferences'],
-        firefox: ['profiles.ini', 'prefs.js', 'user.js'],
-        edge: ['local state', 'preferences', 'first run'],
-      },
-    },
-  };
+describe('webBrowserFileFilter', () => {
+  const props = (file: string) => 
+    mockProps({
+      fileName: file,
+      ctx: {
+        browser: {
+          criticalExtensions: ['.sqlite', '.db', '.log'],
+          criticalFilenames: ['lock', 'prefs.js', 'local state'],
+          specificCriticalFile: {
+            chrome: ['first run', 'local state', 'preferences'],
+            firefox: ['profiles.ini', 'prefs.js', 'user.js'],
+            edge: ['local state', 'preferences', 'first run'],
+          },
+        },
+      }
+    });
 
   describe('Cross-platform critical patterns', () => {
     it('should reject files with critical extensions', () => {
       const criticalFiles = ['file.sqlite', 'data.db', 'config.log'];
       criticalFiles.forEach((file) => {
         expect(
-          isSafeWebBrowserFile({
-            fileName: file,
-            ctx,
-          }),
+          webBrowserFileFilter(props(file)),
         ).toBe(false);
       });
     });
@@ -30,10 +32,7 @@ describe('isSafeWebBrowserFile', () => {
       const criticalFiles = ['lock', 'prefs.js', 'local state'];
       criticalFiles.forEach((file) => {
         expect(
-          isSafeWebBrowserFile({
-            fileName: file,
-            ctx,
-          }),
+          webBrowserFileFilter(props(file)),
         ).toBe(false);
       });
     });
@@ -42,10 +41,7 @@ describe('isSafeWebBrowserFile', () => {
       const safeFiles = ['document.txt', 'image.png', 'video.mp4'];
       safeFiles.forEach((file) => {
         expect(
-          isSafeWebBrowserFile({
-            fileName: file,
-            ctx,
-          }),
+          webBrowserFileFilter(props(file)),
         ).toBe(true);
       });
     });
@@ -56,10 +52,7 @@ describe('isSafeWebBrowserFile', () => {
       const chromeFiles = ['first run', 'local state', 'preferences'];
       chromeFiles.forEach((file) => {
         expect(
-          isSafeWebBrowserFile({
-            fileName: file,
-            ctx,
-          }),
+          webBrowserFileFilter(props(file)),
         ).toBe(false);
       });
     });
@@ -68,10 +61,7 @@ describe('isSafeWebBrowserFile', () => {
       const firefoxFiles = ['profiles.ini', 'prefs.js', 'user.js'];
       firefoxFiles.forEach((file) => {
         expect(
-          isSafeWebBrowserFile({
-            fileName: file,
-            ctx,
-          }),
+          webBrowserFileFilter(props(file)),
         ).toBe(false);
       });
     });
@@ -80,10 +70,7 @@ describe('isSafeWebBrowserFile', () => {
       const edgeFiles = ['local state', 'preferences', 'first run'];
       edgeFiles.forEach((file) => {
         expect(
-          isSafeWebBrowserFile({
-            fileName: file,
-            ctx,
-          }),
+          webBrowserFileFilter(props(file)),
         ).toBe(false);
       });
     });

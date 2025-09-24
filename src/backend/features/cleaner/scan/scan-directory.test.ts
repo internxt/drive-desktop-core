@@ -3,7 +3,7 @@ import path from 'path';
 
 import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
-import { CleanableItem } from '../types/cleaner.types';
+import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import * as isInternxtRelatedModule from '../utils/is-file-internxt-related';
 import * as processDirentModule from './process-dirent';
 import { scanDirectory } from './scan-directory';
@@ -41,7 +41,7 @@ describe('scanDirectory', () => {
 
   it('should return empty array when directory is not a directory', async () => {
     statMock.mockResolvedValue(createMockStats(false));
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([]);
     expect(readdirMock).not.toHaveBeenCalled();
@@ -50,7 +50,7 @@ describe('scanDirectory', () => {
   it('should return empty array when directory cannot be accessed', async () => {
     statMock.mockRejectedValue(new Error('Permission denied'));
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([]);
   });
@@ -60,7 +60,7 @@ describe('scanDirectory', () => {
 
     const expectedItem = createCleanableItemMock('file1.txt', 2048);
     processDirentMock.mockResolvedValue([expectedItem]);
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(statMock).toHaveBeenCalled();
     expect(readdirMock).toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe('scanDirectory', () => {
 
     const expectedItem = createCleanableItemMock('regular-file.txt', 1024);
     processDirentMock.mockResolvedValue([expectedItem]);
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([expectedItem]);
     expect(isInternxtRelatedMock).toHaveBeenCalledWith({ name: '/test/path/internxt-app' });
@@ -104,7 +104,7 @@ describe('scanDirectory', () => {
     const expectedItem = [createCleanableItemMock('nested-file.txt', 512, '/test/path/subdir')];
     processDirentMock.mockResolvedValue(expectedItem);
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual(expectedItem);
     expect(readdirMock).toHaveBeenCalledWith(mockBasePath, {
@@ -132,7 +132,7 @@ describe('scanDirectory', () => {
     const subdirItem = createCleanableItemMock('nested.txt', 200, '/test/path/subdir');
     processDirentMock.mockResolvedValueOnce([file1Item]).mockResolvedValueOnce([subdirItem]).mockResolvedValueOnce([file2Item]);
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([file1Item, subdirItem, file2Item]);
     expect(processDirentMock).toHaveBeenCalledTimes(3);
@@ -143,7 +143,7 @@ describe('scanDirectory', () => {
 
     const accessibleItem = [createCleanableItemMock('accessible-file.txt', 1024)];
     processDirentMock.mockResolvedValueOnce(accessibleItem).mockResolvedValueOnce([]);
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual(accessibleItem);
     expect(processDirentMock).toHaveBeenCalledTimes(2);
@@ -152,7 +152,7 @@ describe('scanDirectory', () => {
   it('should handle empty directories', async () => {
     readdirMock.mockResolvedValue([]);
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([]);
     expect(processDirentMock).toHaveBeenCalledTimes(0);
@@ -162,7 +162,7 @@ describe('scanDirectory', () => {
     statMock.mockResolvedValue(createMockStats(true));
     readdirMock.mockRejectedValue(new Error('Cannot read directory'));
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([]);
   });

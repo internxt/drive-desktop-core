@@ -3,7 +3,7 @@ import { join } from 'path';
 
 import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
-import { CleanableItem } from '../types/cleaner.types';
+import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import * as isFileInternextRelatedModule from '../utils/is-file-internxt-related';
 import * as scanDirectoryModule from './scan-directory';
 import { scanSubDirectory } from './scan-subdirectory';
@@ -49,6 +49,7 @@ describe('scanSubDirectory', () => {
     mockedScanDirectory.mockResolvedValueOnce(mockApp1Items).mockResolvedValueOnce(mockApp2Items);
     // When
     const result = await scanSubDirectory({
+      ctx: {} as CleanerContext,
       baseDir: mockBaseDir,
       subPath: mockSubDir,
     });
@@ -66,6 +67,7 @@ describe('scanSubDirectory', () => {
     mockedScanDirectory.mockRejectedValueOnce(new Error('Permission denied')).mockResolvedValueOnce(app2Items);
     // When
     const result = await scanSubDirectory({
+      ctx: {} as CleanerContext,
       baseDir: mockBaseDir,
       subPath: mockSubDir,
     });
