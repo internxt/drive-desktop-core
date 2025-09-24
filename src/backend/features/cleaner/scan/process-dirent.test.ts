@@ -87,7 +87,7 @@ describe('processDirent', () => {
     const mockDirectoryItems = [mockCleanableItem];
     scanDirectoryMock.mockResolvedValue(mockDirectoryItems);
     // When
-    const result = await processDirent({entry: mockDir, fullPath: mockPath, customDirectoryFilter, customFileFilter });
+    const result = await processDirent({ entry: mockDir, fullPath: mockPath, customDirectoryFilter, customFileFilter });
     // Then
     expect(result).toStrictEqual(mockDirectoryItems);
     expect(customDirectoryFilter).toHaveBeenCalledWith({ folderName: mockDir.name });

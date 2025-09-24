@@ -16,10 +16,7 @@ type ProcessDirentProps = {
 export async function processDirent({ entry, fullPath, customFileFilter, customDirectoryFilter }: ProcessDirentProps) {
   try {
     if (entry.isFile()) {
-      if (
-        (await wasAccessedWithinLastHour({ filePath: fullPath })) ||
-        (customFileFilter && customFileFilter({ fileName: entry.name }))
-      ) {
+      if ((await wasAccessedWithinLastHour({ filePath: fullPath })) || (customFileFilter && customFileFilter({ fileName: entry.name }))) {
         return [];
       }
 
