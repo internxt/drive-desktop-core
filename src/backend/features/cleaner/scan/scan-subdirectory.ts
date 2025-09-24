@@ -54,7 +54,10 @@ export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter
     });
   } catch (error) {
     logger.warn({
-      msg: `[CLEANER] Directory ${subPath} within ${baseDir} might not exist or be accesible, skipping it`,
+      tag: 'CLEANER',
+      msg: `Directory might not exist or be accesible, skipping it`,
+      baseDir,
+      subPath,
       error,
     });
     return [];
