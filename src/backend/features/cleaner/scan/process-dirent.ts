@@ -17,14 +17,14 @@ export async function processDirent({ entry, fullPath, customFileFilter, customD
   try {
     if (entry.isFile()) {
       const fileStats = await fs.stat(fullPath);
-      const wasAccessed = await wasAccessedWithinLastHour({ fileStats });
+      const wasAccessed = wasAccessedWithinLastHour({ fileStats });
       const isFiltered = customFileFilter && customFileFilter({ fileName: entry.name });
 
       if (wasAccessed || isFiltered) {
         return [];
       }
 
-      const item = await createCleanableItem({ filePath: fullPath, stat: fileStats });
+      const item = createCleanableItem({ filePath: fullPath, stat: fileStats });
       return [item];
     } else if (entry.isDirectory()) {
       const isFiltered = customDirectoryFilter && customDirectoryFilter({ folderName: entry.name });

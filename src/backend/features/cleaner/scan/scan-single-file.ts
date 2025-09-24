@@ -9,12 +9,12 @@ export async function scanSingleFile({ filePath }: { filePath: string }) {
   try {
     const fileStats = await fs.stat(filePath);
 
-    const wasAccessed = await wasAccessedWithinLastHour({ fileStats });
+    const wasAccessed = wasAccessedWithinLastHour({ fileStats });
     if (!fileStats.isFile() || wasAccessed) {
       return [];
     }
 
-    const item = await createCleanableItem({ filePath, stat: fileStats });
+    const item = createCleanableItem({ filePath, stat: fileStats });
     return [item];
   } catch {
     logger.warn({

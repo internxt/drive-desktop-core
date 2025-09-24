@@ -4,7 +4,7 @@ type Props = {
   fileStats: Stats;
 };
 
-export async function wasAccessedWithinLastHour({ fileStats }: Props) {
+export function wasAccessedWithinLastHour({ fileStats }: Props) {
   const lastAccessTime = new Date(Math.max(fileStats.atime.getTime(), fileStats.mtime.getTime()));
   const hoursSinceAccess = (Date.now() - lastAccessTime.getTime()) / (1000 * 60 * 60);
   return hoursSinceAccess <= 1;
