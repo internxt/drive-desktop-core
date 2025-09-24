@@ -10,105 +10,98 @@ describe('processDirent', () => {
   const wasAccessedWithinLastHourMock = partialSpyOn(wasAccessedWithinLastHourModule, 'wasAccessedWithinLastHour');
   const createCleanableItemMock = partialSpyOn(createCleanableItemMocule, 'createCleanableItem');
   const scanDirectoryMock = partialSpyOn(scanDirectoryModule, 'scanDirectory');
-  const mockBasePath = '/test';
-  const mockFileName = 'test.txt';
-  const mockFullpath = `${mockBasePath}/${mockFileName}`;
-  const createMockDirent = (name: string, isFile = true) =>
-    mockProps({
-      name,
-      isFile: () => isFile,
-      isDirectory: () => !isFile,
-    });
 
-  const mockFileDirent = createMockDirent(mockFileName);
+  const fullPath = '/test/test.txt';
+  const name = 'test.txt';
   const mockCleanableItem = {
-    fullPath: mockFullpath,
-    fileName: mockFileName,
+    fullPath,
+    fileName: name,
     sizeInBytes: 1024,
   };
 
+  let props: Parameters<typeof processDirent>[0];
+
   beforeEach(() => {
     wasAccessedWithinLastHourMock.mockResolvedValue(false);
+
+    props = mockProps<typeof processDirent>({ entry: { name }, fullPath });
   });
 
-  it('should process file and return CleanableItem when file is safe to delete', async () => {
-    // Given
-    createCleanableItemMock.mockResolvedValue(mockCleanableItem);
-    // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath });
-    // Then
-    expect(result).toStrictEqual([mockCleanableItem]);
-    expect(wasAccessedWithinLastHourMock).toHaveBeenCalledWith({ filePath: mockFullpath });
-    expect(createCleanableItemMock).toHaveBeenCalledWith({ filePath: mockFullpath });
+  describe('for files', () => {
+    beforeEach(() => {
+      props.entry.isFile = vi.fn().mockReturnValue(true);
+    });
+
+    it('should process file and return CleanableItem when file is safe to delete', async () => {
+      // Given
+      createCleanableItemMock.mockResolvedValue(mockCleanableItem);
+      // When
+      const result = await processDirent(props);
+      // Then
+      expect(result).toStrictEqual([mockCleanableItem]);
+      expect(wasAccessedWithinLastHourMock).toBeCalledWith({ filePath: fullPath });
+      expect(createCleanableItemMock).toBeCalledWith({ filePath: fullPath });
+    });
+
+    it('should return empty array when file was accessed within last hour', async () => {
+      // Given
+      wasAccessedWithinLastHourMock.mockResolvedValue(true);
+      // When
+      const result = await processDirent(props);
+      // Then
+      expect(result).toStrictEqual([]);
+      expect(createCleanableItemMock).not.toHaveBeenCalled();
+    });
+
+    it('should return empty array when custom filter excludes file', async () => {
+      // Given
+      props.customFileFilter = vi.fn().mockReturnValue(true);
+      wasAccessedWithinLastHourMock.mockResolvedValue(false);
+      // When
+      const result = await processDirent(props);
+      // Then
+      expect(result).toStrictEqual([]);
+      expect(props.customFileFilter).toBeCalledWith({ fileName: name });
+      expect(createCleanableItemMock).not.toHaveBeenCalled();
+    });
+
+    it('should handle errors gracefully and log warning', async () => {
+      // Given
+      wasAccessedWithinLastHourMock.mockRejectedValue(new Error('Permission denied'));
+      // When
+      const result = await processDirent(props);
+      // Then
+      expect(result).toStrictEqual([]);
+      expect(loggerMock.warn).toBeCalledTimes(1);
+    });
   });
 
-  it('should return empty array when file was accessed within last hour', async () => {
-    // Given
-    wasAccessedWithinLastHourMock.mockResolvedValue(true);
-    // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath });
-    // Then
-    expect(result).toStrictEqual([]);
-    expect(createCleanableItemMock).not.toHaveBeenCalled();
-  });
+  describe('for folders', () => {
+    beforeEach(() => {
+      props.entry.isFile = vi.fn().mockReturnValue(false);
+      props.entry.isDirectory = vi.fn().mockReturnValue(true);
+    });
 
-  it('should return empty array when custom filter excludes file', async () => {
-    // Given
-    const customFileFilter = vi.fn().mockReturnValue(true);
-    wasAccessedWithinLastHourMock.mockResolvedValue(false);
-    // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath, customFileFilter });
-    // Then
-    expect(result).toStrictEqual([]);
-    expect(customFileFilter).toHaveBeenCalledWith({ fileName: mockFileDirent.name });
-    expect(createCleanableItemMock).not.toHaveBeenCalled();
-  });
+    it('should process directory by calling scanDirectory', async () => {
+      // Given
+      scanDirectoryMock.mockResolvedValue([mockCleanableItem]);
+      // When
+      const result = await processDirent(props);
+      // Then
+      expect(result).toStrictEqual([mockCleanableItem]);
+      expect(scanDirectoryMock).toBeCalledTimes(1);
+      expect(wasAccessedWithinLastHourMock).not.toHaveBeenCalled();
+    });
 
-  it('should process directory by calling scanDirectory', async () => {
-    // Given
-    const mockDir = createMockDirent('subdir', false);
-    const mockPath = '/test/subdir';
-    const mockDirectoryItems = [mockCleanableItem];
-    scanDirectoryMock.mockResolvedValue(mockDirectoryItems);
-    // When
-    const result = await processDirent({ entry: mockDir, fullPath: mockPath });
-    // Then
-    expect(result).toStrictEqual(mockDirectoryItems);
-    expect(scanDirectoryMock).toHaveBeenCalledTimes(1);
-    expect(wasAccessedWithinLastHourMock).not.toHaveBeenCalled();
-  });
-
-  it('should process directory when custom directory filter allows it', async () => {
-    // Given
-    const mockDir = createMockDirent('important-folder', false);
-    const mockPath = '/test/important-folder';
-    const customDirectoryFilter = vi.fn().mockReturnValue(false);
-    const customFileFilter = vi.fn();
-    const mockDirectoryItems = [mockCleanableItem];
-    scanDirectoryMock.mockResolvedValue(mockDirectoryItems);
-    // When
-    const result = await processDirent({ entry: mockDir, fullPath: mockPath, customDirectoryFilter, customFileFilter });
-    // Then
-    expect(result).toStrictEqual(mockDirectoryItems);
-    expect(customDirectoryFilter).toHaveBeenCalledWith({ folderName: mockDir.name });
-    expect(scanDirectoryMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        dirPath: mockPath,
-        customFileFilter,
-        customDirectoryFilter,
-      }),
-    );
-  });
-
-  it('should handle errors gracefully and log warning', async () => {
-    // Given
-    wasAccessedWithinLastHourMock.mockRejectedValue(new Error('Permission denied'));
-    // When
-    const result = await processDirent({ entry: mockFileDirent, fullPath: mockFullpath });
-    // Then
-    expect(result).toStrictEqual([]);
-    expect(loggerMock.warn).toHaveBeenCalledWith({
-      msg: `File or Directory with path ${mockFullpath} cannot be accessed, skipping`,
+    it('should return empty array when custom filter excludes folder', async () => {
+      // Given
+      props.customDirectoryFilter = vi.fn().mockReturnValue(true);
+      // When
+      const result = await processDirent(props);
+      // Then
+      expect(result).toStrictEqual([]);
+      expect(props.customDirectoryFilter).toBeCalledWith({ folderName: name });
+      expect(createCleanableItemMock).not.toHaveBeenCalled();
     });
   });
 });

@@ -3,7 +3,7 @@ import { inspect } from 'node:util';
 
 import { paths } from '@/backend/infra/drive-server-wip/schema';
 
-type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS';
+type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS' | 'CLEANER';
 type TLevel = 'debug' | 'warn' | 'error';
 
 export type TLoggerBody = {
@@ -58,6 +58,8 @@ function getTagStr(tag?: TTag): string {
       return 'anti';
     case 'NODE-WIN':
       return 'sync';
+    case 'CLEANER':
+      return 'clea';
     default:
       return '    ';
   }
