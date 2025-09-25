@@ -29,8 +29,7 @@ describe('getFilteredDirectories', () => {
     // When
     const result = await getFilteredDirectories({ baseDir: '/test/path' });
     // Then
-    expect(result).toHaveLength(3);
-    expect(result.map((d) => d.name)).toEqual(['Documents', 'Pictures', 'Videos']);
+    expect(result.map((d) => d.name)).toStrictEqual(['Documents', 'Pictures', 'Videos']);
   });
 
   it('should apply custom directory filter when provided', async () => {
@@ -50,9 +49,7 @@ describe('getFilteredDirectories', () => {
       customDirectoryFilter: customFilter,
     });
     // Then
-    expect(result).toHaveLength(3);
-    expect(result.map((d) => d.name)).toEqual(['Documents', 'Pictures', 'Videos']);
-    expect(result.map((d) => d.name)).not.toContain('TempFolder');
+    expect(result.map((d) => d.name)).toStrictEqual(['Documents', 'Pictures', 'Videos']);
   });
 
   it('should return empty array when no directories match the filters', async () => {
@@ -69,6 +66,5 @@ describe('getFilteredDirectories', () => {
     const result = await getFilteredDirectories({ baseDir: '/test/path' });
     // Then
     expect(result).toHaveLength(0);
-    expect(result).toEqual([]);
   });
 });
