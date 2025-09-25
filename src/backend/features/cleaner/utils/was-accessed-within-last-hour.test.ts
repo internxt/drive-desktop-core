@@ -8,10 +8,6 @@ describe('wasAccessedWithinLastHour', () => {
     vi.setSystemTime(new Date('2025-09-19T12:00:00Z'));
   });
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it('should return true when file was accessed within last hour', () => {
     const recentTime = new Date('2025-09-19T11:30:00Z');
     const mockStat = {
