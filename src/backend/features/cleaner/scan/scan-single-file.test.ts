@@ -47,8 +47,8 @@ describe('scanSingleFile', () => {
     const result = await scanSingleFile({ filePath: mockFilePath });
     // Then
     expect(result).toStrictEqual([]);
-    expect(wasAccessedWithinLastHourMock).not.toHaveBeenCalled();
-    expect(createCleanableItemMock).not.toHaveBeenCalled();
+    expect(wasAccessedWithinLastHourMock).not.toBeCalled();
+    expect(createCleanableItemMock).not.toBeCalled();
   });
 
   it('should return empty array when file was accessed within last hour', async () => {
@@ -58,7 +58,7 @@ describe('scanSingleFile', () => {
     const result = await scanSingleFile({ filePath: mockFilePath });
     // Then
     expect(result).toStrictEqual([]);
-    expect(createCleanableItemMock).not.toHaveBeenCalled();
+    expect(createCleanableItemMock).not.toBeCalled();
   });
 
   it('should handle file access errors gracefully and log warning', async () => {

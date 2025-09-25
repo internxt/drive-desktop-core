@@ -28,6 +28,6 @@ describe('getDiskSpace', () => {
     const result = await getDiskSpace({ mainPath: '/' });
     // Then
     expect(result).toBe(0);
-    expect(loggerMock.error).toHaveBeenCalledWith({ msg: 'Failed to get disk space', error: mockError });
+    expect(loggerMock.error).toBeCalledWith({ msg: 'Failed to get disk space', error: mockError });
   });
 });

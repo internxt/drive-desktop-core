@@ -38,9 +38,9 @@ describe('scanFirefoxCacheProfiles', () => {
     const result = await scanFirefoxCacheProfiles(mockContext);
     // Then
     expect(result).toEqual([]);
-    expect(readdirMock).toHaveBeenCalledWith(mockContext.firefoxCacheDir);
-    expect(mockedIsFirefoxProfileDirectory).not.toHaveBeenCalled();
-    expect(mockedScanDirectory).not.toHaveBeenCalled();
+    expect(readdirMock).toBeCalledWith(mockContext.firefoxCacheDir);
+    expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
+    expect(mockedScanDirectory).not.toBeCalled();
   });
 
   it('should scan valid Firefox profile cache directories', async () => {
@@ -57,6 +57,7 @@ describe('scanFirefoxCacheProfiles', () => {
       .mockResolvedValueOnce(false)
       .mockResolvedValueOnce(false)
       .mockResolvedValueOnce(false);
+
     mockedScanDirectory
       .mockResolvedValueOnce([cacheItems[0]])
       .mockResolvedValueOnce([cacheItems[1]])
@@ -84,28 +85,33 @@ describe('scanFirefoxCacheProfiles', () => {
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
+
     expect(mockedScanDirectory).nthCalledWith(
       1,
       expect.objectContaining({
         dirPath: expect.stringMatching(/cache2$/),
       }),
     );
+
     expect(mockedScanDirectory).nthCalledWith(2, {
       ctx: mockContext.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
+
     expect(mockedScanDirectory).nthCalledWith(
       2,
       expect.objectContaining({
         dirPath: expect.stringMatching(/thumbnails$/),
       }),
     );
+
     expect(mockedScanDirectory).nthCalledWith(3, {
       ctx: mockContext.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
+
     expect(mockedScanDirectory).nthCalledWith(
       3,
       expect.objectContaining({
@@ -191,12 +197,14 @@ describe('scanFirefoxCacheProfiles', () => {
         customFileFilter: mockedWebBrowserFileFilter,
       }),
     );
+
     expect(mockedScanDirectory).nthCalledWith(
       2,
       expect.objectContaining({
         customFileFilter: mockedWebBrowserFileFilter,
       }),
     );
+
     expect(mockedScanDirectory).nthCalledWith(
       3,
       expect.objectContaining({

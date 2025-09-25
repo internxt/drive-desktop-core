@@ -19,7 +19,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
     const profileDirsChecks = await Promise.allSettled(
       entries.map(async (entry) => {
         const isProfileDir = await isFirefoxProfileDirectory(entry, firefoxCacheDir);
-        return { entry: entry, isProfileDir };
+        return { entry, isProfileDir };
       }),
     );
 
@@ -73,9 +73,9 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
         items.push(...result.value);
       }
     });
-  } catch (error) {
+  } catch {
     /**
-     * v.2.5.0
+     * v.0.1.1
      * Alexis Mora
      * Silently ignore errors when scanning Firefox cache profiles
      * This handles cases where profiles don't exist or are inaccessible

@@ -44,7 +44,7 @@ describe('scanDirectory', () => {
     const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([]);
-    expect(readdirMock).not.toHaveBeenCalled();
+    expect(readdirMock).not.toBeCalled();
   });
 
   it('should return empty array when directory cannot be accessed', async () => {
@@ -62,9 +62,9 @@ describe('scanDirectory', () => {
     processDirentMock.mockResolvedValue([expectedItem]);
     const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
-    expect(statMock).toHaveBeenCalled();
-    expect(readdirMock).toHaveBeenCalled();
-    expect(processDirentMock).toHaveBeenCalled();
+    expect(statMock).toBeCalled();
+    expect(readdirMock).toBeCalled();
+    expect(processDirentMock).toBeCalled();
     expect(result).toStrictEqual([expectedItem]);
     expect(processDirentMock).toBeCalledWith(
       expect.objectContaining({

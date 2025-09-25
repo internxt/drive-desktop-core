@@ -58,7 +58,7 @@ describe('processDirent', () => {
       const result = await processDirent(props);
       // Then
       expect(result).toStrictEqual([]);
-      expect(createCleanableItemMock).not.toHaveBeenCalled();
+      expect(createCleanableItemMock).not.toBeCalled();
     });
 
     it('should return empty array when custom filter excludes file', async () => {
@@ -70,7 +70,7 @@ describe('processDirent', () => {
       // Then
       expect(result).toStrictEqual([]);
       expect(props.customFileFilter).toBeCalledWith({ fileName: name });
-      expect(createCleanableItemMock).not.toHaveBeenCalled();
+      expect(createCleanableItemMock).not.toBeCalled();
     });
 
     it('should handle errors gracefully and log warning', async () => {
@@ -98,7 +98,7 @@ describe('processDirent', () => {
       // Then
       expect(result).toStrictEqual([mockCleanableItem]);
       expect(scanDirectoryMock).toBeCalledTimes(1);
-      expect(wasAccessedWithinLastHourMock).not.toHaveBeenCalled();
+      expect(wasAccessedWithinLastHourMock).not.toBeCalled();
     });
 
     it('should return empty array when custom filter excludes folder', async () => {
@@ -109,7 +109,7 @@ describe('processDirent', () => {
       // Then
       expect(result).toStrictEqual([]);
       expect(props.customDirectoryFilter).toBeCalledWith({ folderName: name });
-      expect(createCleanableItemMock).not.toHaveBeenCalled();
+      expect(createCleanableItemMock).not.toBeCalled();
     });
   });
 });
