@@ -7,14 +7,14 @@ import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import { isInternxtRelated } from '../utils/is-file-internxt-related';
 import { processDirent } from './process-dirent';
 
-type ScanDirectoryProps = {
+type Props = {
   ctx: CleanerContext;
   dirPath: string;
   customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
   customDirectoryFilter?: (folderName: string) => boolean;
 };
 
-export async function scanDirectory({ ctx, dirPath, customFileFilter, customDirectoryFilter }: ScanDirectoryProps) {
+export async function scanDirectory({ ctx, dirPath, customFileFilter, customDirectoryFilter }: Props) {
   try {
     const stat = await fs.stat(dirPath);
     if (!stat.isDirectory()) {
@@ -41,9 +41,12 @@ export async function scanDirectory({ ctx, dirPath, customFileFilter, customDire
     return items;
   } catch (error) {
     logger.warn({
-      msg: `Directory ${dirPath} does not exist or cannot be accessed, skipping`,
+      tag: 'CLEANER',
+      msg: 'Directory does not exist or cannot be accessed, skipping',
+      dirPath,
       error,
     });
-    return [];
   }
+
+  return [];
 }

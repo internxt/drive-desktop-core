@@ -7,18 +7,21 @@ import { wasAccessedWithinLastHour } from '../utils/was-accessed-within-last-hou
 
 export async function scanSingleFile({ filePath }: { filePath: string }) {
   try {
-    const stat = await fs.stat(filePath);
+    const fileStats = await fs.stat(filePath);
 
-    if (!stat.isFile() || (await wasAccessedWithinLastHour({ filePath }))) {
+    if (!fileStats.isFile() || wasAccessedWithinLastHour({ fileStats })) {
       return [];
     }
 
-    const item = await createCleanableItem({ filePath });
+    const item = createCleanableItem({ filePath, stat: fileStats });
     return [item];
   } catch {
     logger.warn({
-      msg: `Single file with file path ${filePath} cannot be accessed, skipping`,
+      tag: 'CLEANER',
+      msg: `Single file cannot be accessed, skipping`,
+      filePath,
     });
-    return [];
   }
+
+  return [];
 }

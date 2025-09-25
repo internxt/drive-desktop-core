@@ -1,7 +1,7 @@
 import { promises as fs, Stats } from 'fs';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
-import { partialSpyOn, deepMocked, mockProps } from '@/tests/vitest/utils.helper.test';
+import { partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as createCleanableItemModule from '../utils/create-cleanable-item';
 import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-last-hour';
@@ -21,52 +21,53 @@ describe('scanSingleFile', () => {
     sizeInBytes: 2048,
   };
 
-  const createMockStats = (isFile = true, size = 0) =>
-    mockProps({ isDirectory: () => !isFile, isFile: () => isFile, size }) as unknown as Stats;
+  const createMockStats = (isFile = true) => ({ isDirectory: () => !isFile, isFile: () => isFile }) as unknown as Stats;
 
   beforeEach(() => {
     statMock.mockResolvedValue(createMockStats());
-    wasAccessedWithinLastHourMock.mockResolvedValue(false);
+    wasAccessedWithinLastHourMock.mockReturnValue(false);
   });
 
   it('should return CleanableItem array when file is safe to delete', async () => {
-    createCleanableItemMock.mockResolvedValue(mockCleanableItem);
-
+    // Given
+    createCleanableItemMock.mockReturnValue(mockCleanableItem);
+    // When
     const result = await scanSingleFile({ filePath: mockFilePath });
-
+    // Then
     expect(result).toStrictEqual([mockCleanableItem]);
-    expect(statMock).toHaveBeenCalledWith(mockFilePath);
-    expect(wasAccessedWithinLastHourMock).toHaveBeenCalledWith({ filePath: mockFilePath });
-    expect(createCleanableItemMock).toHaveBeenCalledWith({ filePath: mockFilePath });
+    expect(statMock).toBeCalledWith(mockFilePath);
+    expect(wasAccessedWithinLastHourMock).toBeCalledWith({ fileStats: expect.any(Object) });
+    expect(createCleanableItemMock).toBeCalledWith({ filePath: mockFilePath, stat: expect.any(Object) });
   });
 
   it('should return empty array when path is not a file', async () => {
+    // Given
     statMock.mockResolvedValue(createMockStats(false));
-
+    // When
     const result = await scanSingleFile({ filePath: mockFilePath });
-
+    // Then
     expect(result).toStrictEqual([]);
     expect(wasAccessedWithinLastHourMock).not.toHaveBeenCalled();
     expect(createCleanableItemMock).not.toHaveBeenCalled();
   });
 
   it('should return empty array when file was accessed within last hour', async () => {
-    wasAccessedWithinLastHourMock.mockResolvedValue(true);
-
+    // Given
+    wasAccessedWithinLastHourMock.mockReturnValue(true);
+    // When
     const result = await scanSingleFile({ filePath: mockFilePath });
-
+    // Then
     expect(result).toStrictEqual([]);
     expect(createCleanableItemMock).not.toHaveBeenCalled();
   });
 
   it('should handle file access errors gracefully and log warning', async () => {
+    // Given
     statMock.mockRejectedValue(new Error('File not found'));
-
+    // When
     const result = await scanSingleFile({ filePath: mockFilePath });
-
+    // Then
     expect(result).toStrictEqual([]);
-    expect(loggerMock.warn).toHaveBeenCalledWith({
-      msg: `Single file with file path ${mockFilePath} cannot be accessed, skipping`,
-    });
+    expect(loggerMock.warn).toBeCalledTimes(1);
   });
 });

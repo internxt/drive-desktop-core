@@ -1,7 +1,7 @@
 import { promises as fs, Dirent } from 'fs';
 import { join } from 'path';
 
-import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
+import { deepMocked, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import * as isFileInternextRelatedModule from '../utils/is-file-internxt-related';
@@ -18,7 +18,7 @@ describe('scanSubDirectory', () => {
   const mockedScanDirectory = partialSpyOn(scanDirectoryModule, 'scanDirectory');
 
   const createMockDirent = (name: string, isDirectory = true) =>
-    mockProps({
+    ({
       name,
       isDirectory: () => isDirectory,
       isFile: () => !isDirectory,
@@ -28,7 +28,7 @@ describe('scanSubDirectory', () => {
   const mockSubDir = 'cache';
 
   const createCleanableItemMock = (appName: string, fileName: string, size: number, basePath = mockBaseDir) =>
-    mockProps({
+    ({
       fullPath: `${basePath}/${appName}/${fileName}`,
       fileName,
       sizeInBytes: size,
@@ -55,8 +55,8 @@ describe('scanSubDirectory', () => {
     });
     // Then
     expect(result).toStrictEqual([...mockApp1Items, ...mockApp2Items]);
-    expect(mockedScanDirectory).toHaveBeenCalledWith(expect.objectContaining({ dirPath: `${mockBaseDir}/app1/${mockSubDir}` }));
-    expect(mockedScanDirectory).toHaveBeenCalledWith(expect.objectContaining({ dirPath: `${mockBaseDir}/app2/${mockSubDir}` }));
+    expect(mockedScanDirectory).toBeCalledWith(expect.objectContaining({ dirPath: `${mockBaseDir}/app1/${mockSubDir}` }));
+    expect(mockedScanDirectory).toBeCalledWith(expect.objectContaining({ dirPath: `${mockBaseDir}/app2/${mockSubDir}` }));
   });
 
   it('should handle scanDirectory errors gracefully', async () => {
@@ -73,6 +73,6 @@ describe('scanSubDirectory', () => {
     });
     // Then
     expect(result).toStrictEqual(app2Items);
-    expect(mockedScanDirectory).toHaveBeenCalledTimes(2);
+    expect(mockedScanDirectory).toBeCalledTimes(2);
   });
 });

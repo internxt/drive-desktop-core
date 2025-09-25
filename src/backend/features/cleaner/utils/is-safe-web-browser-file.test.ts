@@ -19,60 +19,42 @@ describe('webBrowserFileFilter', () => {
     });
 
   describe('Cross-platform critical patterns', () => {
-    it('should reject files with critical extensions', () => {
-      const criticalFiles = ['file.sqlite', 'data.db', 'config.log'];
-      criticalFiles.forEach((file) => {
-        expect(
-          webBrowserFileFilter(props(file)),
-        ).toBe(false);
-      });
+    it.each(['file.sqlite', 'data.db', 'config.log'])('should reject files with critical extensions: "%s"', (file) => {
+      expect(
+        webBrowserFileFilter(props(file)),
+      ).toBe(false);
     });
 
-    it('should reject files with critical filenames', () => {
-      const criticalFiles = ['lock', 'prefs.js', 'local state'];
-      criticalFiles.forEach((file) => {
-        expect(
-          webBrowserFileFilter(props(file)),
-        ).toBe(false);
-      });
+    it.each(['lock', 'prefs.js', 'local state'])('should reject files with critical filenames: "%s"', (file) => {
+      expect(
+        webBrowserFileFilter(props(file)),
+      ).toBe(false);
     });
 
-    it('should allow safe files', () => {
-      const safeFiles = ['document.txt', 'image.png', 'video.mp4'];
-      safeFiles.forEach((file) => {
-        expect(
-          webBrowserFileFilter(props(file)),
-        ).toBe(true);
-      });
+    it.each(['document.txt', 'image.png', 'video.mp4'])('should allow safe file: "%s"', (file) => {
+      expect(
+        webBrowserFileFilter(props(file)),
+      ).toBe(true);
     });
   });
 
   describe('Browser-specific critical files', () => {
-    it('should reject Chrome-specific critical files', () => {
-      const chromeFiles = ['first run', 'local state', 'preferences'];
-      chromeFiles.forEach((file) => {
-        expect(
-          webBrowserFileFilter(props(file)),
-        ).toBe(false);
-      });
+    it.each(['first run', 'local state', 'preferences'])('should reject Chrome-specific critical file: "%s"', (file) => {
+      expect(
+        webBrowserFileFilter(props(file)),
+      ).toBe(false);
     });
 
-    it('should reject Firefox-specific critical files', () => {
-      const firefoxFiles = ['profiles.ini', 'prefs.js', 'user.js'];
-      firefoxFiles.forEach((file) => {
-        expect(
-          webBrowserFileFilter(props(file)),
-        ).toBe(false);
-      });
+    it.each(['profiles.ini', 'prefs.js', 'user.js'])('should reject Firefox-specific critical file: "%s"', (file) => {
+      expect(
+        webBrowserFileFilter(props(file)),
+      ).toBe(false);
     });
 
-    it('should reject Edge-specific critical files', () => {
-      const edgeFiles = ['local state', 'preferences', 'first run'];
-      edgeFiles.forEach((file) => {
-        expect(
-          webBrowserFileFilter(props(file)),
-        ).toBe(false);
-      });
+    it.each(['local state', 'preferences', 'first run'])('should reject Edge-specific critical file: "%s"', (file) => {
+      expect(
+        webBrowserFileFilter(props(file))
+      ).toBe(false);
     });
   });
 });

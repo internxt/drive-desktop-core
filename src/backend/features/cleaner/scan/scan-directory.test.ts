@@ -21,13 +21,13 @@ describe('scanDirectory', () => {
 
   const createMockStats = (isDirectory = true, size = 0) => mockProps({ isDirectory: () => isDirectory, size }) as unknown as Stats;
   const createMockDirent = (name: string, isFile = true) =>
-    mockProps({
+    ({
       name,
       isFile: () => isFile,
       isDirectory: () => !isFile,
     }) as unknown as Dirent<Buffer>;
   const createCleanableItemMock = (fileName: string, size: number, basePath = mockBasePath) =>
-    mockProps({
+    ({
       fullPath: `${basePath}/${fileName}`,
       fileName,
       sizeInBytes: size,
@@ -66,7 +66,7 @@ describe('scanDirectory', () => {
     expect(readdirMock).toHaveBeenCalled();
     expect(processDirentMock).toHaveBeenCalled();
     expect(result).toStrictEqual([expectedItem]);
-    expect(processDirentMock).toHaveBeenCalledWith(
+    expect(processDirentMock).toBeCalledWith(
       expect.objectContaining({
         entry: expect.objectContaining({ name: 'file1.txt' }),
         fullPath: '/test/path/file1.txt',
