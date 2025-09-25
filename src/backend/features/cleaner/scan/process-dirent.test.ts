@@ -1,12 +1,17 @@
+import { promises as fs, Stats } from 'fs';
+
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
-import { mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
+import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as createCleanableItemMocule from '../utils/create-cleanable-item';
 import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-last-hour';
 import { processDirent } from './process-dirent';
 import * as scanDirectoryModule from './scan-directory';
 
+vi.mock(import('fs'));
+
 describe('processDirent', () => {
+  const statMock = deepMocked(fs.stat);
   const wasAccessedWithinLastHourMock = partialSpyOn(wasAccessedWithinLastHourModule, 'wasAccessedWithinLastHour');
   const createCleanableItemMock = partialSpyOn(createCleanableItemMocule, 'createCleanableItem');
   const scanDirectoryMock = partialSpyOn(scanDirectoryModule, 'scanDirectory');
@@ -21,8 +26,11 @@ describe('processDirent', () => {
 
   let props: Parameters<typeof processDirent>[0];
 
+  const createMockStats = (isFile = true) => ({ isDirectory: () => !isFile, isFile: () => isFile }) as unknown as Stats;
+
   beforeEach(() => {
-    wasAccessedWithinLastHourMock.mockResolvedValue(false);
+    statMock.mockResolvedValue(createMockStats());
+    wasAccessedWithinLastHourMock.mockReturnValue(false);
 
     props = mockProps<typeof processDirent>({ entry: { name }, fullPath });
   });
@@ -34,18 +42,18 @@ describe('processDirent', () => {
 
     it('should process file and return CleanableItem when file is safe to delete', async () => {
       // Given
-      createCleanableItemMock.mockResolvedValue(mockCleanableItem);
+      createCleanableItemMock.mockReturnValue(mockCleanableItem);
       // When
       const result = await processDirent(props);
       // Then
       expect(result).toStrictEqual([mockCleanableItem]);
-      expect(wasAccessedWithinLastHourMock).toBeCalledWith({ filePath: fullPath });
-      expect(createCleanableItemMock).toBeCalledWith({ filePath: fullPath });
+      expect(wasAccessedWithinLastHourMock).toBeCalledWith({ fileStats: expect.any(Object) });
+      expect(createCleanableItemMock).toBeCalledWith({ filePath: fullPath, stat: expect.any(Object) });
     });
 
     it('should return empty array when file was accessed within last hour', async () => {
       // Given
-      wasAccessedWithinLastHourMock.mockResolvedValue(true);
+      wasAccessedWithinLastHourMock.mockReturnValue(true);
       // When
       const result = await processDirent(props);
       // Then
@@ -56,7 +64,7 @@ describe('processDirent', () => {
     it('should return empty array when custom filter excludes file', async () => {
       // Given
       props.customFileFilter = vi.fn().mockReturnValue(true);
-      wasAccessedWithinLastHourMock.mockResolvedValue(false);
+      wasAccessedWithinLastHourMock.mockReturnValue(false);
       // When
       const result = await processDirent(props);
       // Then
@@ -67,7 +75,7 @@ describe('processDirent', () => {
 
     it('should handle errors gracefully and log warning', async () => {
       // Given
-      wasAccessedWithinLastHourMock.mockRejectedValue(new Error('Permission denied'));
+      statMock.mockRejectedValue(new Error('Permission denied'));
       // When
       const result = await processDirent(props);
       // Then

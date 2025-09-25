@@ -1,56 +1,48 @@
-import { Stats } from 'fs';
-import { promises as fs } from 'fs';
-
-import { deepMocked } from '@/tests/vitest/utils.helper.test';
+import { mockProps } from '@/tests/vitest/utils.helper.test';
 
 import { wasAccessedWithinLastHour } from './was-accessed-within-last-hour';
 
-vi.mock('fs');
-
 describe('wasAccessedWithinLastHour', () => {
-  const statMock = deepMocked(fs.stat);
-  const mockFilePath = '/test/file.txt';
+  let props: Parameters<typeof wasAccessedWithinLastHour>[0];
 
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2025-09-19T12:00:00Z'));
+
+    props = mockProps<typeof wasAccessedWithinLastHour>({
+      fileStats: {
+        atimeMs: new Date('2025-09-19T10:59:00Z').getTime(),
+        mtimeMs: new Date('2025-09-19T10:59:00Z').getTime(),
+      },
+    });
   });
 
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  it('should return true when file was accessed within last hour', async () => {
-    const recentTime = new Date('2025-09-19T11:30:00Z');
-    const mockStat = {
-      atime: recentTime,
-      mtime: new Date('2025-09-19T10:00:00Z'),
-    } as Stats;
-    statMock.mockResolvedValue(mockStat);
-
-    const result = await wasAccessedWithinLastHour({ filePath: mockFilePath });
-
+  it('should return true when file was modified within last hour', () => {
+    // Given
+    props.fileStats.mtimeMs = new Date('2025-09-19T11:00:00Z').getTime();
+    // When
+    const result = wasAccessedWithinLastHour(props);
+    // Then
     expect(result).toBe(true);
   });
 
-  it('should return false when file was accessed more than an hour ago', async () => {
-    const oldTime = new Date('2025-09-19T10:30:00Z');
-    const mockStat = {
-      atime: oldTime,
-      mtime: oldTime,
-    } as Stats;
-    statMock.mockResolvedValue(mockStat);
+  it('should return true when file was accessed within last hour', () => {
+    // Given
+    props.fileStats.atimeMs = new Date('2025-09-19T11:00:00Z').getTime();
+    // When
+    const result = wasAccessedWithinLastHour(props);
+    // Then
+    expect(result).toBe(true);
+  });
 
-    const result = await wasAccessedWithinLastHour({ filePath: mockFilePath });
-
+  it('should return false when file was accessed or modified more than an hour ago', () => {
+    // When
+    const result = wasAccessedWithinLastHour(props);
+    // Then
     expect(result).toBe(false);
-  });
-
-  it('should return true when file access check fails (safety first)', async () => {
-    statMock.mockRejectedValue(new Error('Permission denied'));
-
-    const result = await wasAccessedWithinLastHour({ filePath: mockFilePath });
-
-    expect(result).toBe(true);
   });
 });
