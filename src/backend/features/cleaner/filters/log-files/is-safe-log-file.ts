@@ -13,5 +13,5 @@ export function logFileFilter({ ctx, fileName }: Props): boolean {
    */
   const checkRotatedLog = /\.log(\.\d+)?(\.(gz|bz2|xz|zip))?$/.test(lowerName);
 
-  return includeSafeExtensions && checkRotatedLog;
+  return includeSafeExtensions || checkRotatedLog;
 }
