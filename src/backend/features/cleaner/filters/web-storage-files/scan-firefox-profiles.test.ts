@@ -1,10 +1,11 @@
 import { Dirent, promises as fs } from 'fs';
+
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as scanDirectoryModule from '../../scan/scan-directory';
+import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import * as isFirefoxProfileDirectoryModule from '../../utils/is-firefox-profile-directory';
 import { scanFirefoxProfiles } from './scan-firefox-profiles';
-import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 
 vi.mock(import('fs'));
 
@@ -56,9 +57,7 @@ describe('scanFirefoxProfiles', () => {
       .mockResolvedValueOnce(false)
       .mockResolvedValueOnce(false);
 
-    mockedScanDirectory
-      .mockResolvedValueOnce([profileItems[0]])
-      .mockResolvedValueOnce([profileItems[1]]);
+    mockedScanDirectory.mockResolvedValueOnce([profileItems[0]]).mockResolvedValueOnce([profileItems[1]]);
     // When
     const result = await scanFirefoxProfiles(mockContext);
     // Then
@@ -90,9 +89,7 @@ describe('scanFirefoxProfiles', () => {
     // Given
     const profileEntries = ['profile1.default', 'profile2.test'];
     readdirMock.mockResolvedValue(profileEntries as any);
-    mockedIsFirefoxProfileDirectory
-      .mockRejectedValueOnce(new Error('Permission denied'))
-      .mockResolvedValueOnce(true);
+    mockedIsFirefoxProfileDirectory.mockRejectedValueOnce(new Error('Permission denied')).mockResolvedValueOnce(true);
     mockedScanDirectory.mockResolvedValue([]);
     // When
     const result = await scanFirefoxProfiles(mockContext);
@@ -112,9 +109,7 @@ describe('scanFirefoxProfiles', () => {
     const successItems = [createMockItem('success.sqlite', 1024, '/home/user/.mozilla/firefox/profile2.test')];
     readdirMock.mockResolvedValue(profileEntries as any);
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
-    mockedScanDirectory
-      .mockRejectedValueOnce(new Error('Permission denied'))
-      .mockResolvedValueOnce(successItems);
+    mockedScanDirectory.mockRejectedValueOnce(new Error('Permission denied')).mockResolvedValueOnce(successItems);
     // When
     const result = await scanFirefoxProfiles(mockContext);
     // Then

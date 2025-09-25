@@ -1,13 +1,4 @@
-const WEB_BROWSER_DIRECTORIES = [
-  'google',
-  'chromium',
-  'firefox',
-  'opera',
-  'brave',
-  'chrome',
-  'mozilla',
-  'edge',
-];
+const WEB_BROWSER_DIRECTORIES = ['google', 'chromium', 'firefox', 'opera', 'brave', 'chrome', 'mozilla', 'edge'];
 
 export function isDirectoryWebBrowserRelated(directoryName: string): boolean {
   const lowerName = directoryName.toLowerCase();

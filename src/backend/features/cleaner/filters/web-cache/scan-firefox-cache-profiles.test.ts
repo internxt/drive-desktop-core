@@ -1,11 +1,12 @@
-import { promises as fs } from 'fs';
+import { Dirent, promises as fs } from 'fs';
+
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as scanDirectoryModule from '../../scan/scan-directory';
+import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import * as isFirefoxProfileDirectoryModule from '../../utils/is-firefox-profile-directory';
 import * as webBrowserFileFilterModule from '../../utils/is-safe-web-browser-file';
 import { scanFirefoxCacheProfiles } from './scan-firefox-cache-profiles';
-import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 
 vi.mock(import('fs'));
 
@@ -33,9 +34,7 @@ describe('scanFirefoxCacheProfiles', () => {
   });
 
   it('should return empty array when no entries found in cache directory', async () => {
-    // Given
-    readdirMock.mockResolvedValue([]);
-    // When
+    // Given/When
     const result = await scanFirefoxCacheProfiles(mockContext);
     // Then
     expect(result).toEqual([]);
@@ -46,13 +45,13 @@ describe('scanFirefoxCacheProfiles', () => {
 
   it('should scan valid Firefox profile cache directories', async () => {
     // Given
-    const profileEntries = ['rwt14re6.default', 'abc123.test-profile', 'Crash Reports', 'Pending Pings'];
+    const profileEntries = ['rwt14re6.default', 'abc123.test-profile', 'Crash Reports', 'Pending Pings'] as unknown as Dirent<Buffer>[];
     const cacheItems = [
       createMockItem('cache-file1.dat', 1024, '/home/user/.cache/mozilla/firefox/rwt14re6.default/cache2'),
       createMockItem('thumbnail1.png', 512, '/home/user/.cache/mozilla/firefox/rwt14re6.default/thumbnails'),
       createMockItem('startup1.bin', 256, '/home/user/.cache/mozilla/firefox/rwt14re6.default/startupCache'),
     ];
-    readdirMock.mockResolvedValue(profileEntries as any);
+    readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory
       .mockResolvedValueOnce(true)
       .mockResolvedValueOnce(false)
@@ -65,58 +64,62 @@ describe('scanFirefoxCacheProfiles', () => {
     // When
     const result = await scanFirefoxCacheProfiles(mockContext);
     // Then
-    expect(result).toEqual(cacheItems);
-    expect(readdirMock).toHaveBeenCalledWith(mockContext.firefoxCacheDir);
-    expect(mockedIsFirefoxProfileDirectory).toHaveBeenCalledTimes(4);
-    expect(mockedScanDirectory).toHaveBeenCalledTimes(3); // 3 directories per profile (cache2, thumbnails, startupCache)
+    expect(result).toStrictEqual(cacheItems);
+    expect(readdirMock).toBeCalledWith(mockContext.firefoxCacheDir);
+    expect(mockedIsFirefoxProfileDirectory).toBeCalledTimes(4);
+    expect(mockedScanDirectory).toBeCalledTimes(3);
   });
 
   it('should call scanDirectory with correct parameters for each cache directory', async () => {
     // Given
-    const profileEntries = ['profile1.default'];
-    readdirMock.mockResolvedValue(profileEntries as any);
+    const profileEntries = ['profile1.default'] as unknown as Dirent<Buffer>[];
+    readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
-    mockedScanDirectory.mockResolvedValue([]);
     // When
     await scanFirefoxCacheProfiles(mockContext);
     // Then
-    expect(mockedScanDirectory).toHaveBeenCalledTimes(3);
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(1, {
+    expect(mockedScanDirectory).toBeCalledTimes(3);
+    expect(mockedScanDirectory).nthCalledWith(1, {
       ctx: mockContext.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(1, expect.objectContaining({
-      dirPath: expect.stringMatching(/cache2$/),
-    }));
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(2, {
+    expect(mockedScanDirectory).nthCalledWith(
+      1,
+      expect.objectContaining({
+        dirPath: expect.stringMatching(/cache2$/),
+      }),
+    );
+    expect(mockedScanDirectory).nthCalledWith(2, {
       ctx: mockContext.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(2, expect.objectContaining({
-      dirPath: expect.stringMatching(/thumbnails$/),
-    }));
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(3, {
+    expect(mockedScanDirectory).nthCalledWith(
+      2,
+      expect.objectContaining({
+        dirPath: expect.stringMatching(/thumbnails$/),
+      }),
+    );
+    expect(mockedScanDirectory).nthCalledWith(3, {
       ctx: mockContext.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(3, expect.objectContaining({
-      dirPath: expect.stringMatching(/startupCache$/),
-    }));
+    expect(mockedScanDirectory).nthCalledWith(
+      3,
+      expect.objectContaining({
+        dirPath: expect.stringMatching(/startupCache$/),
+      }),
+    );
   });
 
   it('should scan multiple profile directories correctly', async () => {
     // Given
-    const profileEntries = ['profile1.default', 'profile2.test'];
-    const profile1Items = [
-      createMockItem('cache1.dat', 1024, '/path/to/profile1/cache2'),
-    ];
-    const profile2Items = [
-      createMockItem('cache2.dat', 2048, '/path/to/profile2/cache2'),
-    ];
-    readdirMock.mockResolvedValue(profileEntries as any);
+    const profileEntries = ['profile1.default', 'profile2.test'] as unknown as Dirent<Buffer>[];
+    const profile1Items = [createMockItem('cache1.dat', 1024, '/path/to/profile1/cache2')];
+    const profile2Items = [createMockItem('cache2.dat', 2048, '/path/to/profile2/cache2')];
+    readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
     mockedScanDirectory
       .mockResolvedValueOnce([profile1Items[0]])
@@ -128,41 +131,37 @@ describe('scanFirefoxCacheProfiles', () => {
     // When
     const result = await scanFirefoxCacheProfiles(mockContext);
     // Then
-    expect(result).toEqual([...profile1Items, ...profile2Items]);
-    expect(mockedScanDirectory).toHaveBeenCalledTimes(6);
+    expect(result).toStrictEqual([...profile1Items, ...profile2Items]);
+    expect(mockedScanDirectory).toBeCalledTimes(6);
   });
 
   it('should handle Promise.allSettled rejections gracefully for profile directory checks', async () => {
     // Given
-    const profileEntries = ['profile1.default', 'profile2.test'];
-    readdirMock.mockResolvedValue(profileEntries as any);
-    mockedIsFirefoxProfileDirectory
-      .mockRejectedValueOnce(new Error('Permission denied'))
-      .mockResolvedValueOnce(true);
-    mockedScanDirectory.mockResolvedValue([]);
+    const profileEntries = ['profile1.default', 'profile2.test'] as unknown as Dirent<Buffer>[];
+    readdirMock.mockResolvedValue(profileEntries);
+    mockedIsFirefoxProfileDirectory.mockRejectedValueOnce(new Error('Permission denied')).mockResolvedValueOnce(true);
     // When
     const result = await scanFirefoxCacheProfiles(mockContext);
     // Then
-    expect(result).toEqual([]);
-    expect(mockedScanDirectory).toHaveBeenCalledTimes(3);
+    expect(result).toStrictEqual([]);
+    expect(mockedScanDirectory).toBeCalledTimes(3);
   });
 
   it('should handle Promise.allSettled rejections gracefully for scan operations', async () => {
     // Given
-    const profileEntries = ['profile1.default'];
+    const profileEntries = ['profile1.default'] as unknown as Dirent<Buffer>[];
     const successItems = [createMockItem('success.cache', 1024, '/path/to/cache')];
-    readdirMock.mockResolvedValue(profileEntries as any);
+    readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
     mockedScanDirectory
       .mockRejectedValueOnce(new Error('Permission denied'))
       .mockResolvedValueOnce(successItems)
       .mockRejectedValueOnce(new Error('Directory not found'));
-
     // When
     const result = await scanFirefoxCacheProfiles(mockContext);
     // Then
-    expect(result).toEqual(successItems);
-    expect(mockedScanDirectory).toHaveBeenCalledTimes(3);
+    expect(result).toStrictEqual(successItems);
+    expect(mockedScanDirectory).toBeCalledTimes(3);
   });
 
   it('should silently ignore errors when reading cache directory', async () => {
@@ -171,30 +170,38 @@ describe('scanFirefoxCacheProfiles', () => {
     // When
     const result = await scanFirefoxCacheProfiles(mockContext);
     // Then
-    expect(result).toEqual([]);
-    expect(readdirMock).toHaveBeenCalledWith(mockContext.firefoxCacheDir);
-    expect(mockedIsFirefoxProfileDirectory).not.toHaveBeenCalled();
-    expect(mockedScanDirectory).not.toHaveBeenCalled();
+    expect(result).toStrictEqual([]);
+    expect(readdirMock).toBeCalledWith(mockContext.firefoxCacheDir);
+    expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
+    expect(mockedScanDirectory).not.toBeCalled();
   });
 
   it('should use webBrowserFileFilter for all scan operations', async () => {
     // Given
-    const profileEntries = ['profile.default'];
-    readdirMock.mockResolvedValue(profileEntries as any);
+    const profileEntries = ['profile.default'] as unknown as Dirent<Buffer>[];
+    readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
-    mockedScanDirectory.mockResolvedValue([]);
     // When
     await scanFirefoxCacheProfiles(mockContext);
     // Then
-    expect(mockedScanDirectory).toHaveBeenCalledTimes(3);
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(1, expect.objectContaining({
-      customFileFilter: mockedWebBrowserFileFilter,
-    }));
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(2, expect.objectContaining({
-      customFileFilter: mockedWebBrowserFileFilter,
-    }));
-    expect(mockedScanDirectory).toHaveBeenNthCalledWith(3, expect.objectContaining({
-      customFileFilter: mockedWebBrowserFileFilter,
-    }));
+    expect(mockedScanDirectory).toBeCalledTimes(3);
+    expect(mockedScanDirectory).nthCalledWith(
+      1,
+      expect.objectContaining({
+        customFileFilter: mockedWebBrowserFileFilter,
+      }),
+    );
+    expect(mockedScanDirectory).nthCalledWith(
+      2,
+      expect.objectContaining({
+        customFileFilter: mockedWebBrowserFileFilter,
+      }),
+    );
+    expect(mockedScanDirectory).nthCalledWith(
+      3,
+      expect.objectContaining({
+        customFileFilter: mockedWebBrowserFileFilter,
+      }),
+    );
   });
 });

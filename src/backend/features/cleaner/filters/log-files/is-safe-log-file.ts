@@ -1,11 +1,11 @@
-import { CleanerContext } from "../../types/cleaner.types";
+import { CleanerContext } from '../../types/cleaner.types';
 
 type Props = { ctx: CleanerContext; fileName: string };
 
 export function logFileFilter({ ctx, fileName }: Props): boolean {
   const lowerName = fileName.toLowerCase();
 
-  if (ctx.logFiles.safeExtensions.some(ext => lowerName.endsWith(ext))) {
+  if (ctx.logFiles.safeExtensions.some((ext) => lowerName.endsWith(ext))) {
     return true;
   }
 

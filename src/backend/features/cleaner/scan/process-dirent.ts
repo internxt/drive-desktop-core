@@ -2,10 +2,10 @@ import { Dirent, promises as fs } from 'fs';
 
 import { logger } from '@/backend/core/logger/logger';
 
+import { CleanerContext } from '../types/cleaner.types';
 import { createCleanableItem } from '../utils/create-cleanable-item';
 import { wasAccessedWithinLastHour } from '../utils/was-accessed-within-last-hour';
 import { scanDirectory } from './scan-directory';
-import { CleanerContext } from '../types/cleaner.types';
 
 type Props = {
   ctx: CleanerContext;

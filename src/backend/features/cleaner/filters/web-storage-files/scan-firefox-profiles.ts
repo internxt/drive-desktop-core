@@ -1,10 +1,9 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { scanDirectory } from '../../scan/scan-directory';
+import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { isFirefoxProfileDirectory } from '../../utils/is-firefox-profile-directory';
-
 
 function firefoxStorageFileFilter({ fileName }: { fileName: string }): boolean {
   const lowerName = fileName.toLowerCase();
@@ -18,7 +17,12 @@ function firefoxStorageFileFilter({ fileName }: { fileName: string }): boolean {
   return !(isStorageFile || isStorageFileName);
 }
 
-export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: { ctx: CleanerContext; firefoxProfilesDir: string }): Promise<CleanableItem[]> {
+type Props = {
+  ctx: CleanerContext;
+  firefoxProfilesDir: string;
+};
+
+export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
   const items: CleanableItem[] = [];
 
   try {
@@ -62,9 +66,9 @@ export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: { ctx: Cl
         items.push(...result.value);
       }
     });
-  } catch (error) {
+  } catch {
     /**
-     * v.2.5.0
+     * v.0.1.1
      * Alexis Mora
      * Silently ignore errors when scanning Firefox profiles
      * This handles cases where profiles don't exist or are inaccessible

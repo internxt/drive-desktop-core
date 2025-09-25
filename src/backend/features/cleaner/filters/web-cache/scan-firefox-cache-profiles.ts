@@ -1,12 +1,16 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { scanDirectory } from '../../scan/scan-directory';
+import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { isFirefoxProfileDirectory } from '../../utils/is-firefox-profile-directory';
 import { webBrowserFileFilter } from '../../utils/is-safe-web-browser-file';
 
-export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: { ctx: CleanerContext; firefoxCacheDir: string }): Promise<CleanableItem[]> {
+type Props = {
+  ctx: CleanerContext;
+  firefoxCacheDir: string;
+};
+export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) {
   const items: CleanableItem[] = [];
 
   try {

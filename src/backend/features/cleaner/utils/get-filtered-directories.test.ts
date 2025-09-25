@@ -41,7 +41,7 @@ describe('getFilteredDirectories', () => {
       createMockDirent('TempFolder', true),
       createMockDirent('file.txt', false),
     ];
-    const customFilter = (directoryName: string) => directoryName === 'TempFolder';
+    const customFilter = ({ directoryName }: { directoryName: string }) => directoryName === 'TempFolder';
     mockReaddir.mockResolvedValue(mockDirents);
     // When
     const result = await getFilteredDirectories({

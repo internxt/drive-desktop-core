@@ -2,9 +2,9 @@ import path from 'path';
 
 import { logger } from '@/backend/core/logger/logger';
 
+import { CleanerContext } from '../types/cleaner.types';
 import { getFilteredDirectories } from '../utils/get-filtered-directories';
 import { scanDirectory } from './scan-directory';
-import { CleanerContext } from '../types/cleaner.types';
 
 type Props = {
   ctx: CleanerContext;

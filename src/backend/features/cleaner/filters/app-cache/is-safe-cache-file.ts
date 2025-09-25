@@ -2,14 +2,20 @@ import path from 'path';
 
 import { CleanerContext } from '../../types/cleaner.types';
 
-export function appCacheFileFilter({ ctx, fileName }: { ctx: CleanerContext; fileName: string }): boolean {
+type Props = {
+  ctx: CleanerContext;
+  fileName: string;
+};
+
+export function appCacheFileFilter({ ctx, fileName }: Props): boolean {
   const ext = path.extname(fileName).toLowerCase();
   if (ctx.appCache.criticalExtensions.includes(ext)) {
     return false;
   }
 
   const lowerName = fileName.toLowerCase();
-  if (ctx.appCache.criticalKeywords.some((keyword) => lowerName.includes(keyword))) {
+  const excludeCriticalKeywords = ctx.appCache.criticalKeywords.some((keyword) => lowerName.includes(keyword));
+  if (excludeCriticalKeywords) {
     return false;
   }
 
