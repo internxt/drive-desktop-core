@@ -85,10 +85,10 @@ describe('scanDirectory', () => {
     const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([expectedItem]);
-    expect(isInternxtRelatedMock).toHaveBeenCalledWith({ name: '/test/path/internxt-app' });
-    expect(isInternxtRelatedMock).toHaveBeenCalledWith({ name: '/test/path/regular-file.txt' });
-    expect(processDirentMock).toHaveBeenCalledTimes(1);
-    expect(processDirentMock).toHaveBeenCalledWith(
+    expect(isInternxtRelatedMock).toBeCalledWith({ name: '/test/path/internxt-app' });
+    expect(isInternxtRelatedMock).toBeCalledWith({ name: '/test/path/regular-file.txt' });
+    expect(processDirentMock).toBeCalledTimes(1);
+    expect(processDirentMock).toBeCalledWith(
       expect.objectContaining({
         entry: expect.objectContaining({ name: 'regular-file.txt' }),
         fullPath: '/test/path/regular-file.txt',
@@ -107,11 +107,11 @@ describe('scanDirectory', () => {
     const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual(expectedItem);
-    expect(readdirMock).toHaveBeenCalledWith(mockBasePath, {
+    expect(readdirMock).toBeCalledWith(mockBasePath, {
       withFileTypes: true,
     });
 
-    expect(processDirentMock).toHaveBeenCalledWith(
+    expect(processDirentMock).toBeCalledWith(
       expect.objectContaining({
         entry: dirent,
         fullPath: '/test/path/subdir',
@@ -135,7 +135,7 @@ describe('scanDirectory', () => {
     const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([file1Item, subdirItem, file2Item]);
-    expect(processDirentMock).toHaveBeenCalledTimes(3);
+    expect(processDirentMock).toBeCalledTimes(3);
   });
 
   it('should skip files that cannot be accessed due to permissions', async () => {
@@ -146,7 +146,7 @@ describe('scanDirectory', () => {
     const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual(accessibleItem);
-    expect(processDirentMock).toHaveBeenCalledTimes(2);
+    expect(processDirentMock).toBeCalledTimes(2);
   });
 
   it('should handle empty directories', async () => {
@@ -155,7 +155,7 @@ describe('scanDirectory', () => {
     const result = await scanDirectory({ ctx: {} as CleanerContext, dirPath: mockBasePath });
 
     expect(result).toStrictEqual([]);
-    expect(processDirentMock).toHaveBeenCalledTimes(0);
+    expect(processDirentMock).toBeCalledTimes(0);
   });
 
   it('should handle readdir errors gracefully', async () => {
