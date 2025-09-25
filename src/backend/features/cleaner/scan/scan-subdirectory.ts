@@ -1,39 +1,18 @@
-import { promises as fs } from 'fs';
 import path from 'path';
 
 import { logger } from '@/backend/core/logger/logger';
 
-import { CleanableItem } from '../types/cleaner.types';
-import { isInternxtRelated } from '../utils/is-file-internxt-related';
+import { getFilteredDirectories } from '../utils/get-filtered-directories';
 import { scanDirectory } from './scan-directory';
 
-type FilterDirectoriesProps = {
-  baseDir: string;
-  customDirectoryFilter?: (directoryName: string) => boolean;
-};
-
-async function getFilteredDirectories({ baseDir, customDirectoryFilter }: FilterDirectoriesProps) {
-  return await fs
-    .readdir(baseDir, { withFileTypes: true })
-    .then((dirents) =>
-      dirents.filter(
-        (dirent) =>
-          dirent.isDirectory() &&
-          !isInternxtRelated({ name: dirent.name }) &&
-          (!customDirectoryFilter || !customDirectoryFilter(dirent.name)),
-      ),
-    );
-}
-
-type ScanSubDirectoryProps = {
+type Props = {
   baseDir: string;
   subPath: string;
   customDirectoryFilter?: (directoryName: string) => boolean;
   customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
 };
 
-export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter, customFileFilter }: ScanSubDirectoryProps) {
-  const cleanableItems: CleanableItem[] = [];
+export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter, customFileFilter }: Props) {
   try {
     const directories = await getFilteredDirectories({ baseDir, customDirectoryFilter });
 
@@ -47,11 +26,10 @@ export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter
 
     const results = await Promise.allSettled(scanPromises);
 
-    results.forEach((result) => {
-      if (result.status === 'fulfilled') {
-        cleanableItems.push(...result.value);
-      }
-    });
+    return results
+      .filter((result) => result.status === 'fulfilled')
+      .map((result) => result.value)
+      .flat();
   } catch (error) {
     logger.warn({
       tag: 'CLEANER',
@@ -62,6 +40,4 @@ export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter
     });
     return [];
   }
-
-  return cleanableItems;
 }
