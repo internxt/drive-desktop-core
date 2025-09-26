@@ -1,5 +1,6 @@
 import { logger, TLoggerBody } from './core/logger/logger';
 import { setupElectronLog } from './core/logger/setup-electron-log';
-import { UserAvailableProducts, getUserAvailableProducts } from './features/payments';
 
-export { logger, TLoggerBody, UserAvailableProducts, setupElectronLog, getUserAvailableProducts };
+export { FileSystemModule, AbsolutePath, RelativePath } from './infra/file-system/file-system.module';
+export { PaymentsModule, UserAvailableProducts } from './features/payments/payments.module';
+export { logger, TLoggerBody, setupElectronLog };
