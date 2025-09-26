@@ -7,7 +7,7 @@ export function getRequestKey({
   method,
   context = {},
 }: {
-  endpoint: keyof paths;
+  endpoint: string;
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   context?: Record<string, unknown>;
 }) {
