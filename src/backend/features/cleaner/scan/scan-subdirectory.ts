@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { logger } from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/services/logger';
 
 import { getFilteredDirectories } from '../utils/get-filtered-directories';
 import { scanDirectory } from './scan-directory';

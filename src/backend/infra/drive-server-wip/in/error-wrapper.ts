@@ -1,4 +1,4 @@
-import { logger, TLoggerBody } from '@/backend/core/logger/logger';
+import { logger, TLoggerBody } from '@/backend/core/logger/services/logger';
 import { addGeneralIssue } from '@/backend/features/issues/services/issues';
 
 import { DriveServerWipError } from '../out/drive-server-wip-error';

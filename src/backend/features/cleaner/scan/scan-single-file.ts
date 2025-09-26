@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 
-import { logger } from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/services/logger';
 
 import { createCleanableItem } from '../utils/create-cleanable-item';
 import { wasAccessedWithinLastHour } from '../utils/was-accessed-within-last-hour';

@@ -2,7 +2,7 @@ import { Payments } from '@internxt/sdk/dist/drive';
 import { Tier } from '@internxt/sdk/dist/drive/payments/types/tiers';
 import { mockDeep } from 'vitest-mock-extended';
 
-import { logger } from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/services/logger';
 import { partialSpyOn, mockProps } from '@/tests/vitest/utils.helper.test';
 
 import * as userAvailableProductsMapperFile from '../user-available-products.mapper';

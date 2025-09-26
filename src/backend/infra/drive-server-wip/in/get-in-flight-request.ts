@@ -1,5 +1,3 @@
-import { paths } from '../schema';
-
 const inFlightRequests = new Map<string, Promise<unknown>>();
 
 export function getRequestKey({

@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import { logger } from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/services/logger';
 
 import { CleanableItem } from '../types/cleaner.types';
 import { isInternxtRelated } from '../utils/is-file-internxt-related';

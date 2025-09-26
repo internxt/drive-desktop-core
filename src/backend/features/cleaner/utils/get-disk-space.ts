@@ -1,6 +1,6 @@
 import checkDiskSpace from 'check-disk-space';
 
-import { logger } from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/services/logger';
 
 export async function getDiskSpace({ mainPath }: { mainPath: string }) {
   try {

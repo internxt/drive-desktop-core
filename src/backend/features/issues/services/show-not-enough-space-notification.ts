@@ -1,7 +1,7 @@
 import { Notification } from 'electron';
 import path from 'path';
 
-import { logger } from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/services/logger';
 
 let lastDialogTime = 0;
 

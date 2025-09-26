@@ -1,4 +1,4 @@
-import { logger } from '@/backend/core/logger/logger';
+import { logger } from '@/backend/core/logger/services/logger';
 
 import { userAvailableProductsMapper } from '../user-available-products.mapper';
 import { getPaymentsClient, PaymentsClientConfig } from './get-payments-client';
