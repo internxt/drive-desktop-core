@@ -20,6 +20,7 @@ module.exports = {
       files: ['*.test.ts', '*.test.tsx'],
       rules: {
         '@typescript-eslint/unbound-method': 'off',
+        'sonarjs/os-command': 'off',
       },
     },
   ],
