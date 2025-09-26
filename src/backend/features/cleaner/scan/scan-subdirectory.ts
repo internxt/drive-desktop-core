@@ -1,4 +1,4 @@
-import path from 'path';
+import { join } from 'path';
 
 import { logger } from '@/backend/core/logger/logger';
 
@@ -19,7 +19,7 @@ export async function scanSubDirectory({ ctx, baseDir, subPath, customDirectoryF
     const directories = await getFilteredDirectories({ baseDir, customDirectoryFilter });
 
     const scanPromises = directories.map((directory) => {
-      const dirPath = path.join(baseDir, directory.name, subPath);
+      const dirPath = join(baseDir, directory.name, subPath);
       return scanDirectory({
         ctx,
         dirPath,

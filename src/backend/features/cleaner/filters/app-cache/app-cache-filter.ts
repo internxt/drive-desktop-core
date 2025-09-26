@@ -1,4 +1,4 @@
-import path from 'path';
+import { extname } from 'path';
 
 import { CleanerContext } from '../../types/cleaner.types';
 
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function appCacheFileFilter({ ctx, fileName }: Props): boolean {
-  const ext = path.extname(fileName).toLowerCase();
+  const ext = extname(fileName).toLowerCase();
   const lowerName = fileName.toLowerCase();
 
   const excludeCriticalExtensions = ctx.appCache.criticalExtensions.includes(ext);
