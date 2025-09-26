@@ -1,22 +1,23 @@
-import { Dirent, promises as fs } from 'fs';
+import { Dirent } from 'fs';
+import { readdir } from 'fs/promises';
 
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as scanDirectoryModule from '../../scan/scan-directory';
 import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import * as isFirefoxProfileDirectoryModule from '../../utils/is-firefox-profile-directory';
-import * as webBrowserFileFilterModule from '../../utils/is-safe-web-browser-file';
+import * as webBrowserFileFilterModule from '../../utils/web-browser-file-filter';
 import { scanFirefoxCacheProfiles } from './scan-firefox-cache-profiles';
 
-vi.mock(import('fs'));
+vi.mock(import('fs/promises'));
 
 describe('scanFirefoxCacheProfiles', () => {
   const mockedScanDirectory = partialSpyOn(scanDirectoryModule, 'scanDirectory');
   const mockedIsFirefoxProfileDirectory = partialSpyOn(isFirefoxProfileDirectoryModule, 'isFirefoxProfileDirectory');
   const mockedWebBrowserFileFilter = partialSpyOn(webBrowserFileFilterModule, 'webBrowserFileFilter');
-  const readdirMock = deepMocked(fs.readdir);
+  const readdirMock = deepMocked(readdir);
 
-  const mockContext = mockProps<typeof scanFirefoxCacheProfiles>({
+  const props = mockProps<typeof scanFirefoxCacheProfiles>({
     ctx: {} as CleanerContext,
     firefoxCacheDir: '/home/user/.cache/mozilla/firefox',
   });
@@ -35,10 +36,10 @@ describe('scanFirefoxCacheProfiles', () => {
 
   it('should return empty array when no entries found in cache directory', async () => {
     // Given/When
-    const result = await scanFirefoxCacheProfiles(mockContext);
+    const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toEqual([]);
-    expect(readdirMock).toBeCalledWith(mockContext.firefoxCacheDir);
+    expect(readdirMock).toBeCalledWith(props.firefoxCacheDir);
     expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
     expect(mockedScanDirectory).not.toBeCalled();
   });
@@ -63,10 +64,10 @@ describe('scanFirefoxCacheProfiles', () => {
       .mockResolvedValueOnce([cacheItems[1]])
       .mockResolvedValueOnce([cacheItems[2]]);
     // When
-    const result = await scanFirefoxCacheProfiles(mockContext);
+    const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toStrictEqual(cacheItems);
-    expect(readdirMock).toBeCalledWith(mockContext.firefoxCacheDir);
+    expect(readdirMock).toBeCalledWith(props.firefoxCacheDir);
     expect(mockedIsFirefoxProfileDirectory).toBeCalledTimes(4);
     expect(mockedScanDirectory).toBeCalledTimes(3);
   });
@@ -77,11 +78,11 @@ describe('scanFirefoxCacheProfiles', () => {
     readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
     // When
-    await scanFirefoxCacheProfiles(mockContext);
+    await scanFirefoxCacheProfiles(props);
     // Then
     expect(mockedScanDirectory).toBeCalledTimes(3);
     expect(mockedScanDirectory).nthCalledWith(1, {
-      ctx: mockContext.ctx,
+      ctx: props.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
@@ -94,7 +95,7 @@ describe('scanFirefoxCacheProfiles', () => {
     );
 
     expect(mockedScanDirectory).nthCalledWith(2, {
-      ctx: mockContext.ctx,
+      ctx: props.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
@@ -107,7 +108,7 @@ describe('scanFirefoxCacheProfiles', () => {
     );
 
     expect(mockedScanDirectory).nthCalledWith(3, {
-      ctx: mockContext.ctx,
+      ctx: props.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: mockedWebBrowserFileFilter,
     });
@@ -135,7 +136,7 @@ describe('scanFirefoxCacheProfiles', () => {
       .mockResolvedValueOnce([])
       .mockResolvedValueOnce([]);
     // When
-    const result = await scanFirefoxCacheProfiles(mockContext);
+    const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toStrictEqual([...profile1Items, ...profile2Items]);
     expect(mockedScanDirectory).toBeCalledTimes(6);
@@ -147,7 +148,7 @@ describe('scanFirefoxCacheProfiles', () => {
     readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory.mockRejectedValueOnce(new Error('Permission denied')).mockResolvedValueOnce(true);
     // When
-    const result = await scanFirefoxCacheProfiles(mockContext);
+    const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toStrictEqual([]);
     expect(mockedScanDirectory).toBeCalledTimes(3);
@@ -164,7 +165,7 @@ describe('scanFirefoxCacheProfiles', () => {
       .mockResolvedValueOnce(successItems)
       .mockRejectedValueOnce(new Error('Directory not found'));
     // When
-    const result = await scanFirefoxCacheProfiles(mockContext);
+    const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toStrictEqual(successItems);
     expect(mockedScanDirectory).toBeCalledTimes(3);
@@ -174,10 +175,10 @@ describe('scanFirefoxCacheProfiles', () => {
     // Given
     readdirMock.mockRejectedValue(new Error('Directory not found'));
     // When
-    const result = await scanFirefoxCacheProfiles(mockContext);
+    const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toStrictEqual([]);
-    expect(readdirMock).toBeCalledWith(mockContext.firefoxCacheDir);
+    expect(readdirMock).toBeCalledWith(props.firefoxCacheDir);
     expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
     expect(mockedScanDirectory).not.toBeCalled();
   });
@@ -188,7 +189,7 @@ describe('scanFirefoxCacheProfiles', () => {
     readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
     // When
-    await scanFirefoxCacheProfiles(mockContext);
+    await scanFirefoxCacheProfiles(props);
     // Then
     expect(mockedScanDirectory).toBeCalledTimes(3);
     expect(mockedScanDirectory).nthCalledWith(

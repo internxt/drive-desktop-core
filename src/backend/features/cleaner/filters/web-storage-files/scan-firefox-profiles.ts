@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
 
 import { scanDirectory } from '../../scan/scan-directory';
 import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
@@ -26,7 +26,7 @@ export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
   const items: CleanableItem[] = [];
 
   try {
-    const entries = await fs.readdir(firefoxProfilesDir);
+    const entries = await readdir(firefoxProfilesDir);
 
     const profileDirsChecks = await Promise.allSettled(
       entries.map(async (entry) => {
@@ -49,7 +49,7 @@ export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
     const scanPromises: Promise<CleanableItem[]>[] = [];
 
     for (const profileDir of profileDirs) {
-      const profilePath = path.join(firefoxProfilesDir, profileDir);
+      const profilePath = join(firefoxProfilesDir, profileDir);
 
       scanPromises.push(
         scanDirectory({

@@ -1,10 +1,10 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
 
 import { scanDirectory } from '../../scan/scan-directory';
 import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { isFirefoxProfileDirectory } from '../../utils/is-firefox-profile-directory';
-import { webBrowserFileFilter } from '../../utils/is-safe-web-browser-file';
+import { webBrowserFileFilter } from '../../utils/web-browser-file-filter';
 
 type Props = {
   ctx: CleanerContext;
@@ -14,7 +14,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
   const items: CleanableItem[] = [];
 
   try {
-    const entries = await fs.readdir(firefoxCacheDir);
+    const entries = await readdir(firefoxCacheDir);
 
     const profileDirsChecks = await Promise.allSettled(
       entries.map(async (entry) => {
@@ -37,9 +37,9 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
     const scanPromises: Promise<CleanableItem[]>[] = [];
 
     for (const profileDir of profileDirs) {
-      const profileCachePath = path.join(firefoxCacheDir, profileDir);
+      const profileCachePath = join(firefoxCacheDir, profileDir);
 
-      const cache2Path = path.join(profileCachePath, 'cache2');
+      const cache2Path = join(profileCachePath, 'cache2');
       scanPromises.push(
         scanDirectory({
           ctx,
@@ -48,7 +48,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
         }),
       );
 
-      const thumbnailsPath = path.join(profileCachePath, 'thumbnails');
+      const thumbnailsPath = join(profileCachePath, 'thumbnails');
       scanPromises.push(
         scanDirectory({
           ctx,
@@ -57,7 +57,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
         }),
       );
 
-      const startupCachePath = path.join(profileCachePath, 'startupCache');
+      const startupCachePath = join(profileCachePath, 'startupCache');
       scanPromises.push(
         scanDirectory({
           ctx,

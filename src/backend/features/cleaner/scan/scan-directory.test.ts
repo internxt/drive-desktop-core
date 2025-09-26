@@ -38,12 +38,12 @@ describe('scanDirectory', () => {
   beforeEach(() => {
     joinMock.mockImplementation((...args) => args.join('/'));
     isInternxtRelatedMock.mockReturnValue(false);
-    statMock.mockResolvedValue(({ isDirectory: () => true } as unknown as Stats));
+    statMock.mockResolvedValue({ isDirectory: () => true } as unknown as Stats);
     props = mockProps({ ctx: {} as CleanerContext, dirPath: mockBasePath });
   });
 
   it('should return empty array when directory is not a directory', async () => {
-    statMock.mockResolvedValue(({ isDirectory: () => false } as unknown as Stats));
+    statMock.mockResolvedValue({ isDirectory: () => false } as unknown as Stats);
     const result = await scanDirectory(props);
 
     expect(result).toStrictEqual([]);

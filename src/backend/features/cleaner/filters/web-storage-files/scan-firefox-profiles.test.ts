@@ -1,4 +1,5 @@
-import { Dirent, promises as fs } from 'fs';
+import { Dirent } from 'fs';
+import { readdir } from 'fs/promises';
 
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
@@ -7,14 +8,14 @@ import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import * as isFirefoxProfileDirectoryModule from '../../utils/is-firefox-profile-directory';
 import { scanFirefoxProfiles } from './scan-firefox-profiles';
 
-vi.mock(import('fs'));
+vi.mock(import('fs/promises'));
 
 describe('scanFirefoxProfiles', () => {
   const mockedScanDirectory = partialSpyOn(scanDirectoryModule, 'scanDirectory');
   const mockedIsFirefoxProfileDirectory = partialSpyOn(isFirefoxProfileDirectoryModule, 'isFirefoxProfileDirectory');
-  const readdirMock = deepMocked(fs.readdir);
+  const readdirMock = deepMocked(readdir);
 
-  const mockContext = mockProps<typeof scanFirefoxProfiles>({
+  const props = mockProps<typeof scanFirefoxProfiles>({
     ctx: {} as CleanerContext,
     firefoxProfilesDir: '/home/user/.mozilla/firefox',
   });
@@ -35,10 +36,10 @@ describe('scanFirefoxProfiles', () => {
     // Given
     readdirMock.mockResolvedValue([]);
     // When
-    const result = await scanFirefoxProfiles(mockContext);
+    const result = await scanFirefoxProfiles(props);
     // Then
     expect(result).toEqual([]);
-    expect(readdirMock).toBeCalledWith(mockContext.firefoxProfilesDir);
+    expect(readdirMock).toBeCalledWith(props.firefoxProfilesDir);
     expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
     expect(mockedScanDirectory).not.toBeCalled();
   });
@@ -59,13 +60,13 @@ describe('scanFirefoxProfiles', () => {
 
     mockedScanDirectory.mockResolvedValueOnce([profileItems[0]]).mockResolvedValueOnce([profileItems[1]]);
     // When
-    const result = await scanFirefoxProfiles(mockContext);
+    const result = await scanFirefoxProfiles(props);
     // Then
     expect(result).toEqual(profileItems);
-    expect(readdirMock).toBeCalledWith(mockContext.firefoxProfilesDir);
+    expect(readdirMock).toBeCalledWith(props.firefoxProfilesDir);
     expect(mockedIsFirefoxProfileDirectory).toBeCalledTimes(4);
-    expect(mockedIsFirefoxProfileDirectory).toBeCalledWith('rwt14re6.default', mockContext.firefoxProfilesDir);
-    expect(mockedIsFirefoxProfileDirectory).toBeCalledWith('abc123.test-profile', mockContext.firefoxProfilesDir);
+    expect(mockedIsFirefoxProfileDirectory).toBeCalledWith('rwt14re6.default', props.firefoxProfilesDir);
+    expect(mockedIsFirefoxProfileDirectory).toBeCalledWith('abc123.test-profile', props.firefoxProfilesDir);
     expect(mockedScanDirectory).toBeCalledTimes(2);
   });
 
@@ -76,10 +77,10 @@ describe('scanFirefoxProfiles', () => {
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
     mockedScanDirectory.mockResolvedValue([]);
     // When
-    await scanFirefoxProfiles(mockContext);
+    await scanFirefoxProfiles(props);
     // Then
     expect(mockedScanDirectory).toBeCalledWith({
-      ctx: mockContext.ctx,
+      ctx: props.ctx,
       dirPath: expect.stringContaining('profile1.default'),
       customFileFilter: expect.any(Function),
     });
@@ -92,12 +93,12 @@ describe('scanFirefoxProfiles', () => {
     mockedIsFirefoxProfileDirectory.mockRejectedValueOnce(new Error('Permission denied')).mockResolvedValueOnce(true);
     mockedScanDirectory.mockResolvedValue([]);
     // When
-    const result = await scanFirefoxProfiles(mockContext);
+    const result = await scanFirefoxProfiles(props);
     // Then
     expect(result).toEqual([]);
     expect(mockedScanDirectory).toBeCalledTimes(1);
     expect(mockedScanDirectory).toBeCalledWith({
-      ctx: mockContext.ctx,
+      ctx: props.ctx,
       dirPath: expect.stringContaining('profile2.test'),
       customFileFilter: expect.any(Function),
     });
@@ -111,7 +112,7 @@ describe('scanFirefoxProfiles', () => {
     mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
     mockedScanDirectory.mockRejectedValueOnce(new Error('Permission denied')).mockResolvedValueOnce(successItems);
     // When
-    const result = await scanFirefoxProfiles(mockContext);
+    const result = await scanFirefoxProfiles(props);
     // Then
     expect(result).toEqual(successItems);
     expect(mockedScanDirectory).toBeCalledTimes(2);
@@ -121,10 +122,10 @@ describe('scanFirefoxProfiles', () => {
     // Given
     readdirMock.mockRejectedValue(new Error('Directory not found'));
     // When
-    const result = await scanFirefoxProfiles(mockContext);
+    const result = await scanFirefoxProfiles(props);
     // Then
     expect(result).toEqual([]);
-    expect(readdirMock).toBeCalledWith(mockContext.firefoxProfilesDir);
+    expect(readdirMock).toBeCalledWith(props.firefoxProfilesDir);
     expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
     expect(mockedScanDirectory).not.toBeCalled();
   });
@@ -141,17 +142,17 @@ describe('scanFirefoxProfiles', () => {
         return Promise.resolve([]);
       });
       // When
-      await scanFirefoxProfiles(mockContext);
+      await scanFirefoxProfiles(props);
       // Then
       expect(capturedFilter).toBeDefined();
       if (capturedFilter) {
-        expect(capturedFilter({ ctx: mockContext.ctx, fileName: 'cookies.sqlite' })).toBe(false);
-        expect(capturedFilter({ ctx: mockContext.ctx, fileName: 'webappsstore.sqlite3' })).toBe(false);
-        expect(capturedFilter({ ctx: mockContext.ctx, fileName: 'chromeappsstore.db' })).toBe(false);
-        expect(capturedFilter({ ctx: mockContext.ctx, fileName: 'session.sqlite' })).toBe(false);
-        expect(capturedFilter({ ctx: mockContext.ctx, fileName: 'regular-file.txt' })).toBe(true);
-        expect(capturedFilter({ ctx: mockContext.ctx, fileName: 'prefs.js' })).toBe(true);
-        expect(capturedFilter({ ctx: mockContext.ctx, fileName: 'bookmarks.html' })).toBe(true);
+        expect(capturedFilter({ ctx: props.ctx, fileName: 'cookies.sqlite' })).toBe(false);
+        expect(capturedFilter({ ctx: props.ctx, fileName: 'webappsstore.sqlite3' })).toBe(false);
+        expect(capturedFilter({ ctx: props.ctx, fileName: 'chromeappsstore.db' })).toBe(false);
+        expect(capturedFilter({ ctx: props.ctx, fileName: 'session.sqlite' })).toBe(false);
+        expect(capturedFilter({ ctx: props.ctx, fileName: 'regular-file.txt' })).toBe(true);
+        expect(capturedFilter({ ctx: props.ctx, fileName: 'prefs.js' })).toBe(true);
+        expect(capturedFilter({ ctx: props.ctx, fileName: 'bookmarks.html' })).toBe(true);
       }
     });
   });

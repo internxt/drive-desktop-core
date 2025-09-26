@@ -9,9 +9,12 @@ describe('isDirectoryWebBrowserRelated', () => {
     expect(isDirectoryWebBrowserRelated(name)).toBe(true);
   });
 
-  it.each(['my-google-chrome-app', 'chromium-browser', 'firefox-dev', 'opera-stable'])('should return true for directories containing browser names: %s', (name) => {
-    expect(isDirectoryWebBrowserRelated(name)).toBe(true);
-  });
+  it.each(['my-google-chrome-app', 'chromium-browser', 'firefox-dev', 'opera-stable'])(
+    'should return true for directories containing browser names: %s',
+    (name) => {
+      expect(isDirectoryWebBrowserRelated(name)).toBe(true);
+    },
+  );
 
   it.each(['vscode', 'telegram', 'discord', 'spotify'])('should return false for non-browser directory names: %s', (name) => {
     expect(isDirectoryWebBrowserRelated(name)).toBe(false);

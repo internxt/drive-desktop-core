@@ -61,5 +61,4 @@ describe('is-safe-log-file', () => {
   ])('should return true for rotated log files matching regex pattern: "%s"', (fileName) => {
     expect(logFileFilter({ ctx, fileName })).toBe(true);
   });
-
 });

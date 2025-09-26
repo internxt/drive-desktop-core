@@ -33,9 +33,9 @@ describe('scanSubDirectory', () => {
       fileName,
       sizeInBytes: size,
     }) as unknown as CleanableItem;
-  
+
   let props: Parameters<typeof scanSubDirectory>[0];
-  
+
   beforeEach(() => {
     joinMock.mockImplementation((...args) => args.join('/'));
     mockedIsInternxtRelated.mockReturnValue(false);
