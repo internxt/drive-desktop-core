@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { stat, readdir } from 'fs/promises';
 import path from 'path';
 
 import { logger } from '@/backend/core/logger/logger';
@@ -16,12 +16,12 @@ type Props = {
 
 export async function scanDirectory({ ctx, dirPath, customFileFilter, customDirectoryFilter }: Props) {
   try {
-    const stat = await fs.stat(dirPath);
-    if (!stat.isDirectory()) {
+    const folderStats = await stat(dirPath);
+    if (!folderStats.isDirectory()) {
       return [];
     }
 
-    const dirents = await fs.readdir(dirPath, { withFileTypes: true });
+    const dirents = await readdir(dirPath, { withFileTypes: true });
     const items: CleanableItem[] = [];
 
     for (const dirent of dirents) {

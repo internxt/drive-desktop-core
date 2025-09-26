@@ -2,7 +2,7 @@ import { CleanerContext } from '../../types/cleaner.types';
 
 type Props = { ctx: CleanerContext; fileName: string };
 
-export function logFileFilter({ ctx, fileName }: Props): boolean {
+export function logFileFilter({ ctx, fileName }: Props) {
   const lowerName = fileName.toLowerCase();
 
   const includeSafeExtensions = ctx.logFiles.safeExtensions.some((ext) => lowerName.endsWith(ext));
@@ -13,5 +13,5 @@ export function logFileFilter({ ctx, fileName }: Props): boolean {
    */
   const checkRotatedLog = /\.log(\.\d+)?(\.(gz|bz2|xz|zip))?$/.test(lowerName);
 
-  return includeSafeExtensions && checkRotatedLog;
+  return includeSafeExtensions || checkRotatedLog;
 }

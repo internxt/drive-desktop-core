@@ -1,8 +1,6 @@
 import ElectronLog from 'electron-log';
 import { inspect } from 'node:util';
 
-import { paths } from '@/backend/infra/drive-server-wip/schema';
-
 type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS' | 'CLEANER';
 type TLevel = 'debug' | 'warn' | 'error';
 
@@ -11,12 +9,6 @@ export type TLoggerBody = {
   msg: string;
   workspaceId?: string;
   context?: Record<string, unknown>;
-  attributes?: {
-    userId?: string;
-    tag?: TTag;
-    method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-    endpoint?: keyof paths;
-  };
   [key: string]: unknown;
 };
 
@@ -66,7 +58,7 @@ function getTagStr(tag?: TTag): string {
 }
 
 function prepareBody(level: TLevel, rawBody: TLoggerBody) {
-  const { tag, msg, workspaceId, attributes, ...rest } = rawBody;
+  const { tag, msg, workspaceId, ...rest } = rawBody;
 
   const header = `${getLevelStr(level)} - ${getProcessStr()} - ${getTagStr(tag)}`;
 
@@ -79,7 +71,7 @@ function prepareBody(level: TLevel, rawBody: TLoggerBody) {
 
   const body = inspect(rawBody, { depth: Infinity, breakLength: Infinity });
   const coloredBody = inspect(rawBody, { depth: Infinity, breakLength: Infinity, colors: true });
-  return { attributes, body, coloredBody };
+  return { body, coloredBody };
 }
 
 function debug(rawBody: TLoggerBody) {

@@ -2,10 +2,6 @@
 import { DeepPartial } from 'ts-essentials';
 import { MockedFunction, MockInstance } from 'vitest';
 
-export function getMockCalls(object: { mock: { calls: any[] } }) {
-  return object.mock.calls.map((call) => call[0]);
-}
-
 export function mockProps<T extends (...args: any[]) => unknown>(props: DeepPartial<Parameters<T>[0]>) {
   return props as Parameters<T>[0];
 }
