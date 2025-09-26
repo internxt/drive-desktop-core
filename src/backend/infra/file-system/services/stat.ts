@@ -25,7 +25,7 @@ export async function stat({ absolutePath }: TProps) {
       }
 
       /**
-       * v2.5.3 Daniel Jiménez
+       * v0.1.2 Daniel Jiménez
        * TODO: EACCES has not been reproduced in windows
        * https://stackoverflow.com/questions/59428844/listen-eacces-permission-denied-in-windows
        */
