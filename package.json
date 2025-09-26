@@ -15,7 +15,7 @@
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
     "type-check": "tsc",
-    "find-deadcode": "ts-prune -e",
+    "find-deadcode": "ts-prune -i index.ts -e",
     "========== Testing ==========": "",
     "test": "vitest",
     "test:once": "npm run test -- --run",
