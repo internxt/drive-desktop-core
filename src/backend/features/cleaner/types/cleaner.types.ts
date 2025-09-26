@@ -85,6 +85,19 @@ type BrowserContext = {
   };
 };
 
+type AppCacheContext = {
+  paths: AppCachePaths;
+  criticalExtensions: string[];
+  criticalKeywords: string[];
+};
+
+type LogFilesContext = {
+  paths: LogFilesPaths;
+  safeExtensions: string[];
+};
+
 export type CleanerContext = {
   browser: BrowserContext;
+  appCache: AppCacheContext;
+  logFiles: LogFilesContext;
 };

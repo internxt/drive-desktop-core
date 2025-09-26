@@ -5,7 +5,7 @@ type Props = {
   fileName: string;
 };
 
-export function isSafeWebBrowserFile({ ctx, fileName }: Props) {
+export function webBrowserFileFilter({ ctx, fileName }: Props) {
   const lowerName = fileName.toLowerCase();
   const allCriticalFiles = Object.values(ctx.browser.specificCriticalFile).flat();
 
