@@ -1,8 +1,6 @@
 import ElectronLog from 'electron-log';
 import { inspect } from 'node:util';
 
-import { paths } from '@/backend/infra/drive-server-wip/schema';
-
 type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS' | 'CLEANER';
 type TLevel = 'debug' | 'warn' | 'error';
 
@@ -11,12 +9,6 @@ export type TLoggerBody = {
   msg: string;
   workspaceId?: string;
   context?: Record<string, unknown>;
-  attributes?: {
-    userId?: string;
-    tag?: TTag;
-    method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-    endpoint?: keyof paths;
-  };
   [key: string]: unknown;
 };
 
