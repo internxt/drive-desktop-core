@@ -2,7 +2,7 @@ import { CleanerContext } from '../../types/cleaner.types';
 
 type Props = { ctx: CleanerContext; fileName: string };
 
-export function logFileFilter({ ctx, fileName }: Props): boolean {
+export function logFileFilter({ ctx, fileName }: Props) {
   const lowerName = fileName.toLowerCase();
 
   const includeSafeExtensions = ctx.logFiles.safeExtensions.some((ext) => lowerName.endsWith(ext));

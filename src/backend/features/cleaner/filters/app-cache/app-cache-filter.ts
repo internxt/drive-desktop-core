@@ -7,7 +7,7 @@ type Props = {
   fileName: string;
 };
 
-export function appCacheFileFilter({ ctx, fileName }: Props): boolean {
+export function appCacheFileFilter({ ctx, fileName }: Props) {
   const ext = extname(fileName).toLowerCase();
   const lowerName = fileName.toLowerCase();
 
