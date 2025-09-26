@@ -21,7 +21,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm run init:ci
+        run: npm ci
 
       - name: Find deadcode
         run: npm run find-deadcode
