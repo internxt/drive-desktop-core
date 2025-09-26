@@ -1,11 +1,11 @@
-name: Publish package to npmjs
+name: Publish
 
 on:
   release:
     types: [published]
 
 jobs:
-  publish_npm:
+  publish:
     runs-on: ubuntu-latest
     timeout-minutes: 1
 
