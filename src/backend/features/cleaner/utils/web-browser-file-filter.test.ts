@@ -5,7 +5,7 @@ import { webBrowserFileFilter } from './web-browser-file-filter';
 describe('webBrowserFileFilter', () => {
   let props: Parameters<typeof webBrowserFileFilter>[0];
   beforeEach(() => {
-    props =  mockProps<typeof webBrowserFileFilter>({
+    props = mockProps<typeof webBrowserFileFilter>({
       fileName: '',
       ctx: {
         browser: {
