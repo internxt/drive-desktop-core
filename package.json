@@ -15,15 +15,13 @@
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
     "type-check": "tsc",
-    "find-deadcode": "ts-prune -i schema.ts -e",
+    "find-deadcode": "ts-prune -e",
     "========== Testing ==========": "",
     "test": "vitest",
     "test:once": "npm run test -- --run",
     "test:one": "npm run test -- related x",
     "test:cov": "npm run test:once -- --coverage",
     "========== Other ==========": "",
-    "swagger_dev": "openapi-typescript http://localhost:3004/api-json -o ./src/backend/infra/drive-server-wip/schema.ts",
-    "swagger_prod": "openapi-typescript https://gateway.internxt.com/drive/api-json -o ./src/backend/infra/drive-server-wip/schema.ts",
     "depcheck": "depcheck"
   },
   "devDependencies": {
@@ -41,8 +39,6 @@
     "eslint-plugin-prettier": "^5.5.3",
     "eslint-plugin-sonarjs": "^3.0.5",
     "eslint-plugin-unicorn": "^56.0.1",
-    "openapi-fetch": "^0.13.4",
-    "openapi-typescript": "^7.8.0",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "ts-essentials": "^10.1.1",
@@ -55,8 +51,8 @@
     "vitest-mock-extended": "^3.1.0"
   },
   "dependencies": {
-    "check-disk-space": "^3.4.0",
     "@internxt/sdk": "^1.11.10",
+    "check-disk-space": "^3.4.0",
     "electron-log": "^5.4.1",
     "zod": "^4.0.13"
   },
