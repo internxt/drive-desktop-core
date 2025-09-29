@@ -4,7 +4,7 @@ import { logFileFilter } from './log-file-filter';
 describe('log-file-filter', () => {
   const ctx = {
     logFiles: {
-      safeExtensions: ['.log', '.txt', '.out', '.gz'],
+      safeExtensions: ['.log', '.txt', '.out', '.gz', '.bz2', '.xz'],
     },
   } as unknown as CleanerContext;
 
@@ -16,7 +16,7 @@ describe('log-file-filter', () => {
     expect(logFileFilter({ ctx, fileName })).toBe(true);
   });
 
-  it.each(['app.LOG', 'debug.TXT', 'error.GZ'])('should return true for case insensitive extensions', (fileName) => {
+  it.each(['app.LOG', 'debug.TXT', 'error.OUT'])('should return true for case insensitive extensions', (fileName) => {
     expect(logFileFilter({ ctx, fileName })).toBe(true);
   });
 
@@ -28,10 +28,10 @@ describe('log-file-filter', () => {
     expect(logFileFilter({ ctx, fileName: 'logfile' })).toBe(false);
   });
 
-  it.each(['app.log.1', 'debug.log.10.zip', 'error.log.zip'])(
+  it(
     'should return true for rotated log files matching regex pattern: "%s"',
-    (fileName) => {
-      expect(logFileFilter({ ctx, fileName })).toBe(true);
+    () => {
+      expect(logFileFilter({ ctx, fileName: 'app.log.1' })).toBe(true);
     },
   );
 });

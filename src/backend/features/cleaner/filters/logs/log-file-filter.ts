@@ -9,9 +9,9 @@ export function logFileFilter({ ctx, fileName }: Props) {
   /**
    * v0.1.1 Esteban Galvis
    * Remove also files that match the pattern of rotated logs
-   * e.g. app.log.1, app.log.2.gz, app.log.3.bz2, etc.
+   * e.g. app.log.1, app.log.2, etc.
    */
-  const checkRotatedLog = /\.log(\.\d+)?(\.(gz|bz2|xz|zip))?$/.test(lowerName);
+  const checkRotatedLog = /\.log(\.\d+)?$/.test(lowerName);
 
   return includeSafeExtensions || checkRotatedLog;
 }
