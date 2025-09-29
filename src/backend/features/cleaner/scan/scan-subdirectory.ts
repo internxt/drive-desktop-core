@@ -1,24 +1,27 @@
-import path from 'path';
+import { join } from 'path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
 
+import { CleanerContext } from '../types/cleaner.types';
 import { getFilteredDirectories } from '../utils/get-filtered-directories';
 import { scanDirectory } from './scan-directory';
 
 type Props = {
+  ctx: CleanerContext;
   baseDir: string;
   subPath: string;
-  customDirectoryFilter?: (directoryName: string) => boolean;
+  customDirectoryFilter?: ({ directoryName }: { directoryName: string }) => boolean;
   customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
 };
 
-export async function scanSubDirectory({ baseDir, subPath, customDirectoryFilter, customFileFilter }: Props) {
+export async function scanSubDirectory({ ctx, baseDir, subPath, customDirectoryFilter, customFileFilter }: Props) {
   try {
     const directories = await getFilteredDirectories({ baseDir, customDirectoryFilter });
 
     const scanPromises = directories.map((directory) => {
-      const dirPath = path.join(baseDir, directory.name, subPath);
+      const dirPath = join(baseDir, directory.name, subPath);
       return scanDirectory({
+        ctx,
         dirPath,
         customFileFilter,
       });
