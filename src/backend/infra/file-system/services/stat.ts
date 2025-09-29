@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 
-export class StatError extends Error {
+class StatError extends Error {
   constructor(
     public readonly code: 'NON_EXISTS' | 'NO_ACCESS' | 'UNKNOWN',
     cause?: unknown,
