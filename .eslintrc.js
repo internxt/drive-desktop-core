@@ -56,6 +56,7 @@ module.exports = {
     'sonarjs/no-redundant-optional': 'off',
     'sonarjs/todo-tag': 'off',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+    'unicorn/prefer-node-protocol': 'error',
     'padding-line-between-statements': [
       'error',
       { blankLine: 'always', prev: '*', next: 'block' },

@@ -1,11 +1,11 @@
-import { Stats } from 'fs';
-import path from 'path';
+import { Stats } from 'node:fs';
+import path from 'node:path';
 
 import { deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import { createCleanableItem } from './create-cleanable-item';
 
-vi.mock(import('path'));
+vi.mock(import('node:path'));
 
 describe('createCleanableItem', () => {
   const mockedBasename = deepMocked(path.basename);

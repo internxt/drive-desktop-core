@@ -1,4 +1,4 @@
-import { promises as fs, Stats } from 'fs';
+import { promises as fs, Stats } from 'node:fs';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
@@ -8,7 +8,7 @@ import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-l
 import { processDirent } from './process-dirent';
 import * as scanDirectoryModule from './scan-directory';
 
-vi.mock(import('fs'));
+vi.mock(import('node:fs'));
 
 describe('processDirent', () => {
   const statMock = deepMocked(fs.stat);

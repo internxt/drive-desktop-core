@@ -1,4 +1,4 @@
-import { mkdirSync } from 'fs';
+import { mkdirSync } from 'node:fs';
 import { vi } from 'vitest';
 
 import { TEST_FILES } from './mocks.helper.test';

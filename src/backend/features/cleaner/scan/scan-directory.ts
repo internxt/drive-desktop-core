@@ -1,5 +1,5 @@
-import { stat, readdir } from 'fs/promises';
-import { join } from 'path/posix';
+import { stat, readdir } from 'node:fs/promises';
+import { join } from 'node:path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
 
