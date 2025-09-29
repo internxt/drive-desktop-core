@@ -1,4 +1,5 @@
-import { promises as fs, Stats } from 'node:fs';
+import { Stats } from 'node:fs';
+import { stat } from 'node:fs/promises';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
@@ -8,10 +9,10 @@ import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-l
 import { processDirent } from './process-dirent';
 import * as scanDirectoryModule from './scan-directory';
 
-vi.mock(import('node:fs'));
+vi.mock(import('node:fs/promises'));
 
 describe('processDirent', () => {
-  const statMock = deepMocked(fs.stat);
+  const statMock = deepMocked(stat);
   const wasAccessedWithinLastHourMock = partialSpyOn(wasAccessedWithinLastHourModule, 'wasAccessedWithinLastHour');
   const createCleanableItemMock = partialSpyOn(createCleanableItemMocule, 'createCleanableItem');
   const scanDirectoryMock = partialSpyOn(scanDirectoryModule, 'scanDirectory');
@@ -31,7 +32,6 @@ describe('processDirent', () => {
   beforeEach(() => {
     statMock.mockResolvedValue(createMockStats());
     wasAccessedWithinLastHourMock.mockReturnValue(false);
-
     props = mockProps<typeof processDirent>({ entry: { name }, fullPath });
   });
 
@@ -42,6 +42,7 @@ describe('processDirent', () => {
 
     it('should process file and return CleanableItem when file is safe to delete', async () => {
       // Given
+      props.customFileFilter = vi.fn().mockReturnValue(true);
       createCleanableItemMock.mockReturnValue(mockCleanableItem);
       // When
       const result = await processDirent(props);
@@ -63,7 +64,7 @@ describe('processDirent', () => {
 
     it('should return empty array when custom filter excludes file', async () => {
       // Given
-      props.customFileFilter = vi.fn().mockReturnValue(true);
+      props.customFileFilter = vi.fn().mockReturnValue(false);
       wasAccessedWithinLastHourMock.mockReturnValue(false);
       // When
       const result = await processDirent(props);
