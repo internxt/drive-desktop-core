@@ -18,8 +18,8 @@ describe('webBrowserFileFilter', () => {
           },
         },
       },
-    },
-  };
+    });
+  });
 
   describe('Cross-platform critical patterns', () => {
     it.each(['file.sqlite', 'data.db', 'config.log'])('should reject files with critical extensions: "%s"', (file) => {
