@@ -20,7 +20,7 @@ export async function processDirent({ ctx, entry, fullPath, customFileFilter, cu
     if (entry.isFile()) {
       const fileStats = await fs.stat(fullPath);
       const wasAccessed = wasAccessedWithinLastHour({ fileStats });
-      const isFiltered = customFileFilter && customFileFilter({ ctx, fileName: entry.name });
+      const isFiltered = customFileFilter?.({ ctx, fileName: entry.name });
 
       if (wasAccessed || isFiltered) {
         return [];
@@ -29,7 +29,7 @@ export async function processDirent({ ctx, entry, fullPath, customFileFilter, cu
       const item = createCleanableItem({ filePath: fullPath, stat: fileStats });
       return [item];
     } else if (entry.isDirectory()) {
-      const isFiltered = customDirectoryFilter && customDirectoryFilter({ folderName: entry.name });
+      const isFiltered = customDirectoryFilter?.({ folderName: entry.name });
 
       if (isFiltered) {
         return [];
