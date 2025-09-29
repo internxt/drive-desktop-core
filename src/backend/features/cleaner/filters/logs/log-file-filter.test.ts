@@ -28,10 +28,7 @@ describe('log-file-filter', () => {
     expect(logFileFilter({ ctx, fileName: 'logfile' })).toBe(false);
   });
 
-  it(
-    'should return true for rotated log files matching regex pattern: "%s"',
-    () => {
-      expect(logFileFilter({ ctx, fileName: 'app.log.1' })).toBe(true);
-    },
-  );
+  it('should return true for rotated log files matching regex pattern: "%s"', () => {
+    expect(logFileFilter({ ctx, fileName: 'app.log.1' })).toBe(true);
+  });
 });
