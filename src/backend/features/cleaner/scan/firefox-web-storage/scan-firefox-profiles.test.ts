@@ -30,7 +30,6 @@ describe('scanFirefoxProfiles', () => {
   let props: Parameters<typeof scanFirefoxProfiles>[0];
 
   beforeEach(() => {
-    vi.clearAllMocks();
     joinMock.mockImplementation((...args) => args.join('/'));
     basenameMock.mockImplementation((path: string) => {
       const parts = path.split('/');
