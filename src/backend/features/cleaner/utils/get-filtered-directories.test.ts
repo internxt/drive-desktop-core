@@ -1,10 +1,10 @@
-import { promises as fs, Dirent } from 'fs';
+import { promises as fs, Dirent } from 'node:fs';
 
 import { deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import { getFilteredDirectories } from './get-filtered-directories';
 
-vi.mock(import('fs'));
+vi.mock(import('node:fs'));
 
 describe('getFilteredDirectories', () => {
   const mockReaddir = deepMocked(fs.readdir);

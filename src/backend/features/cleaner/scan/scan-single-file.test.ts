@@ -1,4 +1,4 @@
-import { promises as fs, Stats } from 'fs';
+import { promises as fs, Stats } from 'node:fs';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
@@ -7,7 +7,7 @@ import * as createCleanableItemModule from '../utils/create-cleanable-item';
 import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-last-hour';
 import { scanSingleFile } from './scan-single-file';
 
-vi.mock(import('fs'));
+vi.mock(import('node:fs'));
 
 describe('scanSingleFile', () => {
   const statMock = deepMocked(fs.stat);

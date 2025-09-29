@@ -1,10 +1,10 @@
-import { stat } from 'fs/promises';
+import { stat } from 'node:fs/promises';
 
 import { deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import { isFirefoxProfileDirectory } from './is-firefox-profile-directory';
 
-vi.mock(import('fs/promises'));
+vi.mock(import('node:fs/promises'));
 
 describe('isFirefoxProfileDirectory', () => {
   const mockStat = deepMocked(stat);

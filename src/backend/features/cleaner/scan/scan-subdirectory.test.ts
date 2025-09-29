@@ -1,4 +1,4 @@
-import { Dirent } from 'fs';
+import { Dirent } from 'node:fs';
 
 import { mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
