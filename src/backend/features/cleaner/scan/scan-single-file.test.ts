@@ -1,7 +1,7 @@
 import { promises as fs, Stats } from 'fs';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
-import { partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
+import { partialSpyOn, deepMocked, calls } from '@/tests/vitest/utils.helper.test';
 
 import * as createCleanableItemModule from '../utils/create-cleanable-item';
 import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-last-hour';
@@ -68,6 +68,6 @@ describe('scanSingleFile', () => {
     const result = await scanSingleFile({ filePath: mockFilePath });
     // Then
     expect(result).toStrictEqual([]);
-    expect(loggerMock.warn).toBeCalledTimes(1);
+    calls(loggerMock.warn).toHaveLength(1);
   });
 });
