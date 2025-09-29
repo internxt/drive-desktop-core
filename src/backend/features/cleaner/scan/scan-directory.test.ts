@@ -1,5 +1,5 @@
-import { promises as fs, Dirent, Stats } from 'fs';
-import path from 'path';
+import { Dirent, Stats } from 'node:fs';
+import { stat, readdir } from 'node:fs/promises';
 
 import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
@@ -8,24 +8,22 @@ import * as isInternxtRelatedModule from '../utils/is-file-internxt-related';
 import * as processDirentModule from './process-dirent';
 import { scanDirectory } from './scan-directory';
 
-vi.mock(import('fs'));
-vi.mock(import('path'));
+vi.mock(import('node:fs/promises'));
 
 describe('scanDirectory', () => {
-  const readdirMock = deepMocked(fs.readdir);
-  const statMock = deepMocked(fs.stat);
-  const joinMock = deepMocked(path.join);
+  const readdirMock = deepMocked(readdir);
+  const statMock = deepMocked(stat);
   const mockBasePath = '/test/path';
-  const isInternxtRelatedMock = partialSpyOn(isInternxtRelatedModule, 'isInternxtRelated', false);
-  const processDirentMock = partialSpyOn(processDirentModule, 'processDirent', false);
+  const isInternxtRelatedMock = partialSpyOn(isInternxtRelatedModule, 'isInternxtRelated');
+  const processDirentMock = partialSpyOn(processDirentModule, 'processDirent');
 
-  const createMockStats = (isDirectory = true, size = 0) => mockProps({ isDirectory: () => isDirectory, size }) as unknown as Stats;
   const createMockDirent = (name: string, isFile = true) =>
     ({
       name,
       isFile: () => isFile,
       isDirectory: () => !isFile,
     }) as unknown as Dirent<Buffer>;
+
   const createCleanableItemMock = (fileName: string, size: number, basePath = mockBasePath) =>
     ({
       fullPath: `${basePath}/${fileName}`,
@@ -33,15 +31,17 @@ describe('scanDirectory', () => {
       sizeInBytes: size,
     }) as unknown as CleanableItem;
 
+  let props: Parameters<typeof scanDirectory>[0];
+
   beforeEach(() => {
-    joinMock.mockImplementation((...args) => args.join('/'));
     isInternxtRelatedMock.mockReturnValue(false);
-    statMock.mockResolvedValue(createMockStats(true));
+    statMock.mockResolvedValue({ isDirectory: () => true } as unknown as Stats);
+    props = mockProps({ dirPath: mockBasePath });
   });
 
   it('should return empty array when directory is not a directory', async () => {
-    statMock.mockResolvedValue(createMockStats(false));
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    statMock.mockResolvedValue({ isDirectory: () => false } as unknown as Stats);
+    const result = await scanDirectory(props);
 
     expect(result).toStrictEqual([]);
     expect(readdirMock).not.toHaveBeenCalled();
@@ -50,7 +50,7 @@ describe('scanDirectory', () => {
   it('should return empty array when directory cannot be accessed', async () => {
     statMock.mockRejectedValue(new Error('Permission denied'));
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory(props);
 
     expect(result).toStrictEqual([]);
   });
@@ -60,7 +60,7 @@ describe('scanDirectory', () => {
 
     const expectedItem = createCleanableItemMock('file1.txt', 2048);
     processDirentMock.mockResolvedValue([expectedItem]);
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory(props);
 
     expect(statMock).toHaveBeenCalled();
     expect(readdirMock).toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe('scanDirectory', () => {
 
     const expectedItem = createCleanableItemMock('regular-file.txt', 1024);
     processDirentMock.mockResolvedValue([expectedItem]);
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory(props);
 
     expect(result).toStrictEqual([expectedItem]);
     expect(isInternxtRelatedMock).toBeCalledWith({ name: '/test/path/internxt-app' });
@@ -104,7 +104,7 @@ describe('scanDirectory', () => {
     const expectedItem = [createCleanableItemMock('nested-file.txt', 512, '/test/path/subdir')];
     processDirentMock.mockResolvedValue(expectedItem);
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory(props);
 
     expect(result).toStrictEqual(expectedItem);
     expect(readdirMock).toBeCalledWith(mockBasePath, {
@@ -132,7 +132,7 @@ describe('scanDirectory', () => {
     const subdirItem = createCleanableItemMock('nested.txt', 200, '/test/path/subdir');
     processDirentMock.mockResolvedValueOnce([file1Item]).mockResolvedValueOnce([subdirItem]).mockResolvedValueOnce([file2Item]);
 
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory(props);
 
     expect(result).toStrictEqual([file1Item, subdirItem, file2Item]);
     expect(processDirentMock).toBeCalledTimes(3);
@@ -143,27 +143,28 @@ describe('scanDirectory', () => {
 
     const accessibleItem = [createCleanableItemMock('accessible-file.txt', 1024)];
     processDirentMock.mockResolvedValueOnce(accessibleItem).mockResolvedValueOnce([]);
-    const result = await scanDirectory({ dirPath: mockBasePath });
+    const result = await scanDirectory(props);
 
     expect(result).toStrictEqual(accessibleItem);
     expect(processDirentMock).toBeCalledTimes(2);
   });
 
   it('should handle empty directories', async () => {
+    // Given
     readdirMock.mockResolvedValue([]);
-
-    const result = await scanDirectory({ dirPath: mockBasePath });
-
+    // When
+    const result = await scanDirectory(props);
+    // Then
     expect(result).toStrictEqual([]);
     expect(processDirentMock).toBeCalledTimes(0);
   });
 
   it('should handle readdir errors gracefully', async () => {
-    statMock.mockResolvedValue(createMockStats(true));
+    // Given
     readdirMock.mockRejectedValue(new Error('Cannot read directory'));
-
-    const result = await scanDirectory({ dirPath: mockBasePath });
-
+    // When
+    const result = await scanDirectory(props);
+    // Then
     expect(result).toStrictEqual([]);
   });
 });

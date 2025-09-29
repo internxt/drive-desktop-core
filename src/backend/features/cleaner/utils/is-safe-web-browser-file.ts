@@ -11,7 +11,7 @@ export function isSafeWebBrowserFile({ ctx, fileName }: Props) {
 
   return !(
     ctx.browser.criticalExtensions.some((ext) => lowerName.endsWith(ext)) ||
-    ctx.browser.criticalFilenames.some((filename) => filename === lowerName) ||
+    ctx.browser.criticalFilenames.includes(lowerName) ||
     allCriticalFiles.includes(lowerName)
   );
 }

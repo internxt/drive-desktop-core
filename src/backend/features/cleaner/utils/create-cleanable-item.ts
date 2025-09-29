@@ -1,5 +1,5 @@
-import { Stats } from 'fs';
-import path from 'path';
+import { Stats } from 'node:fs';
+import path from 'node:path';
 
 import { CleanableItem } from '../types/cleaner.types';
 

@@ -46,9 +46,9 @@ Always import the function used, not the module. This is to be consistent and im
 
 ```ts
 // bad
-import fs from 'fs';
+import fs from 'node:fs';
 // good
-import { stat } from 'fs';
+import { stat } from 'node:fs';
 ```
 
 ### Use function instead of arrow functions by default
