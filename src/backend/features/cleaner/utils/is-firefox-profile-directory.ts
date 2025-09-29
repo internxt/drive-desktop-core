@@ -1,5 +1,5 @@
-import { stat } from 'fs/promises';
-import { join } from 'path/posix';
+import { stat } from 'node:fs/promises';
+import { join } from 'node:path/posix';
 
 type Props = {
   entry: string;
