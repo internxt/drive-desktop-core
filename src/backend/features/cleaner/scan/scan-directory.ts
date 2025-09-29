@@ -1,5 +1,5 @@
 import { stat, readdir } from 'fs/promises';
-import path from 'path';
+import { join } from 'path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
 
@@ -25,7 +25,7 @@ export async function scanDirectory({ ctx, dirPath, customFileFilter, customDire
     const items: CleanableItem[] = [];
 
     for (const dirent of dirents) {
-      const fullPath = path.join(dirPath, dirent.name);
+      const fullPath = join(dirPath, dirent.name);
       if (isInternxtRelated({ name: fullPath })) continue;
 
       const cleanableItems = await processDirent({

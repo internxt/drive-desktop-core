@@ -1,21 +1,18 @@
 import { Dirent, Stats } from 'fs';
 import { stat, readdir } from 'fs/promises';
-import path from 'path';
 
 import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
-import { CleanableItem, CleanerContext } from '../types/cleaner.types';
+import { CleanableItem } from '../types/cleaner.types';
 import * as isInternxtRelatedModule from '../utils/is-file-internxt-related';
 import * as processDirentModule from './process-dirent';
 import { scanDirectory } from './scan-directory';
 
 vi.mock(import('fs/promises'));
-vi.mock(import('path'));
 
 describe('scanDirectory', () => {
   const readdirMock = deepMocked(readdir);
   const statMock = deepMocked(stat);
-  const joinMock = deepMocked(path.join);
   const mockBasePath = '/test/path';
   const isInternxtRelatedMock = partialSpyOn(isInternxtRelatedModule, 'isInternxtRelated');
   const processDirentMock = partialSpyOn(processDirentModule, 'processDirent');
@@ -26,6 +23,7 @@ describe('scanDirectory', () => {
       isFile: () => isFile,
       isDirectory: () => !isFile,
     }) as unknown as Dirent<Buffer>;
+
   const createCleanableItemMock = (fileName: string, size: number, basePath = mockBasePath) =>
     ({
       fullPath: `${basePath}/${fileName}`,
@@ -36,10 +34,9 @@ describe('scanDirectory', () => {
   let props: Parameters<typeof scanDirectory>[0];
 
   beforeEach(() => {
-    joinMock.mockImplementation((...args) => args.join('/'));
     isInternxtRelatedMock.mockReturnValue(false);
     statMock.mockResolvedValue({ isDirectory: () => true } as unknown as Stats);
-    props = mockProps({ ctx: {} as CleanerContext, dirPath: mockBasePath });
+    props = mockProps({ dirPath: mockBasePath });
   });
 
   it('should return empty array when directory is not a directory', async () => {

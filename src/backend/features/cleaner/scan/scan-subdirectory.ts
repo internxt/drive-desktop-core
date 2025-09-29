@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join } from 'path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
 

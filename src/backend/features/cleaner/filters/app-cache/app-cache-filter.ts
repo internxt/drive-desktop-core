@@ -14,5 +14,5 @@ export function appCacheFileFilter({ ctx, fileName }: Props) {
   const excludeCriticalExtensions = ctx.appCache.criticalExtensions.includes(ext);
   const excludeCriticalKeywords = ctx.appCache.criticalKeywords.some((keyword) => lowerName.includes(keyword));
 
-  return !(excludeCriticalExtensions || excludeCriticalKeywords);
+  return !excludeCriticalExtensions && !excludeCriticalKeywords;
 }

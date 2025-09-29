@@ -1,18 +1,14 @@
 import { Dirent } from 'fs';
-import { join } from 'path';
 
-import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
+import { mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
-import { CleanableItem, CleanerContext } from '../types/cleaner.types';
+import { CleanableItem } from '../types/cleaner.types';
 import * as getFilteredDirectoriesModule from '../utils/get-filtered-directories';
 import * as isFileInternextRelatedModule from '../utils/is-file-internxt-related';
 import * as scanDirectoryModule from './scan-directory';
 import { scanSubDirectory } from './scan-subdirectory';
 
-vi.mock(import('path'));
-
 describe('scanSubDirectory', () => {
-  const joinMock = deepMocked(join);
   const mockedGetFilteredDirectories = partialSpyOn(getFilteredDirectoriesModule, 'getFilteredDirectories');
   const mockedIsInternxtRelated = partialSpyOn(isFileInternextRelatedModule, 'isInternxtRelated');
   const mockedScanDirectory = partialSpyOn(scanDirectoryModule, 'scanDirectory');
@@ -37,10 +33,8 @@ describe('scanSubDirectory', () => {
   let props: Parameters<typeof scanSubDirectory>[0];
 
   beforeEach(() => {
-    joinMock.mockImplementation((...args) => args.join('/'));
     mockedIsInternxtRelated.mockReturnValue(false);
     props = mockProps<typeof scanSubDirectory>({
-      ctx: {} as CleanerContext,
       baseDir: mockBaseDir,
       subPath: mockSubDir,
     });
