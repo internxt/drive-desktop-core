@@ -21,7 +21,7 @@ type AllItemsToDeleteProps = {
 export function getAllItemsToDelete({ viewModel, report, cleanerSectionKeys }: AllItemsToDeleteProps) {
   const itemsToDelete: CleanableItem[] = [];
 
-  cleanerSectionKeys.forEach((sectionKey) => {
+  for (const sectionKey of cleanerSectionKeys) {
     const section = report[sectionKey];
     const sectionViewModel = viewModel[sectionKey];
 
@@ -29,7 +29,7 @@ export function getAllItemsToDelete({ viewModel, report, cleanerSectionKeys }: A
       const selectedItems = getSelectedItemsForSection({ sectionViewModel, sectionItems: section.items });
       itemsToDelete.push(...selectedItems);
     }
-  });
+  }
 
   return itemsToDelete;
 }

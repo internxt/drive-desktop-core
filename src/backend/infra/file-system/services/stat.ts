@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 
-export class StatError extends Error {
+class StatError extends Error {
   constructor(
     public readonly code: 'NON_EXISTS' | 'NO_ACCESS' | 'UNKNOWN',
     cause?: unknown,
@@ -18,10 +18,10 @@ export async function stat({ absolutePath }: TProps) {
     const stat = await fs.stat(absolutePath);
 
     return { data: stat };
-  } catch (exc) {
-    if (exc instanceof Error) {
-      if (exc.message.includes('ENOENT')) {
-        return { error: new StatError('NON_EXISTS', exc) };
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes('ENOENT')) {
+        return { error: new StatError('NON_EXISTS', error) };
       }
 
       /**
@@ -29,11 +29,11 @@ export async function stat({ absolutePath }: TProps) {
        * TODO: EACCES has not been reproduced in windows
        * https://stackoverflow.com/questions/59428844/listen-eacces-permission-denied-in-windows
        */
-      if (exc.message.includes('EPERM') || exc.message.includes('EACCES')) {
-        return { error: new StatError('NO_ACCESS', exc) };
+      if (error.message.includes('EPERM') || error.message.includes('EACCES')) {
+        return { error: new StatError('NO_ACCESS', error) };
       }
     }
 
-    return { error: new StatError('UNKNOWN', exc) };
+    return { error: new StatError('UNKNOWN', error) };
   }
 }
