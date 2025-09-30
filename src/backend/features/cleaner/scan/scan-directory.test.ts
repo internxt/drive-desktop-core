@@ -1,5 +1,5 @@
-import { Dirent, Stats } from 'fs';
-import { stat, readdir } from 'fs/promises';
+import { Dirent, Stats } from 'node:fs';
+import { stat, readdir } from 'node:fs/promises';
 
 import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
@@ -8,7 +8,7 @@ import * as isInternxtRelatedModule from '../utils/is-file-internxt-related';
 import * as processDirentModule from './process-dirent';
 import { scanDirectory } from './scan-directory';
 
-vi.mock(import('fs/promises'));
+vi.mock(import('node:fs/promises'));
 
 describe('scanDirectory', () => {
   const readdirMock = deepMocked(readdir);

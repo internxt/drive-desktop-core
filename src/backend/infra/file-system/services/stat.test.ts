@@ -1,7 +1,7 @@
-import { execSync } from 'child_process';
-import { mkdir, writeFile } from 'fs/promises';
-import { join } from 'path';
-import { cwd } from 'process';
+import { execSync } from 'node:child_process';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { cwd } from 'node:process';
 import { v4 } from 'uuid';
 
 import { TEST_FILES } from '@/tests/vitest/mocks.helper.test';

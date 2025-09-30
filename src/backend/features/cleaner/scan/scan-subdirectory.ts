@@ -1,4 +1,4 @@
-import { join } from 'path/posix';
+import { join } from 'node:path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
 
@@ -29,10 +29,7 @@ export async function scanSubDirectory({ ctx, baseDir, subPath, customDirectoryF
 
     const results = await Promise.allSettled(scanPromises);
 
-    return results
-      .filter((result) => result.status === 'fulfilled')
-      .map((result) => result.value)
-      .flat();
+    return results.filter((result) => result.status === 'fulfilled').flatMap((result) => result.value);
   } catch (error) {
     logger.warn({
       tag: 'CLEANER',
