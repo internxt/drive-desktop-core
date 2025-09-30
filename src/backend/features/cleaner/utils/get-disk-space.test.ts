@@ -1,7 +1,7 @@
 import checkDiskSpace from 'check-disk-space';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
-import { deepMocked } from '@/tests/vitest/utils.helper.test';
+import { calls, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import { getDiskSpace } from './get-disk-space';
 
@@ -12,8 +12,7 @@ describe('getDiskSpace', () => {
 
   it('should return the disk size for the base path', async () => {
     // Given
-    const mockDiskSpace = { size: 5000000000 };
-    checkDiskSpaceMock.mockResolvedValue(mockDiskSpace);
+    checkDiskSpaceMock.mockResolvedValue({ size: 5000000000 });
     // When
     const result = await getDiskSpace({ mainPath: 'C:\\' });
     // Then
@@ -28,6 +27,6 @@ describe('getDiskSpace', () => {
     const result = await getDiskSpace({ mainPath: '/' });
     // Then
     expect(result).toBe(0);
-    expect(loggerMock.error).toHaveBeenCalledWith({ msg: 'Failed to get disk space', error: mockError });
+    calls(loggerMock.error).toMatchObject([{ msg: 'Failed to get disk space', error: mockError }]);
   });
 });

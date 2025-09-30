@@ -1,4 +1,4 @@
-# Agreement
+# Contributing
 
 ## Architecture
 
@@ -36,33 +36,9 @@ type Props = {
 export function fn({ prop1, prop2 }: Props) {}
 ```
 
-### Testing template
+### Testing
 
-```ts
-import * as depModule from 'module';
-
-describe('nameOfFunction', () => {
-  const depMock = partialSpyOn(depModule, "dep");
-
-  let props: Parameters<typeof fn>[0];
-
-  beforeEach(() => {
-    // 1. Mock values
-    depMock.mockReturnValue("first");
-    // 2. Set props
-    props = mockProps<typeof fn>({ prop1: "first" });
-  })
-
-  it('should do x when y', () => {
-    // Given
-    depMock.mockReturnValue("second");
-    props.prop1 = "second";
-    // When
-    fn(props);
-    // Then
-  })
-})
-```
+See `docs/TESTING.md`.
 
 ### Imports
 
