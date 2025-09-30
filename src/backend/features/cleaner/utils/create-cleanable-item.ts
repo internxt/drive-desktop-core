@@ -1,13 +1,12 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { Stats } from 'node:fs';
+import { basename } from 'node:path/posix';
 
 import { CleanableItem } from '../types/cleaner.types';
 
-export async function createCleanableItem({ filePath }: { filePath: string }) {
-  const stat = await fs.stat(filePath);
+export function createCleanableItem({ filePath, stat }: { filePath: string; stat: Stats }) {
   return {
     fullPath: filePath,
-    fileName: path.basename(filePath),
+    fileName: basename(filePath),
     sizeInBytes: stat.size,
   } as CleanableItem;
 }

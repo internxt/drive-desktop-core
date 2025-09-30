@@ -33,12 +33,6 @@ export type LogFilesPaths = {
   varLogDir: string;
 };
 
-export type TrashFilesPaths = {
-  localShareTrash: string;
-  legacyTrash: string;
-  xdgDataTrash?: string;
-};
-
 export type WebStorageFilesPaths = {
   chromeCookies: string;
   chromeLocalStorage: string;
@@ -78,6 +72,10 @@ export type CleanupProgress = {
 };
 
 type BrowserContext = {
+  paths: {
+    storage: WebStorageFilesPaths;
+    cache: WebCacheFilesPaths;
+  };
   criticalExtensions: string[];
   criticalFilenames: string[];
   specificCriticalFile: {
@@ -87,8 +85,21 @@ type BrowserContext = {
   };
 };
 
+type AppCacheContext = {
+  paths: AppCachePaths;
+  criticalExtensions: string[];
+  criticalKeywords: string[];
+};
+
+type LogFilesContext = {
+  paths: LogFilesPaths;
+  safeExtensions: string[];
+};
+
 export type CleanerContext = {
   browser: BrowserContext;
+  appCache: AppCacheContext;
+  logFiles: LogFilesContext;
 };
 export const CLEANER_SECTION_KEYS: readonly CleanerSectionKey<CleanerReport>[] = [
   'appCache',
