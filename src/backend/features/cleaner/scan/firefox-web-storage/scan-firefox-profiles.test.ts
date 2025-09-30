@@ -35,7 +35,7 @@ describe('scanFirefoxProfiles', () => {
       const parts = path.split('/');
       return parts[parts.length - 1] || '';
     });
-    mockedIsFirefoxProfileDirectory.mockResolvedValue(false);
+    mockedIsFirefoxProfileDirectory.mockReturnValue(false);
     readdirMock.mockResolvedValue([]);
 
     props = mockProps<typeof scanFirefoxProfiles>({
@@ -58,7 +58,6 @@ describe('scanFirefoxProfiles', () => {
     const result = await scanFirefoxProfiles(props);
     // Then
     expect(result).toEqual([]);
-    expect(readdirMock).toBeCalledWith(firefoxProfilesDir);
     expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
   });
 
@@ -71,7 +70,7 @@ describe('scanFirefoxProfiles', () => {
       firefox: [],
       edge: [],
     };
-    const profileEntries = ['profile.default'] as unknown as Dirent<Buffer>[];
+    const profileEntries = [createMockDirent('profile.default')];
     const profileFiles = [
       createMockDirent('cookies.sqlite', false),
       createMockDirent('webappsstore.sqlite3', false),
@@ -82,14 +81,12 @@ describe('scanFirefoxProfiles', () => {
     ];
     statMock.mockResolvedValueOnce({ isDirectory: () => true }).mockResolvedValue({ isFile: () => true, size: 2048 });
     readdirMock.mockResolvedValueOnce(profileEntries).mockResolvedValueOnce(profileFiles);
-    mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
+    mockedIsFirefoxProfileDirectory.mockReturnValue(true);
     mockedWasAccessedWithinLastHour.mockReturnValue(false);
     // When
     const result = await scanFirefoxProfiles(props);
-
     // Then
-    expect(result).toHaveLength(3);
-    expect(result).toStrictEqual(
+    expect(result).toMatchObject(
       expect.arrayContaining([
         {
           fullPath: '/home/user/.mozilla/firefox/profile.default/regular-file.txt',

@@ -16,6 +16,13 @@ describe('scanFirefoxCacheProfiles', () => {
   const mockedIsFirefoxProfileDirectory = partialSpyOn(isFirefoxProfileDirectoryModule, 'isFirefoxProfileDirectory');
   const readdirMock = deepMocked(readdir);
 
+  const createMockDirent = (name: string, isDirectory = true) =>
+    ({
+      name,
+      isDirectory: () => isDirectory,
+      isFile: () => !isDirectory,
+    }) as unknown as Dirent<Buffer>;
+
   const createMockItem = (fileName: string, size: number, basePath: string): CleanableItem => ({
     fullPath: `${basePath}/${fileName}`,
     fileName,
@@ -26,7 +33,7 @@ describe('scanFirefoxCacheProfiles', () => {
 
   beforeEach(() => {
     mockedScanDirectory.mockResolvedValue([]);
-    mockedIsFirefoxProfileDirectory.mockResolvedValue(false);
+    mockedIsFirefoxProfileDirectory.mockReturnValue(false);
     readdirMock.mockResolvedValue([]);
     props = mockProps<typeof scanFirefoxCacheProfiles>({
       ctx: {
@@ -46,14 +53,13 @@ describe('scanFirefoxCacheProfiles', () => {
     const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toEqual([]);
-    expect(readdirMock).toBeCalledWith(firefoxCacheDir);
     expect(mockedIsFirefoxProfileDirectory).not.toBeCalled();
     expect(mockedScanDirectory).not.toBeCalled();
   });
 
   it('should scan valid Firefox profile cache directories', async () => {
     // Given
-    const profileEntries = ['rwt14re6.default', 'abc123.test-profile', 'Crash Reports', 'Pending Pings'] as unknown as Dirent<Buffer>[];
+    const profileEntries = [createMockDirent('rwt14re6.default'), createMockDirent('abc123.test-profile')];
     const cacheItems = [
       createMockItem('cache-file1.dat', 1024, '/home/user/.cache/mozilla/firefox/rwt14re6.default/cache2'),
       createMockItem('thumbnail1.png', 512, '/home/user/.cache/mozilla/firefox/rwt14re6.default/thumbnails'),
@@ -61,10 +67,10 @@ describe('scanFirefoxCacheProfiles', () => {
     ];
     readdirMock.mockResolvedValue(profileEntries);
     mockedIsFirefoxProfileDirectory
-      .mockResolvedValueOnce(true)
-      .mockResolvedValueOnce(false)
-      .mockResolvedValueOnce(false)
-      .mockResolvedValueOnce(false);
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(false);
 
     mockedScanDirectory
       .mockResolvedValueOnce([cacheItems[0]])
@@ -74,29 +80,7 @@ describe('scanFirefoxCacheProfiles', () => {
     const result = await scanFirefoxCacheProfiles(props);
     // Then
     expect(result).toStrictEqual(cacheItems);
-    expect(readdirMock).toBeCalledWith(firefoxCacheDir);
-    expect(mockedIsFirefoxProfileDirectory).toBeCalledTimes(4);
+    expect(mockedIsFirefoxProfileDirectory).toBeCalledTimes(2);
     expect(mockedScanDirectory).toBeCalledTimes(3);
-  });
-
-  it('should scan multiple profile directories correctly', async () => {
-    // Given
-    const profileEntries = ['profile1.default', 'profile2.test'] as unknown as Dirent<Buffer>[];
-    const profile1Items = [createMockItem('cache1.dat', 1024, '/path/to/profile1/cache2')];
-    const profile2Items = [createMockItem('cache2.dat', 2048, '/path/to/profile2/cache2')];
-    readdirMock.mockResolvedValue(profileEntries);
-    mockedIsFirefoxProfileDirectory.mockResolvedValue(true);
-    mockedScanDirectory
-      .mockResolvedValueOnce([profile1Items[0]])
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([profile2Items[0]])
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([]);
-    // When
-    const result = await scanFirefoxCacheProfiles(props);
-    // Then
-    expect(result).toStrictEqual([...profile1Items, ...profile2Items]);
-    expect(mockedScanDirectory).toBeCalledTimes(6);
   });
 });

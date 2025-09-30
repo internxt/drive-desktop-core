@@ -1,3 +1,4 @@
+import { Dirent } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path/posix';
 
@@ -12,30 +13,24 @@ type Props = {
 
 export async function scanFirefoxProfiles({ ctx }: Props) {
   const firefoxProfilesDir = ctx.browser.paths.storage.firefoxProfile;
-  let entries: string[];
+  let entries: Dirent[];
   try {
-    entries = await readdir(firefoxProfilesDir);
+    entries = await readdir(firefoxProfilesDir, { withFileTypes: true });
   } catch {
     return [];
   }
 
   const profileDirsChecks = await Promise.allSettled(
-    entries.map(async (entry) => {
-      const isProfileDir = await isFirefoxProfileDirectory({ entry, parentPath: firefoxProfilesDir });
+    entries.map((entry) => {
+      const isProfileDir = isFirefoxProfileDirectory({ entry, parentPath: firefoxProfilesDir });
       return { entry, isProfileDir };
     }),
   );
 
   const profileDirs = profileDirsChecks
-    .filter(
-      (
-        result,
-      ): result is PromiseFulfilledResult<{
-        entry: string;
-        isProfileDir: boolean;
-      }> => result.status === 'fulfilled' && result.value.isProfileDir,
-    )
-    .map((result) => result.value.entry);
+    .filter((result) => result.status === 'fulfilled')
+    .filter((result) => result.value.isProfileDir)
+    .map((result) => result.value.entry.name);
 
   const scanPromises: Promise<CleanableItem[]>[] = [];
 
