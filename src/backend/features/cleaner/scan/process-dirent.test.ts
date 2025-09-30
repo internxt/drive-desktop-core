@@ -2,7 +2,7 @@ import { Stats } from 'node:fs';
 import { stat } from 'node:fs/promises';
 
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
-import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
+import { mockProps, partialSpyOn, deepMocked, calls } from '@/tests/vitest/utils.helper.test';
 
 import * as createCleanableItemMocule from '../utils/create-cleanable-item';
 import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-last-hour';
@@ -81,7 +81,7 @@ describe('processDirent', () => {
       const result = await processDirent(props);
       // Then
       expect(result).toStrictEqual([]);
-      expect(loggerMock.warn).toBeCalledTimes(1);
+      calls(loggerMock.warn).toHaveLength(1);
     });
   });
 
