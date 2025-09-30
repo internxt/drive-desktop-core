@@ -5,7 +5,7 @@ import {
   CleanerViewModel,
 } from '@/backend/features/cleaner/types/cleaner.types';
 
-export function formatFileSize(bytes: number): string {
+export function formatFileSize({ bytes }: { bytes: number }): string {
   if (bytes === 0) return '0 B';
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -13,7 +13,11 @@ export function formatFileSize(bytes: number): string {
   return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 }
 
-export function createInitialViewModel<T extends Record<string, CleanerSection>>(cleanerSectionKeys: CleanerSectionKey<T>[]) {
+export function createInitialViewModel<T extends Record<string, CleanerSection>>({
+  cleanerSectionKeys,
+}: {
+  cleanerSectionKeys: CleanerSectionKey<T>[];
+}) {
   const viewModel: CleanerViewModel = {};
 
   cleanerSectionKeys.forEach((sectionKey) => {
@@ -26,12 +30,12 @@ export function createInitialViewModel<T extends Record<string, CleanerSection>>
   return viewModel;
 }
 
-export function isItemSelected(viewModel: CleanerSectionViewModel, itemPath: string) {
+export function isItemSelected({ viewModel, itemPath }: { viewModel: CleanerSectionViewModel; itemPath: string }) {
   const isException = viewModel.exceptions.includes(itemPath);
   return viewModel.selectedAll ? !isException : isException;
 }
 
-export function toggleItem(viewModel: CleanerSectionViewModel, itemPath: string) {
+export function toggleItem({ viewModel, itemPath }: { viewModel: CleanerSectionViewModel; itemPath: string }) {
   const exceptions = [...viewModel.exceptions];
   const exceptionIndex = exceptions.indexOf(itemPath);
 
@@ -47,14 +51,14 @@ export function toggleItem(viewModel: CleanerSectionViewModel, itemPath: string)
   };
 }
 
-export function toggleSelectAll(viewModel: CleanerSectionViewModel) {
+export function toggleSelectAll({ viewModel }: { viewModel: CleanerSectionViewModel }) {
   return {
     selectedAll: !viewModel.selectedAll,
     exceptions: [],
   };
 }
 
-export function getSelectedItems(viewModel: CleanerSectionViewModel, allItems: Array<{ fullPath: string }>) {
+export function getSelectedItems({ viewModel, allItems }: { viewModel: CleanerSectionViewModel; allItems: Array<{ fullPath: string }> }) {
   if (viewModel.selectedAll) {
     return allItems.map((item) => item.fullPath).filter((path) => !viewModel.exceptions.includes(path));
   } else {
@@ -62,8 +66,8 @@ export function getSelectedItems(viewModel: CleanerSectionViewModel, allItems: A
   }
 }
 
-export function getSectionStats(viewModel: CleanerSectionViewModel, allItems: Array<{ fullPath: string }>) {
-  const selectedItems = getSelectedItems(viewModel, allItems);
+export function getSectionStats({ viewModel, allItems }: { viewModel: CleanerSectionViewModel; allItems: Array<{ fullPath: string }> }) {
+  const selectedItems = getSelectedItems({ viewModel, allItems });
   const selectedCount = selectedItems.length;
   const totalCount = allItems.length;
 
@@ -86,7 +90,13 @@ export function getSectionStats(viewModel: CleanerSectionViewModel, allItems: Ar
   };
 }
 
-export function calculateSelectedSize<T extends Record<string, CleanerSection>>(viewModel: CleanerViewModel, report: T): number {
+export function calculateSelectedSize<T extends Record<string, CleanerSection>>({
+  viewModel,
+  report,
+}: {
+  viewModel: CleanerViewModel;
+  report: T;
+}): number {
   let totalSize = 0;
 
   Object.entries(viewModel).forEach(([sectionKey, sectionViewModel]) => {
@@ -116,14 +126,21 @@ export function calculateSelectedSize<T extends Record<string, CleanerSection>>(
 
 type SectionConfig = Record<string, { name: string; color: string }>;
 
-export function calculateChartSegments<T extends Record<string, CleanerSection>>(props: {
+type calculateChartSegmentsProps<T extends Record<string, CleanerSection>> = {
   viewModel: CleanerViewModel;
   report: T;
   totalSize: number;
   getSectionSelectionStats: (sectionKey: string, report: T) => ReturnType<typeof getSectionStats>;
   sectionConfig: SectionConfig;
-}): Array<{ color: string; percentage: number; size: number }> {
-  const { viewModel, report, totalSize, getSectionSelectionStats, sectionConfig } = props;
+};
+
+export function calculateChartSegments<T extends Record<string, CleanerSection>>({
+  viewModel,
+  report,
+  totalSize,
+  getSectionSelectionStats,
+  sectionConfig,
+}: calculateChartSegmentsProps<T>) {
   const segments: Array<{ color: string; percentage: number; size: number }> = [];
 
   Object.entries(report).forEach(([sectionKey, section]) => {
@@ -153,7 +170,7 @@ export function calculateChartSegments<T extends Record<string, CleanerSection>>
       if (sectionSelectedSize > 0) {
         const config = sectionConfig[sectionKey];
         segments.push({
-          color: config?.color || '#6B7280', // fallback color for unknown sections
+          color: config?.color || '#6B7280',
           percentage: totalSize > 0 ? (sectionSelectedSize / totalSize) * 100 : 0,
           size: sectionSelectedSize,
         });
