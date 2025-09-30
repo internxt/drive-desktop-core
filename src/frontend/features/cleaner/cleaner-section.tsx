@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { Button } from '@/frontend/components/button';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
-import { CleanerContextType } from './cleaner.types';
+import { CleanerContextType, SectionConfig } from './cleaner.types';
 import { CleanupConfirmDialog } from './components/cleanup-confirm-dialog';
 import { useCleanerViewModel } from './use-cleaner-view-model';
+import { CleanerView } from './views/cleaner-view';
 import { CleaningView } from './views/cleaning-view';
 import { GenerateReportView } from './views/generate-report-view';
 import { LoadingView } from './views/loading-view';
@@ -13,13 +14,14 @@ import { LockedState } from './views/locked-view';
 
 type Props = {
   active: boolean;
+  sectionConfig: SectionConfig;
   useCleaner: () => CleanerContextType;
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
 };
-export function CleanerSection({ active, useCleaner, useTranslationContext, openUrl }: Readonly<Props>) {
+export function CleanerSection({ active, sectionConfig, useCleaner, useTranslationContext, openUrl }: Readonly<Props>) {
   const { translate } = useTranslationContext();
-  const { cleaningState, isCleanerAvailable, sectionKeys, loading, report, generateReport, startCleanup } = useCleaner();
+  const { cleaningState, isCleanerAvailable, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
   const useCleanerViewModelHook = useCleanerViewModel(sectionKeys);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
@@ -66,8 +68,13 @@ export function CleanerSection({ active, useCleaner, useTranslationContext, open
         {report && (
           <>
             <div className="flex-1">
-              <>TODO</>
-              {/* <CleanerView report={report} {...useCleanerViewModelHook} /> */}
+              <CleanerView
+                diskSpace={diskSpace}
+                report={report}
+                sectionConfig={sectionConfig}
+                {...useCleanerViewModelHook}
+                useTranslationContext={useTranslationContext}
+              />
             </div>
             <div className="flex justify-center">
               <Button className={'hover:cursor-pointer'} variant={'primary'} size="md" onClick={handleCleanupClick}>
