@@ -10,6 +10,7 @@ import { isSafeWebBrowserFile } from '../../utils/is-safe-web-browser-file';
 type Props = {
   ctx: CleanerContext;
 };
+
 export async function scanFirefoxCacheProfiles({ ctx }: Props) {
   const firefoxCacheDir = ctx.browser.paths.cache.firefoxCacheDir;
 
@@ -20,17 +21,12 @@ export async function scanFirefoxCacheProfiles({ ctx }: Props) {
     return [];
   }
 
-  const profileDirsChecks = await Promise.allSettled(
-    entries.map((entry) => {
-      const isProfileDir = isFirefoxProfileDirectory({ entry, parentPath: firefoxCacheDir });
-      return { entry, isProfileDir };
-    }),
-  );
+  const profileDirsChecks = entries.map((entry) => {
+    const isProfileDir = isFirefoxProfileDirectory({ entry, parentPath: firefoxCacheDir });
+    return { entry, isProfileDir };
+  });
 
-  const profileDirs = profileDirsChecks
-    .filter((result) => result.status === 'fulfilled')
-    .filter((result) => result.value.isProfileDir)
-    .map((result) => result.value.entry.name);
+  const profileDirs = profileDirsChecks.filter((result) => result.isProfileDir).map((result) => result.entry.name);
 
   const scanPromises: Promise<CleanableItem[]>[] = [];
 

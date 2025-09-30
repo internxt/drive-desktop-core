@@ -6,13 +6,9 @@ type Props = {
 };
 
 export function isFirefoxProfileDirectory({ entry, parentPath }: Props) {
-  try {
-    if (!entry.isDirectory()) return false;
-    if (!parentPath.toLowerCase().includes('profiles')) return false;
+  if (!entry.isDirectory()) return false;
+  if (!parentPath.toLowerCase().includes('profiles')) return false;
 
-    const profileRegex = /^[a-z0-9]+\.default(-[a-z]+)?$/i;
-    return profileRegex.test(entry.name);
-  } catch {
-    return false;
-  }
+  const profileRegex = /^[a-z0-9]+\.default(-[a-z]+)?$/i;
+  return profileRegex.test(entry.name);
 }

@@ -1,6 +1,5 @@
 import { Dirent } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
-import { join, basename } from 'node:path/posix';
 
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
@@ -9,15 +8,12 @@ import * as wasAccessedWithinLastHourModule from '../../utils/was-accessed-withi
 import { scanFirefoxProfiles } from './scan-firefox-profiles';
 
 vi.mock(import('node:fs/promises'));
-vi.mock(import('node:path/posix'));
 
 describe('scanFirefoxProfiles', () => {
   const firefoxProfilesDir = '/home/user/.mozilla/firefox';
   const mockedIsFirefoxProfileDirectory = partialSpyOn(isFirefoxProfileDirectoryModule, 'isFirefoxProfileDirectory');
   const mockedWasAccessedWithinLastHour = partialSpyOn(wasAccessedWithinLastHourModule, 'wasAccessedWithinLastHour');
   const readdirMock = deepMocked(readdir);
-  const joinMock = deepMocked(join);
-  const basenameMock = deepMocked(basename);
   const statMock = deepMocked(stat);
 
   const createMockDirent = (name: string, isDirectory = true) =>
@@ -30,11 +26,6 @@ describe('scanFirefoxProfiles', () => {
   let props: Parameters<typeof scanFirefoxProfiles>[0];
 
   beforeEach(() => {
-    joinMock.mockImplementation((...args) => args.join('/'));
-    basenameMock.mockImplementation((path: string) => {
-      const parts = path.split('/');
-      return parts[parts.length - 1] || '';
-    });
     mockedIsFirefoxProfileDirectory.mockReturnValue(false);
     readdirMock.mockResolvedValue([]);
 
@@ -86,24 +77,22 @@ describe('scanFirefoxProfiles', () => {
     // When
     const result = await scanFirefoxProfiles(props);
     // Then
-    expect(result).toMatchObject(
-      expect.arrayContaining([
-        {
-          fullPath: '/home/user/.mozilla/firefox/profile.default/regular-file.txt',
-          fileName: 'regular-file.txt',
-          sizeInBytes: 2048,
-        },
-        {
-          fullPath: '/home/user/.mozilla/firefox/profile.default/prefs.js',
-          fileName: 'prefs.js',
-          sizeInBytes: 2048,
-        },
-        {
-          fullPath: '/home/user/.mozilla/firefox/profile.default/bookmarks.html',
-          fileName: 'bookmarks.html',
-          sizeInBytes: 2048,
-        },
-      ]),
-    );
+    expect(result).toMatchObject([
+      {
+        fullPath: '/home/user/.mozilla/firefox/profile.default/regular-file.txt',
+        fileName: 'regular-file.txt',
+        sizeInBytes: 2048,
+      },
+      {
+        fullPath: '/home/user/.mozilla/firefox/profile.default/prefs.js',
+        fileName: 'prefs.js',
+        sizeInBytes: 2048,
+      },
+      {
+        fullPath: '/home/user/.mozilla/firefox/profile.default/bookmarks.html',
+        fileName: 'bookmarks.html',
+        sizeInBytes: 2048,
+      },
+    ]);
   });
 });
