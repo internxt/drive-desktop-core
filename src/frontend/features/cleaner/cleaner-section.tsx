@@ -1,9 +1,7 @@
-// import { useState } from 'react';
-// import { Button } from '@/frontend/components/button';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { CleanerContextType } from './cleaner.types';
-// import { useCleanerViewModel } from './use-cleaner-view-model';
+import { CleaningView } from './views/cleaning-view';
 import { LockedState } from './views/locked-view';
 
 type Props = {
@@ -43,7 +41,7 @@ export function CleanerSection({ active, useCleaner, useTranslationContext, open
     }
 
     if (cleaningState.cleaning || cleaningState.cleaningCompleted) {
-      return <>TODO {/*<CleaningView />;*/}</>;
+      return <CleaningView useCleaner={useCleaner} useTranslationContext={useTranslationContext} />;
     }
 
     return (
