@@ -10,6 +10,10 @@ export function deepMocked<T extends (...args: any[]) => unknown>(fn: T) {
   return vi.mocked(fn) as MockedFunction<(...args: Parameters<T>) => DeepPartial<ReturnType<T>>>;
 }
 
+export function calls(object: { mock: { calls: any[] } }) {
+  return expect(object.mock.calls.map((call) => call[0]));
+}
+
 /**
  * v2.5.6 Daniel Jiménez
  * Code extracted from vitest
