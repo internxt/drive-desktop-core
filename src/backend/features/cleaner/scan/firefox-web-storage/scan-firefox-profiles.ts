@@ -13,6 +13,7 @@ type Props = {
 
 export async function scanFirefoxProfiles({ ctx }: Props) {
   const firefoxProfilesDir = ctx.browser.paths.storage.firefoxProfile;
+
   let entries: Dirent[];
   try {
     entries = await readdir(firefoxProfilesDir, { withFileTypes: true });
@@ -20,17 +21,12 @@ export async function scanFirefoxProfiles({ ctx }: Props) {
     return [];
   }
 
-  const profileDirsChecks = await Promise.allSettled(
-    entries.map((entry) => {
-      const isProfileDir = isFirefoxProfileDirectory({ entry, parentPath: firefoxProfilesDir });
-      return { entry, isProfileDir };
-    }),
-  );
+  const profileDirsChecks = entries.map((entry) => {
+    const isProfileDir = isFirefoxProfileDirectory({ entry, parentPath: firefoxProfilesDir });
+    return { entry, isProfileDir };
+  });
 
-  const profileDirs = profileDirsChecks
-    .filter((result) => result.status === 'fulfilled')
-    .filter((result) => result.value.isProfileDir)
-    .map((result) => result.value.entry.name);
+  const profileDirs = profileDirsChecks.filter((result) => result.isProfileDir).map((result) => result.entry.name);
 
   const scanPromises: Promise<CleanableItem[]>[] = [];
 
