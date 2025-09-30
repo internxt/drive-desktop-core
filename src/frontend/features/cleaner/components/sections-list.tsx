@@ -1,7 +1,7 @@
 import { CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
-import { SectionConfig } from '../cleaner.service';
+import { SectionConfig } from '../cleaner.types';
 import { SectionItem } from './section-item';
 import { SectionsListHeadertype } from './sections-list-header-type';
 import { Separator } from './separator';

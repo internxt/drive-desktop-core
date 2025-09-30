@@ -3,7 +3,9 @@ import { CaretRight } from '@phosphor-icons/react';
 import { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 import { Checkbox } from '@/frontend/components/checkbox';
 
-import { formatFileSize, getSectionStats, SectionConfig } from '../cleaner.service';
+import { SectionConfig } from '../cleaner.types';
+import { formatFileSize } from '../service/format-file-size';
+import { getSectionStats } from '../service/get-section-stats';
 import { Separator } from './separator';
 
 type SectionItemProps = {
@@ -30,7 +32,7 @@ export function SectionItem({
 
   if (!config || !sectionViewModel) return null;
 
-  const stats = getSectionStats(sectionViewModel, section.items);
+  const stats = getSectionStats({ viewModel: sectionViewModel, allItems: section.items });
 
   const isSectionAllSelected = stats.isAllSelected;
   const isSectionPartiallySelected = stats.isPartiallySelected;
@@ -56,7 +58,7 @@ export function SectionItem({
             onToggleSectionExpansion(sectionName);
           }}>
           <div className="flex items-center gap-1">
-            <span className="text-sm text-gray-50">{formatFileSize(section.totalSizeInBytes)}</span>
+            <span className="text-sm text-gray-50">{formatFileSize({ bytes: section.totalSizeInBytes })}</span>
             <CaretRight color="#0066ff" weight="bold" />
           </div>
         </div>
