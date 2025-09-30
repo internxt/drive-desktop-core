@@ -8,7 +8,7 @@ import { CleanupConfirmDialog } from './components/cleanup-confirm-dialog';
 import { useCleanerViewModel } from './use-cleaner-view-model';
 import { CleaningView } from './views/cleaning-view';
 import { GenerateReportView } from './views/generate-report-view';
-import { LoadingView } from './views/loading-view'
+import { LoadingView } from './views/loading-view';
 import { LockedState } from './views/locked-view';
 
 type Props = {
