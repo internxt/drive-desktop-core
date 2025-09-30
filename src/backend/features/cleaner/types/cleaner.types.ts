@@ -31,12 +31,6 @@ export type LogFilesPaths = {
   varLogDir: string;
 };
 
-export type TrashFilesPaths = {
-  localShareTrash: string;
-  legacyTrash: string;
-  xdgDataTrash?: string;
-};
-
 export type WebStorageFilesPaths = {
   chromeCookies: string;
   chromeLocalStorage: string;
@@ -76,6 +70,10 @@ export type CleanupProgress = {
 };
 
 type BrowserContext = {
+  paths: {
+    storage: WebStorageFilesPaths;
+    cache: WebCacheFilesPaths;
+  };
   criticalExtensions: string[];
   criticalFilenames: string[];
   specificCriticalFile: {
