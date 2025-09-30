@@ -67,7 +67,6 @@ export function getSectionStats(viewModel: CleanerSectionViewModel, allItems: Ar
   const selectedCount = selectedItems.length;
   const totalCount = allItems.length;
 
-  // For empty sections, treat as having no meaningful selection state
   if (totalCount === 0) {
     return {
       selectedCount: 0,
@@ -94,7 +93,6 @@ export function calculateSelectedSize<T extends Record<string, CleanerSection>>(
     const section = report[sectionKey as keyof T];
     if (section) {
       if (sectionViewModel.selectedAll) {
-        // All selected except exceptions - use total minus exceptions
         totalSize += section.totalSizeInBytes;
         sectionViewModel.exceptions.forEach((exceptionPath) => {
           const item = section.items.find((item) => item.fullPath === exceptionPath);
@@ -103,7 +101,6 @@ export function calculateSelectedSize<T extends Record<string, CleanerSection>>(
           }
         });
       } else {
-        // Only exceptions selected - add only exception sizes
         sectionViewModel.exceptions.forEach((exceptionPath) => {
           const item = section.items.find((item) => item.fullPath === exceptionPath);
           if (item) {
@@ -119,20 +116,6 @@ export function calculateSelectedSize<T extends Record<string, CleanerSection>>(
 
 type SectionConfig = Record<string, { name: string; color: string }>;
 
-/**
- * Calculates visual segments for the circular progress chart in the CleanupSizeIndicator.
- * Each segment represents a cleaner section (appCache, logFiles, etc.) with its color,
- * percentage of the total, and selected size.
- *
- * @param props.viewModel - The current ViewModel state with selections
- * @param props.report - The cleaner report with section data
- * @param props.totalSize - Total size across all sections (for percentage calculation)
- * @param props.getSectionSelectionStats - Function to get selection stats for a section
- * @param props.sectionConfig - Configuration object with section names and colors
- * @returns Array of visual segments for chart rendering, containing color, percentage, and size
- *
- *
- */
 export function calculateChartSegments<T extends Record<string, CleanerSection>>(props: {
   viewModel: CleanerViewModel;
   report: T;
@@ -151,7 +134,6 @@ export function calculateChartSegments<T extends Record<string, CleanerSection>>
       let sectionSelectedSize = 0;
 
       if (sectionViewModel.selectedAll) {
-        // All selected except exceptions -> calculate total minus exceptions
         sectionSelectedSize = section.totalSizeInBytes;
         sectionViewModel.exceptions.forEach((exceptionPath) => {
           const item = section.items.find((item) => item.fullPath === exceptionPath);
@@ -160,7 +142,6 @@ export function calculateChartSegments<T extends Record<string, CleanerSection>>
           }
         });
       } else {
-        // Only exceptions selected -> calculate only exception sizes
         sectionViewModel.exceptions.forEach((exceptionPath) => {
           const item = section.items.find((item) => item.fullPath === exceptionPath);
           if (item) {
@@ -169,7 +150,6 @@ export function calculateChartSegments<T extends Record<string, CleanerSection>>
         });
       }
 
-      // Only add segments with actual selected size
       if (sectionSelectedSize > 0) {
         const config = sectionConfig[sectionKey];
         segments.push({
