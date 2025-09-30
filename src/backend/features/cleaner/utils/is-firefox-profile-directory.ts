@@ -1,23 +1,14 @@
-import { stat } from 'node:fs/promises';
-import { join } from 'node:path/posix';
+import { Dirent } from 'node:fs';
 
 type Props = {
-  entry: string;
+  entry: Dirent;
   parentPath: string;
 };
 
-export async function isFirefoxProfileDirectory({ entry, parentPath }: Props) {
-  const fullPath = join(parentPath, entry);
+export function isFirefoxProfileDirectory({ entry, parentPath }: Props) {
+  if (!entry.isDirectory()) return false;
+  if (!parentPath.toLowerCase().includes('profiles')) return false;
 
-  try {
-    const entryStat = await stat(fullPath);
-    if (!entryStat.isDirectory()) return false;
-
-    if (!parentPath.toLowerCase().includes('profiles')) return false;
-
-    const profileRegex = /^[a-z0-9]+\.default(-[a-z]+)?$/i;
-    return profileRegex.test(entry);
-  } catch {
-    return false;
-  }
+  const profileRegex = /^[a-z0-9]+\.default(-[a-z]+)?$/i;
+  return profileRegex.test(entry.name);
 }

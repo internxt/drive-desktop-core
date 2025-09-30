@@ -1,4 +1,5 @@
-import { Dirent, promises as fs } from 'node:fs';
+import { Dirent } from 'node:fs';
+import { stat } from 'node:fs/promises';
 
 import { logger } from '@/backend/core/logger/logger';
 
@@ -18,11 +19,11 @@ type Props = {
 export async function processDirent({ ctx, entry, fullPath, customFileFilter, customDirectoryFilter }: Props) {
   try {
     if (entry.isFile()) {
-      const fileStats = await fs.stat(fullPath);
+      const fileStats = await stat(fullPath);
       const wasAccessed = wasAccessedWithinLastHour({ fileStats });
       const isFiltered = customFileFilter?.({ ctx, fileName: entry.name });
 
-      if (wasAccessed || isFiltered) {
+      if (wasAccessed || !isFiltered) {
         return [];
       }
 

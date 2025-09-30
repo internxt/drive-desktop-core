@@ -1,17 +1,14 @@
-import { stat } from 'node:fs/promises';
-
-import { deepMocked } from '@/tests/vitest/utils.helper.test';
+import { Dirent } from 'node:fs';
 
 import { isFirefoxProfileDirectory } from './is-firefox-profile-directory';
 
-vi.mock(import('node:fs/promises'));
-
 describe('isFirefoxProfileDirectory', () => {
-  const mockStat = deepMocked(stat);
-
-  beforeEach(() => {
-    mockStat.mockResolvedValue({ isDirectory: () => true });
-  });
+  const createMockDirent = (name: string, isDirectory = true): Dirent =>
+    ({
+      name,
+      isDirectory: () => isDirectory,
+      isFile: () => !isDirectory,
+    }) as Dirent;
 
   it.each([
     ['abc123.default', '/home/user/firefox/profiles'],
@@ -20,12 +17,13 @@ describe('isFirefoxProfileDirectory', () => {
     ['test123.default', '/path/to/firefox/profiles/subfolder'],
     ['a1b2c3.default-dev', '/PROFILES/firefox'],
     ['123.default', '/home/user/firefox/profiles'],
-  ])('should return true for valid Firefox profile directory: "%s" in path "%s"', async (entry, parentPath) => {
+  ])('should return true for valid Firefox profile directory: "%s" in path "%s"', (entryName, parentPath) => {
+    // Given
+    const entry = createMockDirent(entryName, true);
     // When
-    const result = await isFirefoxProfileDirectory({ entry, parentPath });
+    const result = isFirefoxProfileDirectory({ entry, parentPath });
     // Then
     expect(result).toBe(true);
-    expect(mockStat).toBeCalledWith(`${parentPath}/${entry}`);
   });
 
   it.each([
@@ -36,9 +34,11 @@ describe('isFirefoxProfileDirectory', () => {
     ['profile-default', '/home/user/firefox/profiles'],
     ['.default', '/home/user/firefox/profiles'],
     ['profile.default-', '/home/user/firefox/profiles'],
-  ])('should return false for invalid Firefox profile directory name: "%s"', async (entry, parentPath) => {
+  ])('should return false for invalid Firefox profile directory name: "%s"', (entryName, parentPath) => {
+    // Given
+    const entry = createMockDirent(entryName, true);
     // When
-    const result = await isFirefoxProfileDirectory({ entry, parentPath });
+    const result = isFirefoxProfileDirectory({ entry, parentPath });
     // Then
     expect(result).toBe(false);
   });
@@ -48,27 +48,20 @@ describe('isFirefoxProfileDirectory', () => {
     ['xyz789.default-esr', '/home/user/documents'],
     ['profile.default-release', '/Users/john/Library'],
     ['test123.default', '/random/path'],
-  ])('should return false when parent path does not contain "profiles": "%s" in path "%s"', async (entry, parentPath) => {
+  ])('should return false when parent path does not contain "profiles": "%s" in path "%s"', (entryName, parentPath) => {
+    // Given
+    const entry = createMockDirent(entryName, true);
     // When
-    const result = await isFirefoxProfileDirectory({ entry, parentPath });
+    const result = isFirefoxProfileDirectory({ entry, parentPath });
     // Then
     expect(result).toBe(false);
   });
 
-  it('should return false when entry is not a directory', async () => {
+  it('should return false when entry is not a directory', () => {
     // Given
-    mockStat.mockResolvedValue({ isDirectory: () => false });
+    const entry = createMockDirent('abc123.default', false);
     // When
-    const result = await isFirefoxProfileDirectory({ entry: 'abc123.default', parentPath: '/home/user/firefox/profiles' });
-    // Then
-    expect(result).toBe(false);
-  });
-
-  it('should return false when stat fails', async () => {
-    // Given
-    mockStat.mockRejectedValue(new Error());
-    // When
-    const result = await isFirefoxProfileDirectory({ entry: 'abc123.default', parentPath: '/home/user/firefox/profiles' });
+    const result = isFirefoxProfileDirectory({ entry, parentPath: '/home/user/firefox/profiles' });
     // Then
     expect(result).toBe(false);
   });
