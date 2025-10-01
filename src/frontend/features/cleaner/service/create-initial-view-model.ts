@@ -7,12 +7,12 @@ export function createInitialViewModel<T extends Record<string, CleanerSection>>
 }) {
   const viewModel: CleanerViewModel = {};
 
-  cleanerSectionKeys.forEach((sectionKey) => {
+  for (const sectionKey of cleanerSectionKeys) {
     viewModel[sectionKey as string] = {
       selectedAll: true,
       exceptions: [],
     };
-  });
+  }
 
   return viewModel;
 }
