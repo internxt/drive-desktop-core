@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeepPartial } from 'ts-essentials';
 import { MockedFunction, MockInstance } from 'vitest';
@@ -10,8 +11,14 @@ export function deepMocked<T extends (...args: any[]) => unknown>(fn: T) {
   return vi.mocked(fn) as MockedFunction<(...args: Parameters<T>) => DeepPartial<ReturnType<T>>>;
 }
 
-export function calls(object: { mock: { calls: any[] } }) {
-  return expect(object.mock.calls.map((call) => call[0]));
+export function calls(object: any) {
+  return expect(object.mock.calls.map((call: any) => call[0]));
+}
+
+export function call(object: any) {
+  const calls = object.mock.calls.map((call: any) => call[0]);
+  if (calls.length !== 1) throw new Error('Invalid length');
+  return expect(calls[0]);
 }
 
 /**
