@@ -2,14 +2,16 @@ import { CleanerSection, CleanerSectionKey, CleanerViewModel } from '@/backend/f
 
 export function createInitialViewModel<T extends Record<string, CleanerSection>>({
   cleanerSectionKeys,
+  selectedAll = true,
 }: {
   cleanerSectionKeys: CleanerSectionKey<T>[];
+  selectedAll?: boolean;
 }) {
   const viewModel: CleanerViewModel = {};
 
   for (const sectionKey of cleanerSectionKeys) {
     viewModel[sectionKey as string] = {
-      selectedAll: true,
+      selectedAll,
       exceptions: [],
     };
   }
