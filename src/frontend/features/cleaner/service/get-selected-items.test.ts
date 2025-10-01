@@ -1,15 +1,20 @@
 import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { mockProps } from '@/tests/vitest/utils.helper.test';
 
 import { getSelectedItems } from './get-selected-items';
 
 describe('get-selected-items', () => {
-  const props = {
-    viewModel: {
-      selectedAll: false,
-      exceptions: [],
-    } as CleanerSectionViewModel,
-    allItems: [{ fullPath: '/path/to/file1' }, { fullPath: '/path/to/file2' }, { fullPath: '/path/to/file3' }],
-  };
+  let props: Parameters<typeof getSelectedItems>[0];
+
+  beforeEach(() => {
+    props = mockProps<typeof getSelectedItems>({
+      viewModel: {
+        selectedAll: false,
+        exceptions: [],
+      } as CleanerSectionViewModel,
+      allItems: [{ fullPath: '/path/to/file1' }, { fullPath: '/path/to/file2' }, { fullPath: '/path/to/file3' }],
+    });
+  });
 
   it('should return all items except exceptions when selectedAll is true', () => {
     // Given
