@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeepPartial } from 'ts-essentials';
 import { MockedFunction, MockInstance } from 'vitest';
