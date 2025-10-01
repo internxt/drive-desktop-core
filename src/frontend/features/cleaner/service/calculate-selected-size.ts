@@ -1,5 +1,24 @@
 import { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 
+function calculateExceptionsSize(section: CleanerSection, exceptionPaths: string[]): number {
+  let size = 0;
+  for (const exceptionPath of exceptionPaths) {
+    const item = section.items.find((item) => item.fullPath === exceptionPath);
+    if (item) {
+      size += item.sizeInBytes;
+    }
+  }
+  return size;
+}
+
+function calculateSectionSize(section: CleanerSection, sectionViewModel: CleanerViewModel[string]): number {
+  if (sectionViewModel.selectedAll) {
+    const exceptionsSize = calculateExceptionsSize(section, sectionViewModel.exceptions);
+    return section.totalSizeInBytes - exceptionsSize;
+  }
+  return calculateExceptionsSize(section, sectionViewModel.exceptions);
+}
+
 export function calculateSelectedSize<T extends Record<string, CleanerSection>>({
   viewModel,
   report,
@@ -9,27 +28,12 @@ export function calculateSelectedSize<T extends Record<string, CleanerSection>>(
 }): number {
   let totalSize = 0;
 
-  Object.entries(viewModel).forEach(([sectionKey, sectionViewModel]) => {
+  for (const [sectionKey, sectionViewModel] of Object.entries(viewModel)) {
     const section = report[sectionKey as keyof T];
     if (section) {
-      if (sectionViewModel.selectedAll) {
-        totalSize += section.totalSizeInBytes;
-        sectionViewModel.exceptions.forEach((exceptionPath) => {
-          const item = section.items.find((item) => item.fullPath === exceptionPath);
-          if (item) {
-            totalSize -= item.sizeInBytes;
-          }
-        });
-      } else {
-        sectionViewModel.exceptions.forEach((exceptionPath) => {
-          const item = section.items.find((item) => item.fullPath === exceptionPath);
-          if (item) {
-            totalSize += item.sizeInBytes;
-          }
-        });
-      }
+      totalSize += calculateSectionSize(section, sectionViewModel);
     }
-  });
+  }
 
   return totalSize;
 }
