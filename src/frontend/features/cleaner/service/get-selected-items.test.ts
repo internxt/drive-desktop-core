@@ -3,17 +3,13 @@ import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleane
 import { getSelectedItems } from './get-selected-items';
 
 describe('get-selected-items', () => {
-  let props: Parameters<typeof getSelectedItems>[0];
-
-  beforeEach(() => {
-    props = {
-      viewModel: {
-        selectedAll: false,
-        exceptions: [],
-      } as CleanerSectionViewModel,
-      allItems: [{ fullPath: '/path/to/file1' }, { fullPath: '/path/to/file2' }, { fullPath: '/path/to/file3' }],
-    };
-  });
+  const props = {
+    viewModel: {
+      selectedAll: false,
+      exceptions: [],
+    } as CleanerSectionViewModel,
+    allItems: [{ fullPath: '/path/to/file1' }, { fullPath: '/path/to/file2' }, { fullPath: '/path/to/file3' }],
+  };
 
   it('should return all items except exceptions when selectedAll is true', () => {
     // Given
