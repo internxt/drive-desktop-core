@@ -1,22 +1,6 @@
-import { logger, TLoggerBody } from './core/logger/logger';
-import { setupElectronLog } from './core/logger/setup-electron-log';
-import { IssuesModule, BackupsIssue, GeneralIssue, Issue, SyncIssue } from './features/issues/issues.module';
-import { UserAvailableProducts, getUserAvailableProducts } from './features/payments';
-import { createDriveServerWipModule } from './infra/drive-server-wip/create-drive-server-wip-module';
-import { paths, components } from './infra/drive-server-wip/schema';
+export { logger, TLoggerBody } from './core/logger/logger';
+export { setupElectronLog } from './core/logger/setup-electron-log';
 
-export {
-  logger,
-  TLoggerBody,
-  paths,
-  components,
-  IssuesModule,
-  SyncIssue,
-  BackupsIssue,
-  GeneralIssue,
-  Issue,
-  UserAvailableProducts,
-  setupElectronLog,
-  createDriveServerWipModule,
-  getUserAvailableProducts,
-};
+export { FileSystemModule, AbsolutePath, RelativePath } from './infra/file-system/file-system.module';
+export { PaymentsModule, UserAvailableProducts } from './features/payments/payments.module';
+export { CleanerModule } from './features/cleaner/cleaner.module';

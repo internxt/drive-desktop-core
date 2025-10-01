@@ -14,5 +14,6 @@ export async function getUserAvailableProducts({ paymentsClientConfig }: { payme
       msg: 'Failed to get user available products with error:',
       error,
     });
+    return undefined;
   }
 }

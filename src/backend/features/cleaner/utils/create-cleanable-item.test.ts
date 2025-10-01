@@ -1,25 +1,23 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { Stats } from 'node:fs';
+import path from 'node:path';
 
 import { deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import { createCleanableItem } from './create-cleanable-item';
 
-vi.mock(import('fs'));
-vi.mock(import('path'));
+vi.mock(import('node:path'));
 
 describe('createCleanableItem', () => {
-  const mockedStat = deepMocked(fs.stat);
   const mockedBasename = deepMocked(path.basename);
 
-  it('should create a CleanableItem with correct properties', async () => {
-    const mockStat = { size: 1024 };
-    mockedStat.mockResolvedValue(mockStat);
-    mockedBasename.mockReturnValue('example.txt');
-
+  it('should create a CleanableItem with correct properties', () => {
+    // Given
+    const mockStat = { size: 1024 } as Stats;
     const filePath = '/mock/path/example.txt';
-    const result = await createCleanableItem({ filePath });
-
+    mockedBasename.mockReturnValue('example.txt');
+    // When
+    const result = createCleanableItem({ filePath, stat: mockStat });
+    // Then
     expect(result).toEqual({
       fullPath: filePath,
       fileName: 'example.txt',

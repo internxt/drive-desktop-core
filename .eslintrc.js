@@ -7,7 +7,7 @@ module.exports = {
     'plugin:sonarjs/recommended-legacy',
   ],
   parser: '@typescript-eslint/parser',
-  ignorePatterns: ['schema.ts', 'node_modules', 'build', 'coverage'],
+  ignorePatterns: ['node_modules', 'build', 'coverage'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -20,6 +20,7 @@ module.exports = {
       files: ['*.test.ts', '*.test.tsx'],
       rules: {
         '@typescript-eslint/unbound-method': 'off',
+        'sonarjs/os-command': 'off',
       },
     },
   ],
@@ -54,7 +55,10 @@ module.exports = {
     'sonarjs/no-empty-test-file': 'off',
     'sonarjs/no-redundant-optional': 'off',
     'sonarjs/todo-tag': 'off',
+    'unicorn/catch-error-name': 'error',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+    'unicorn/no-array-for-each': 'error',
+    'unicorn/prefer-node-protocol': 'error',
     'padding-line-between-statements': [
       'error',
       { blankLine: 'always', prev: '*', next: 'block' },
