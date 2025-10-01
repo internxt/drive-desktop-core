@@ -4,6 +4,8 @@ import { logger } from '@/backend/core/logger/logger';
 import { FileSystemModule } from '@/backend/infra/file-system/file-system.module';
 import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
+import { cleanerStore } from '../stores/cleaner.store';
+
 type Props = {
   absolutePath: AbsolutePath;
 };
@@ -17,19 +19,19 @@ export async function deleteFileSafely({ absolutePath }: Props) {
         msg: 'Failed to delete file, could not retrieve file stats',
         filePath: absolutePath,
       });
-      return { success: false, size: 0 };
+      return;
     }
 
     const fileSize = data.size;
     await unlink(absolutePath);
 
-    return { success: true, size: fileSize };
+    cleanerStore.state.deletedFilesCount++;
+    cleanerStore.state.totalSpaceGained += fileSize;
   } catch (error) {
     logger.warn({
       msg: 'Failed to delete file, continuing with next file',
       absolutePath,
-      error: error instanceof Error ? error.message : String(error),
+      error,
     });
-    return { success: false, size: 0 };
   }
 }

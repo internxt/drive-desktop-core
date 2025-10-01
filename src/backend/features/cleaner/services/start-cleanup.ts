@@ -1,24 +1,20 @@
 import { logger } from '@/backend/core/logger/logger';
 import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
+import { cleanerStore } from '../stores/cleaner.store';
 import { CleanerViewModel, CleanupProgress, CleanerReport, CleanerSectionKey } from '../types/cleaner.types';
 import { getAllItemsToDelete } from '../utils/selection-utils';
 import { deleteFileSafely } from './delete-file-saftly';
 
-let currentAbortController: AbortController | null = null;
-let totalFilesToDelete = 0;
-let deletedFilesCount = 0;
-let totalSpaceGained = 0;
-
-type Props = {
+type StartCleanupProps = {
   viewModel: CleanerViewModel;
   storedCleanerReport: CleanerReport;
   emitProgress: (progress: CleanupProgress) => void;
   cleanerSectionKeys: CleanerSectionKey[];
 };
 
-export async function startCleanup({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: Props) {
-  if (currentAbortController) {
+export const startCleanup = async ({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: StartCleanupProps) => {
+  if (cleanerStore.state.isCleanupInProgress) {
     logger.warn({ tag: 'CLEANER', msg: 'Cleanup already in progress, ignoring new request' });
     return;
   }
@@ -28,17 +24,15 @@ export async function startCleanup({ viewModel, storedCleanerReport, emitProgres
     return;
   }
 
-  currentAbortController = new AbortController();
-  deletedFilesCount = 0;
-  totalSpaceGained = 0;
-
   const itemsToDelete = getAllItemsToDelete({ viewModel, report: storedCleanerReport, cleanerSectionKeys });
-  totalFilesToDelete = itemsToDelete.length;
+  cleanerStore.state.currentAbortController = new AbortController();
+  cleanerStore.state.totalFilesToDelete = itemsToDelete.length;
+  cleanerStore.state.isCleanupInProgress = true;
 
   logger.debug({
     tag: 'CLEANER',
     msg: 'Starting cleanup process',
-    totalFiles: totalFilesToDelete,
+    totalFiles: cleanerStore.state.totalFilesToDelete,
   });
 
   emitProgress({
@@ -50,28 +44,22 @@ export async function startCleanup({ viewModel, storedCleanerReport, emitProgres
     cleaningCompleted: false,
   });
 
-  for (let i = 0; i < itemsToDelete.length; i++) {
-    if (currentAbortController.signal.aborted) {
+  for (const [i, item] of itemsToDelete.entries()) {
+    if (cleanerStore.state.currentAbortController?.signal.aborted) {
       logger.debug({ tag: 'CLEANER', msg: 'Cleanup process was aborted' });
       break;
     }
 
-    const item = itemsToDelete[i];
     if (!item) return;
-    // TODO: Cahnge type in getAllItemsToDelete
-    const result = await deleteFileSafely({ absolutePath: item.fullPath as AbsolutePath });
+    // TODO: Change type in getAllItemsToDelete
+    await deleteFileSafely({ absolutePath: item.fullPath as AbsolutePath });
 
-    if (result.success) {
-      deletedFilesCount++;
-      totalSpaceGained += result.size;
-    }
-
-    const progress = Math.round(((i + 1) / totalFilesToDelete) * 100);
+    const progress = Math.round(((i + 1) / cleanerStore.state.totalFilesToDelete) * 100);
     emitProgress({
       currentCleaningPath: item.fileName,
       progress,
-      deletedFiles: deletedFilesCount,
-      spaceGained: totalSpaceGained,
+      deletedFiles: cleanerStore.state.deletedFilesCount,
+      spaceGained: cleanerStore.state.totalSpaceGained,
       cleaning: true,
       cleaningCompleted: false,
     });
@@ -80,8 +68,8 @@ export async function startCleanup({ viewModel, storedCleanerReport, emitProgres
   emitProgress({
     currentCleaningPath: '',
     progress: 100,
-    deletedFiles: deletedFilesCount,
-    spaceGained: totalSpaceGained,
+    deletedFiles: cleanerStore.state.deletedFilesCount,
+    spaceGained: cleanerStore.state.totalSpaceGained,
     cleaning: false,
     cleaningCompleted: true,
   });
@@ -89,19 +77,9 @@ export async function startCleanup({ viewModel, storedCleanerReport, emitProgres
   logger.debug({
     tag: 'CLEANER',
     msg: 'Cleanup process finished',
-    deletedFiles: deletedFilesCount,
-    totalFiles: totalFilesToDelete,
+    deletedFiles: cleanerStore.state.deletedFilesCount,
+    totalFiles: cleanerStore.state.totalFilesToDelete,
   });
 
-  currentAbortController = null;
-}
-
-export function stopCleanup(): void {
-  if (!currentAbortController) {
-    logger.warn({ tag: 'CLEANER', msg: 'No cleanup process to stop' });
-    return;
-  }
-
-  logger.debug({ tag: 'CLEANER', msg: 'Stopping cleanup process' });
-  currentAbortController.abort();
-}
+  cleanerStore.reset();
+};
