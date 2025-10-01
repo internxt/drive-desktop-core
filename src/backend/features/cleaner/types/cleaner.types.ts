@@ -16,7 +16,9 @@ export type CleanerReport = {
   webCache: CleanerSection;
 };
 
-export type CleanerSectionKey = keyof CleanerReport;
+export type ExtendedCleanerReport<T extends Record<string, CleanerSection> = {}> = CleanerReport & T;
+
+export type CleanerSectionKey<T extends Record<string, CleanerSection> = CleanerReport> = keyof T;
 
 export type AppCachePaths = {
   userCache: string;
@@ -99,3 +101,10 @@ export type CleanerContext = {
   appCache: AppCacheContext;
   logFiles: LogFilesContext;
 };
+export const CLEANER_SECTION_KEYS: readonly CleanerSectionKey<CleanerReport>[] = [
+  'appCache',
+  'logFiles',
+  'trash',
+  'webStorage',
+  'webCache',
+] as const;
