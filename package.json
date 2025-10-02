@@ -24,6 +24,9 @@
     "========== Other ==========": "",
     "depcheck": "depcheck"
   },
+  "peerDependencies": {
+    "react": "^17.0.2"
+  },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.81.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
