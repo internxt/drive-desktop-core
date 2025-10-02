@@ -1,9 +1,9 @@
 import { unlink } from 'node:fs/promises';
 
 import { logger } from '@/backend/core/logger/logger';
+import { throwWrapper } from '@/backend/core/utils/throw-wrapper';
 import { FileSystemModule } from '@/backend/infra/file-system/file-system.module';
 import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
-import { throwWrapper } from '@/backend/core/utils/throw-wrapper';
 
 import { cleanerStore } from '../stores/cleaner.store';
 

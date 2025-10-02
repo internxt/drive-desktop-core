@@ -82,4 +82,4 @@ export async function startCleanup({ viewModel, storedCleanerReport, emitProgres
   });
 
   cleanerStore.reset();
-};
+}
