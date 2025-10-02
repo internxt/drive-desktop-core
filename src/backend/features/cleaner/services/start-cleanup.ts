@@ -8,12 +8,12 @@ import { deleteFileSafely } from './delete-file-saftly';
 
 type StartCleanupProps = {
   viewModel: CleanerViewModel;
-  storedCleanerReport: CleanerReport;
+  storedCleanerReport: CleanerReport | null;
   emitProgress: (progress: CleanupProgress) => void;
   cleanerSectionKeys: CleanerSectionKey[];
 };
 
-export const startCleanup = async ({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: StartCleanupProps) => {
+export async function startCleanup({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: StartCleanupProps) {
   if (cleanerStore.state.isCleanupInProgress) {
     logger.warn({ tag: 'CLEANER', msg: 'Cleanup already in progress, ignoring new request' });
     return;
@@ -50,7 +50,7 @@ export const startCleanup = async ({ viewModel, storedCleanerReport, emitProgres
       break;
     }
 
-    if (!item) return;
+    if (!item) continue;
     // TODO: Change type in getAllItemsToDelete
     await deleteFileSafely({ absolutePath: item.fullPath as AbsolutePath });
 

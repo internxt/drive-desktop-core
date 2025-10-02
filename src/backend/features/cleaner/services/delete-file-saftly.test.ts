@@ -3,7 +3,7 @@ import { unlink } from 'node:fs/promises';
 import { FileSystemModule } from '@/backend/infra/file-system/file-system.module';
 import type { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
-import { deepMocked, partialSpyOn } from '@/tests/vitest/utils.helper.test';
+import { call, deepMocked, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { cleanerStore } from '../stores/cleaner.store';
 import { deleteFileSafely } from './delete-file-saftly';
@@ -29,8 +29,8 @@ describe('deleteFileSafely', () => {
     // When
     await deleteFileSafely({ absolutePath: testFilePath });
     // Then
-    expect(mockedStat).toBeCalledWith({ absolutePath: testFilePath });
-    expect(mockedUnlink).toBeCalledWith(testFilePath);
+    call(mockedStat).toMatchObject({ absolutePath: testFilePath });
+    call(mockedUnlink).toMatchObject(testFilePath);
     expect(cleanerStore.state.deletedFilesCount).toBe(1);
     expect(cleanerStore.state.totalSpaceGained).toBe(1024);
     expect(loggerMock.warn).not.toBeCalled();
@@ -44,15 +44,17 @@ describe('deleteFileSafely', () => {
     // When
     await deleteFileSafely({ absolutePath: testFilePath });
     // Then
-    expect(mockedStat).toBeCalledWith({ absolutePath: testFilePath });
-    expect(mockedUnlink).not.toBeCalled();
     expect(cleanerStore.state.deletedFilesCount).toBe(0);
     expect(cleanerStore.state.totalSpaceGained).toBe(0);
-
-    expect(loggerMock.warn).toBeCalledWith({
+    expect(mockedUnlink).not.toBeCalled();
+    call(mockedStat).toMatchObject({ absolutePath: testFilePath });
+    call(loggerMock.warn).toMatchObject({
       tag: 'CLEANER',
-      msg: 'Failed to delete file, could not retrieve file stats',
-      filePath: testFilePath,
+      msg: 'Failed to delete file, continuing with next file',
+      absolutePath: testFilePath,
+      error: {
+        message: 'File not found',
+      },
     });
   });
 
@@ -66,17 +68,17 @@ describe('deleteFileSafely', () => {
     // When
     await deleteFileSafely({ absolutePath: testFilePath });
     // Then
-    expect(mockedStat).toBeCalledWith({ absolutePath: testFilePath });
-    expect(mockedUnlink).toBeCalledWith(testFilePath);
     expect(cleanerStore.state.deletedFilesCount).toBe(0);
     expect(cleanerStore.state.totalSpaceGained).toBe(0);
-
-    expect(loggerMock.warn).toBeCalledWith({
+    call(mockedStat).toMatchObject({ absolutePath: testFilePath });
+    call(mockedUnlink).toMatchObject(testFilePath);
+    call(loggerMock.warn).toMatchObject({
+      tag: 'CLEANER',
       msg: 'Failed to delete file, continuing with next file',
       absolutePath: testFilePath,
-      error: expect.objectContaining({
+      error: {
         message: 'Permission denied',
-      }),
+      },
     });
   });
 });
