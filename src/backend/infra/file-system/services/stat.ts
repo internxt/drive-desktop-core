@@ -9,11 +9,9 @@ class StatError extends Error {
   }
 }
 
-type TProps = {
-  absolutePath: string;
-};
+type Props = { absolutePath: string };
 
-export async function stat({ absolutePath }: TProps) {
+export async function stat({ absolutePath }: Props) {
   try {
     const stat = await fs.stat(absolutePath);
 
@@ -36,4 +34,10 @@ export async function stat({ absolutePath }: TProps) {
 
     return { error: new StatError('UNKNOWN', error) };
   }
+}
+
+export async function statThrow(props: Props) {
+  const { data, error } = await stat(props);
+  if (error) throw error;
+  return data;
 }
