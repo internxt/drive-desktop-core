@@ -1,4 +1,4 @@
-export type CleanerState = {
+type CleanerState = {
   currentAbortController: AbortController | null;
   totalFilesToDelete: number;
   deletedFilesCount: number;
@@ -16,17 +16,14 @@ function createInitialState(): CleanerState {
   };
 }
 
-const cleanerState: CleanerState = createInitialState();
+const state: CleanerState = createInitialState();
 
-function reset(): CleanerState {
+function reset() {
   const newState = createInitialState();
-  Object.assign(cleanerState, newState);
-  return cleanerState;
+  Object.assign(state, newState);
 }
 
 export const cleanerStore = {
-  get state() {
-    return cleanerState;
-  },
+  state,
   reset,
 } as const;
