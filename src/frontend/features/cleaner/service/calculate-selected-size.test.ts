@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import type { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { AbsolutePath } from '@/backend/infra/file-system/file-system.module';
 
 import { calculateSelectedSize } from './calculate-selected-size';
 
@@ -9,21 +10,21 @@ describe('calculateSelectedSize', () => {
     appCache: {
       totalSizeInBytes: 1000,
       items: [
-        { fullPath: '/cache/file1.tmp', fileName: 'file1.tmp', sizeInBytes: 400 },
-        { fullPath: '/cache/file2.tmp', fileName: 'file2.tmp', sizeInBytes: 300 },
-        { fullPath: '/cache/file3.tmp', fileName: 'file3.tmp', sizeInBytes: 300 },
+        { absolutePath: '/cache/file1.tmp' as AbsolutePath, fileName: 'file1.tmp', sizeInBytes: 400 },
+        { absolutePath: '/cache/file2.tmp' as AbsolutePath, fileName: 'file2.tmp', sizeInBytes: 300 },
+        { absolutePath: '/cache/file3.tmp' as AbsolutePath, fileName: 'file3.tmp', sizeInBytes: 300 },
       ],
     },
     logFiles: {
       totalSizeInBytes: 2000,
       items: [
-        { fullPath: '/logs/app.log', fileName: 'app.log', sizeInBytes: 800 },
-        { fullPath: '/logs/error.log', fileName: 'error.log', sizeInBytes: 1200 },
+        { absolutePath: '/logs/app.log' as AbsolutePath, fileName: 'app.log', sizeInBytes: 800 },
+        { absolutePath: '/logs/error.log' as AbsolutePath, fileName: 'error.log', sizeInBytes: 1200 },
       ],
     },
     webCache: {
       totalSizeInBytes: 1500,
-      items: [{ fullPath: '/web/cache1', fileName: 'cache1', sizeInBytes: 1500 }],
+      items: [{ absolutePath: '/web/cache1' as AbsolutePath, fileName: 'cache1', sizeInBytes: 1500 }],
     },
   });
 

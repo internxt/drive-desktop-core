@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/frontend/components/button';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
+import { CleanerSection, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { CleanerContextType, SectionConfig } from './cleaner.types';
 import { CleanupConfirmDialog } from './components/cleanup-confirm-dialog';
 import { useCleanerViewModel } from './use-cleaner-view-model';
@@ -12,14 +13,14 @@ import { GenerateReportView } from './views/generate-report-view';
 import { LoadingView } from './views/loading-view';
 import { LockedState } from './views/locked-view';
 
-type Props = {
+type Props<T extends Record<string, CleanerSection> = {}> = {
   active: boolean;
   sectionConfig: SectionConfig;
-  useCleaner: () => CleanerContextType;
+  useCleaner: () => CleanerContextType<ExtendedCleanerReport<T>>;
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
 };
-export function CleanerSection({ active, sectionConfig, useCleaner, useTranslationContext, openUrl }: Readonly<Props>) {
+export function CleanerSection<T extends Record<string, CleanerSection> = {}>({ active, sectionConfig, useCleaner, useTranslationContext, openUrl }: Readonly<Props<T>>) {
   const { translate } = useTranslationContext();
   const { cleaningState, isCleanerAvailable, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
   const useCleanerViewModelHook = useCleanerViewModel(sectionKeys);

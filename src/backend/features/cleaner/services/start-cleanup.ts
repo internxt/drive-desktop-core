@@ -1,19 +1,18 @@
 import { logger } from '@/backend/core/logger/logger';
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
 import { cleanerStore } from '../stores/cleaner.store';
-import { CleanerViewModel, CleanupProgress, CleanerReport, CleanerSectionKey } from '../types/cleaner.types';
+import { CleanerViewModel, CleanupProgress, CleanerSectionKey, ExtendedCleanerReport, CleanerSection } from '../types/cleaner.types';
 import { getAllItemsToDelete } from '../utils/selection-utils';
 import { deleteFileSafely } from './delete-file-saftly';
 
-type StartCleanupProps = {
+type StartCleanupProps<T extends Record<string, CleanerSection> = {}> = {
   viewModel: CleanerViewModel;
-  storedCleanerReport: CleanerReport;
+  storedCleanerReport: ExtendedCleanerReport<T> | null;
   emitProgress: (progress: CleanupProgress) => void;
-  cleanerSectionKeys: CleanerSectionKey[];
+  cleanerSectionKeys: CleanerSectionKey<ExtendedCleanerReport<T>>[];
 };
 
-export const startCleanup = async ({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: StartCleanupProps) => {
+export async function startCleanup<T extends Record<string, CleanerSection> = {}>({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: StartCleanupProps<T>) {
   if (cleanerStore.state.isCleanupInProgress) {
     logger.warn({ tag: 'CLEANER', msg: 'Cleanup already in progress, ignoring new request' });
     return;
@@ -51,8 +50,7 @@ export const startCleanup = async ({ viewModel, storedCleanerReport, emitProgres
     }
 
     if (!item) return;
-    // TODO: Change type in getAllItemsToDelete
-    await deleteFileSafely({ absolutePath: item.fullPath as AbsolutePath });
+    await deleteFileSafely({ absolutePath: item.absolutePath });
 
     const progress = Math.round(((i + 1) / cleanerStore.state.totalFilesToDelete) * 100);
     emitProgress({

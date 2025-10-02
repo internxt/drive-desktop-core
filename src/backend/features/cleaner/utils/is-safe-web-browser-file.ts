@@ -7,11 +7,9 @@ type Props = {
 
 export function isSafeWebBrowserFile({ ctx, fileName }: Props) {
   const lowerName = fileName.toLowerCase();
-  const allCriticalFiles = Object.values(ctx.browser.specificCriticalFile).flat();
 
   return !(
     ctx.browser.criticalExtensions.some((ext) => lowerName.endsWith(ext)) ||
-    ctx.browser.criticalFilenames.includes(lowerName) ||
-    allCriticalFiles.includes(lowerName)
+    ctx.browser.criticalFilenames.includes(lowerName)
   );
 }

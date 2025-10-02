@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSection, CleanerSectionKey, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
@@ -31,7 +31,7 @@ export function CleanerView({
   getTotalSelectedSize,
   getGlobalSelectionStats,
 }: CleanerViewProps) {
-  const [sectionDetailMenu, setSectionDetailMenu] = useState<string | null>(null);
+  const [sectionDetailMenu, setSectionDetailMenu] = useState<CleanerSectionKey | null>(null);
 
   const totalSize = useMemo(() => {
     return Object.values(report).reduce((sum, section) => sum + section.totalSizeInBytes, 0);
@@ -41,7 +41,7 @@ export function CleanerView({
     return getTotalSelectedSize(report);
   }, [getTotalSelectedSize, report]);
 
-  const toggleSectionExpansion = (sectionKey: string) => {
+  const toggleSectionExpansion = (sectionKey: CleanerSectionKey) => {
     setSectionDetailMenu((prev) => (prev === sectionKey ? null : sectionKey));
   };
 

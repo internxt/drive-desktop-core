@@ -1,8 +1,15 @@
 import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { AbsolutePath } from '@/backend/infra/file-system/file-system.module';
 
 import { getSelectedItems } from './get-selected-items';
 
-export function getSectionStats({ viewModel, allItems }: { viewModel: CleanerSectionViewModel; allItems: Array<{ fullPath: string }> }) {
+export function getSectionStats({
+  viewModel,
+  allItems,
+}: {
+  viewModel: CleanerSectionViewModel;
+  allItems: Array<{ absolutePath: AbsolutePath }>;
+}) {
   const selectedItems = getSelectedItems({ viewModel, allItems });
   const selectedCount = selectedItems.length;
   const totalCount = allItems.length;

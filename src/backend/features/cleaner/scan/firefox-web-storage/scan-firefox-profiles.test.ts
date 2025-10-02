@@ -6,11 +6,12 @@ import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper
 import * as isFirefoxProfileDirectoryModule from '../../utils/is-firefox-profile-directory';
 import * as wasAccessedWithinLastHourModule from '../../utils/was-accessed-within-last-hour';
 import { scanFirefoxProfiles } from './scan-firefox-profiles';
+import { AbsolutePath } from '@/backend';
 
 vi.mock(import('node:fs/promises'));
 
 describe('scanFirefoxProfiles', () => {
-  const firefoxProfilesDir = '/home/user/.mozilla/firefox';
+  const firefoxProfilesDir = '/home/user/.mozilla/firefox' as AbsolutePath;
   const mockedIsFirefoxProfileDirectory = partialSpyOn(isFirefoxProfileDirectoryModule, 'isFirefoxProfileDirectory');
   const mockedWasAccessedWithinLastHour = partialSpyOn(wasAccessedWithinLastHourModule, 'wasAccessedWithinLastHour');
   const readdirMock = deepMocked(readdir);
@@ -32,13 +33,11 @@ describe('scanFirefoxProfiles', () => {
     props = mockProps<typeof scanFirefoxProfiles>({
       ctx: {
         browser: {
-          paths: {
-            storage: {
-              firefoxProfile: firefoxProfilesDir,
-            },
-          },
+          criticalExtensions: [],
+          criticalFilenames: [],
         },
       },
+      firefoxProfilesDir,
     });
   });
 
@@ -56,11 +55,6 @@ describe('scanFirefoxProfiles', () => {
     // Given
     props.ctx.browser.criticalExtensions = ['.sqlite', '.sqlite3', '.db'];
     props.ctx.browser.criticalFilenames = ['cookies', 'webappsstore', 'chromeappsstore'];
-    props.ctx.browser.specificCriticalFile = {
-      chrome: [],
-      firefox: [],
-      edge: [],
-    };
     const profileEntries = [createMockDirent('profile.default')];
     const profileFiles = [
       createMockDirent('cookies.sqlite', false),
@@ -79,17 +73,17 @@ describe('scanFirefoxProfiles', () => {
     // Then
     expect(result).toMatchObject([
       {
-        fullPath: '/home/user/.mozilla/firefox/profile.default/regular-file.txt',
+        absolutePath: '/home/user/.mozilla/firefox/profile.default/regular-file.txt',
         fileName: 'regular-file.txt',
         sizeInBytes: 2048,
       },
       {
-        fullPath: '/home/user/.mozilla/firefox/profile.default/prefs.js',
+        absolutePath: '/home/user/.mozilla/firefox/profile.default/prefs.js',
         fileName: 'prefs.js',
         sizeInBytes: 2048,
       },
       {
-        fullPath: '/home/user/.mozilla/firefox/profile.default/bookmarks.html',
+        absolutePath: '/home/user/.mozilla/firefox/profile.default/bookmarks.html',
         fileName: 'bookmarks.html',
         sizeInBytes: 2048,
       },

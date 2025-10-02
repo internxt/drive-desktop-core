@@ -1,5 +1,7 @@
+import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
+
 export type CleanableItem = {
-  fullPath: string;
+  absolutePath: AbsolutePath;
   fileName: string;
   sizeInBytes: number;
 };
@@ -20,46 +22,13 @@ export type ExtendedCleanerReport<T extends Record<string, CleanerSection> = {}>
 
 export type CleanerSectionKey<T extends Record<string, CleanerSection> = CleanerReport> = keyof T;
 
-export type AppCachePaths = {
-  userCache: string;
-  tmpDir: string;
-  varTmpDir: string;
-  localShareCache: string;
-};
-
-export type LogFilesPaths = {
-  localShareLogs: string;
-  xsessionErrorsFile: string;
-  varLogDir: string;
-};
-
-export type WebStorageFilesPaths = {
-  chromeCookies: string;
-  chromeLocalStorage: string;
-  chromeSessionStorage: string;
-  chromeIndexedDB: string;
-  chromeWebStorage: string;
-  firefoxProfile: string;
-  braveCookies: string;
-  braveLocalStorage: string;
-  braveSessionStorage: string;
-  braveIndexedDB: string;
-  braveWebStorage: string;
-};
-
-export type WebCacheFilesPaths = {
-  chromeCacheDir: string;
-  firefoxCacheDir: string;
-  braveCacheDir: string;
-};
-
 export type CleanerSectionViewModel = {
   selectedAll: boolean;
   exceptions: string[];
 };
 
-export type CleanerViewModel = {
-  [sectionKey: string]: CleanerSectionViewModel;
+export type CleanerViewModel<T extends Record<string, CleanerSection> = {}> = {
+  [sectionKey in CleanerSectionKey<ExtendedCleanerReport<T>>]: CleanerSectionViewModel;
 };
 
 export type CleanupProgress = {
@@ -72,27 +41,16 @@ export type CleanupProgress = {
 };
 
 type BrowserContext = {
-  paths: {
-    storage: WebStorageFilesPaths;
-    cache: WebCacheFilesPaths;
-  };
   criticalExtensions: string[];
   criticalFilenames: string[];
-  specificCriticalFile: {
-    chrome: string[];
-    firefox: string[];
-    edge: string[];
-  };
 };
 
 type AppCacheContext = {
-  paths: AppCachePaths;
   criticalExtensions: string[];
   criticalKeywords: string[];
 };
 
 type LogFilesContext = {
-  paths: LogFilesPaths;
   safeExtensions: string[];
 };
 
@@ -101,7 +59,7 @@ export type CleanerContext = {
   appCache: AppCacheContext;
   logFiles: LogFilesContext;
 };
-export const CLEANER_SECTION_KEYS: readonly CleanerSectionKey<CleanerReport>[] = [
+export const CLEANER_SECTION_KEYS: readonly CleanerSectionKey<ExtendedCleanerReport>[] = [
   'appCache',
   'logFiles',
   'trash',

@@ -1,9 +1,9 @@
-import { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSection, CleanerSectionKey, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 
 function calculateExceptionsSize(section: CleanerSection, exceptionPaths: string[]): number {
   let size = 0;
   for (const exceptionPath of exceptionPaths) {
-    const item = section.items.find((item) => item.fullPath === exceptionPath);
+    const item = section.items.find((item) => item.absolutePath === exceptionPath);
     if (item) {
       size += item.sizeInBytes;
     }
@@ -11,7 +11,7 @@ function calculateExceptionsSize(section: CleanerSection, exceptionPaths: string
   return size;
 }
 
-function calculateSectionSize(section: CleanerSection, sectionViewModel: CleanerViewModel[string]): number {
+function calculateSectionSize(section: CleanerSection, sectionViewModel: CleanerViewModel[CleanerSectionKey]): number {
   if (sectionViewModel.selectedAll) {
     const exceptionsSize = calculateExceptionsSize(section, sectionViewModel.exceptions);
     return section.totalSizeInBytes - exceptionsSize;

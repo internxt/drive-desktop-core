@@ -2,6 +2,8 @@ import { Dirent } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path/posix';
 
+import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
+
 import { scanDirectory } from '../../scan/scan-directory';
 import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { isFirefoxProfileDirectory } from '../../utils/is-firefox-profile-directory';
@@ -9,10 +11,10 @@ import { isSafeWebBrowserFile } from '../../utils/is-safe-web-browser-file';
 
 type Props = {
   ctx: CleanerContext;
+  firefoxCacheDir: AbsolutePath;
 };
 
-export async function scanFirefoxCacheProfiles({ ctx }: Props) {
-  const firefoxCacheDir = ctx.browser.paths.cache.firefoxCacheDir;
+export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) {
 
   let entries: Dirent[];
   try {
@@ -33,29 +35,29 @@ export async function scanFirefoxCacheProfiles({ ctx }: Props) {
   for (const profileDir of profileDirs) {
     const profileCachePath = join(firefoxCacheDir, profileDir);
 
-    const cache2Path = join(profileCachePath, 'cache2');
+    const cache2Path = join(profileCachePath, 'cache2') as AbsolutePath;
     scanPromises.push(
       scanDirectory({
         ctx,
-        dirPath: cache2Path,
+        absolutePath: cache2Path,
         customFileFilter: isSafeWebBrowserFile,
       }),
     );
 
-    const thumbnailsPath = join(profileCachePath, 'thumbnails');
+    const thumbnailsPath = join(profileCachePath, 'thumbnails') as AbsolutePath;
     scanPromises.push(
       scanDirectory({
         ctx,
-        dirPath: thumbnailsPath,
+        absolutePath: thumbnailsPath,
         customFileFilter: isSafeWebBrowserFile,
       }),
     );
 
-    const startupCachePath = join(profileCachePath, 'startupCache');
+    const startupCachePath = join(profileCachePath, 'startupCache') as AbsolutePath;
     scanPromises.push(
       scanDirectory({
         ctx,
-        dirPath: startupCachePath,
+        absolutePath: startupCachePath,
         customFileFilter: isSafeWebBrowserFile,
       }),
     );

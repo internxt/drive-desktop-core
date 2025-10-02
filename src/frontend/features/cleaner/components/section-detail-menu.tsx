@@ -1,7 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRef } from 'react';
 
-import { CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSection, CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
@@ -11,14 +11,14 @@ import { SectionDetailHeader } from './section-detail-header';
 import { SectionDetailMenuItem } from './section-detail-menu-item';
 import { Separator } from './separator';
 
-type Props = {
-  sectionName: string;
-  report: ExtendedCleanerReport;
-  viewModel: CleanerViewModel;
+type Props<T extends Record<string, CleanerSection> = {}> = {
+  sectionName: CleanerSectionKey<ExtendedCleanerReport<T>>;
+  report: ExtendedCleanerReport<T>;
+  viewModel: CleanerViewModel<T>;
   sectionConfig: SectionConfig;
   onClose: () => void;
-  onToggleSection: (sectionKey: string) => void;
-  onToggleItem: (sectionKey: string, itemPath: string) => void;
+  onToggleSection: (sectionKey: CleanerSectionKey) => void;
+  onToggleItem: (sectionKey: CleanerSectionKey, itemPath: string) => void;
   useTranslationContext: () => LocalContextProps;
 };
 
@@ -34,7 +34,7 @@ export function SectionDetailMenu({
 }: Readonly<Props>) {
   if (!sectionName) return <></>;
 
-  const sectionData = report[sectionName as keyof ExtendedCleanerReport];
+  const sectionData = report[sectionName];
   const sectionViewModel = viewModel[sectionName];
   if (!sectionViewModel) return <></>;
   const stats = getSectionStats({ viewModel: sectionViewModel, allItems: sectionData.items });
@@ -86,7 +86,7 @@ export function SectionDetailMenu({
             {virtualizer.getVirtualItems().map((virtualItem) => {
               const item = items[virtualItem.index];
               if (!item) return <></>;
-              const isSelected = isItemSelected({ viewModel: sectionViewModel, itemPath: item.fullPath });
+              const isSelected = isItemSelected({ viewModel: sectionViewModel, itemPath: item.absolutePath });
 
               return (
                 <div

@@ -26,7 +26,7 @@ describe('scanDirectory', () => {
 
   const createCleanableItemMock = (fileName: string, size: number, basePath = mockBasePath) =>
     ({
-      fullPath: `${basePath}/${fileName}`,
+      absolutePath: `${basePath}/${fileName}`,
       fileName,
       sizeInBytes: size,
     }) as unknown as CleanableItem;
@@ -36,7 +36,7 @@ describe('scanDirectory', () => {
   beforeEach(() => {
     isInternxtRelatedMock.mockReturnValue(false);
     statMock.mockResolvedValue({ isDirectory: () => true } as unknown as Stats);
-    props = mockProps({ dirPath: mockBasePath });
+    props = mockProps({ absolutePath: mockBasePath });
   });
 
   it('should return empty array when directory is not a directory', async () => {
@@ -69,7 +69,7 @@ describe('scanDirectory', () => {
     expect(processDirentMock).toBeCalledWith(
       expect.objectContaining({
         entry: expect.objectContaining({ name: 'file1.txt' }),
-        fullPath: '/test/path/file1.txt',
+        absolutePath: '/test/path/file1.txt',
         customFileFilter: undefined,
       }),
     );
@@ -91,7 +91,7 @@ describe('scanDirectory', () => {
     expect(processDirentMock).toBeCalledWith(
       expect.objectContaining({
         entry: expect.objectContaining({ name: 'regular-file.txt' }),
-        fullPath: '/test/path/regular-file.txt',
+        absolutePath: '/test/path/regular-file.txt',
         customFileFilter: undefined,
       }),
     );
@@ -114,7 +114,7 @@ describe('scanDirectory', () => {
     expect(processDirentMock).toBeCalledWith(
       expect.objectContaining({
         entry: dirent,
-        fullPath: '/test/path/subdir',
+        absolutePath: '/test/path/subdir',
         customFileFilter: undefined,
       }),
     );

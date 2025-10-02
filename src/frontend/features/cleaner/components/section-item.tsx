@@ -1,6 +1,6 @@
 import { CaretRight } from '@phosphor-icons/react';
 
-import { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSection, CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { Checkbox } from '@/frontend/components/checkbox';
 
 import { SectionConfig } from '../cleaner.types';
@@ -8,14 +8,14 @@ import { formatFileSize } from '../service/format-file-size';
 import { getSectionStats } from '../service/get-section-stats';
 import { Separator } from './separator';
 
-type SectionItemProps = {
-  sectionName: string;
+type SectionItemProps<T extends Record<string, CleanerSection> = {}> = {
+  sectionName: CleanerSectionKey<ExtendedCleanerReport<T>>;
   section: CleanerSection;
   showSeparatorOnTop: boolean;
-  viewModel: CleanerViewModel;
+  viewModel: CleanerViewModel<T>;
   sectionConfig: SectionConfig;
-  onToggleSection: (sectionName: string) => void;
-  onToggleSectionExpansion: (sectionName: string) => void;
+  onToggleSection: (sectionName: CleanerSectionKey) => void;
+  onToggleSectionExpansion: (sectionName: CleanerSectionKey) => void;
 };
 
 export function SectionItem({

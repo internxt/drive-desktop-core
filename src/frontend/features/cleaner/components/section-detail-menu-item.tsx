@@ -1,4 +1,4 @@
-import { CleanableItem } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanableItem, CleanerSectionKey } from '@/backend/features/cleaner/types/cleaner.types';
 import { Checkbox } from '@/frontend/components/checkbox';
 
 import { formatFileSize } from '../service/format-file-size';
@@ -6,10 +6,10 @@ import { Separator } from './separator';
 
 type SectionDetailMenuItemProps = {
   item: CleanableItem;
-  sectionName: string;
+  sectionName: CleanerSectionKey;
   showSeparatorOnTop: boolean;
   isSelected: boolean;
-  onToggleItem: (sectionKey: string, itemPath: string) => void;
+  onToggleItem: (sectionKey: CleanerSectionKey, itemPath: string) => void;
 };
 
 export function SectionDetailMenuItem({
@@ -20,7 +20,7 @@ export function SectionDetailMenuItem({
   onToggleItem,
 }: Readonly<SectionDetailMenuItemProps>) {
   return (
-    <div key={item.fullPath}>
+    <div key={item.absolutePath}>
       {showSeparatorOnTop && <Separator size="small" />}
 
       <div className="flex cursor-pointer items-center px-2 py-4 transition-colors duration-500">
@@ -28,7 +28,7 @@ export function SectionDetailMenuItem({
           label={item.fileName}
           className="font-semibold hover:cursor-pointer"
           checked={isSelected}
-          onClick={() => onToggleItem(sectionName, item.fullPath)}
+          onClick={() => onToggleItem(sectionName, item.absolutePath)}
         />
 
         <div className="flex flex-1 items-end justify-end">

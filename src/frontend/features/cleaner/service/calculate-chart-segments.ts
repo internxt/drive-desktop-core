@@ -1,20 +1,21 @@
-import { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSection, CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 
 import { SectionConfig } from '../cleaner.types';
 import { getSectionStats } from './get-section-stats';
+import { C } from 'vitest/dist/chunks/environment.d.cL3nLXbE';
 
 type calculateChartSegmentsProps<T extends Record<string, CleanerSection>> = {
   viewModel: CleanerViewModel;
-  report: T;
+  report: ExtendedCleanerReport<T>;
   totalSize: number;
-  getSectionSelectionStats: (sectionKey: string, report: T) => ReturnType<typeof getSectionStats>;
+  getSectionSelectionStats: (sectionKey: CleanerSectionKey, report: ExtendedCleanerReport<T>) => ReturnType<typeof getSectionStats>;
   sectionConfig: SectionConfig;
 };
 
 function calculateExceptionsSize(section: CleanerSection, exceptionPaths: string[]): number {
   let size = 0;
   for (const exceptionPath of exceptionPaths) {
-    const item = section.items.find((item) => item.fullPath === exceptionPath);
+    const item = section.items.find((item) => item.absolutePath === exceptionPath);
     if (item) {
       size += item.sizeInBytes;
     }
@@ -22,7 +23,7 @@ function calculateExceptionsSize(section: CleanerSection, exceptionPaths: string
   return size;
 }
 
-function calculateSectionSelectedSize(section: CleanerSection, sectionViewModel: CleanerViewModel[string]): number {
+function calculateSectionSelectedSize(section: CleanerSection, sectionViewModel: CleanerViewModel[CleanerSectionKey]): number {
   if (sectionViewModel.selectedAll) {
     const exceptionsSize = calculateExceptionsSize(section, sectionViewModel.exceptions);
     return section.totalSizeInBytes - exceptionsSize;
@@ -49,8 +50,8 @@ export function calculateChartSegments<T extends Record<string, CleanerSection>>
   const segments: Array<{ color: string; percentage: number; size: number }> = [];
 
   for (const [sectionKey, section] of Object.entries(report)) {
-    const sectionStats = getSectionSelectionStats(sectionKey, report);
-    const sectionViewModel = viewModel[sectionKey];
+    const sectionStats = getSectionSelectionStats(sectionKey as CleanerSectionKey, report);
+    const sectionViewModel = viewModel[sectionKey as CleanerSectionKey];
 
     if (!sectionViewModel || sectionStats.selectedCount === 0) {
       continue;

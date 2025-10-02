@@ -1,6 +1,7 @@
 import { Dirent } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 
+import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as scanDirectoryModule from '../../scan/scan-directory';
@@ -24,7 +25,7 @@ describe('scanFirefoxCacheProfiles', () => {
     }) as unknown as Dirent<Buffer>;
 
   const createMockItem = (fileName: string, size: number, basePath: string): CleanableItem => ({
-    fullPath: `${basePath}/${fileName}`,
+    absolutePath: `${basePath}/${fileName}` as AbsolutePath,
     fileName,
     sizeInBytes: size,
   });
@@ -38,13 +39,18 @@ describe('scanFirefoxCacheProfiles', () => {
     props = mockProps<typeof scanFirefoxCacheProfiles>({
       ctx: {
         browser: {
-          paths: {
-            cache: {
-              firefoxCacheDir,
-            },
-          },
+          criticalExtensions: [],
+          criticalFilenames: [],
+        },
+        appCache: {
+          criticalExtensions: [],
+          criticalKeywords: [],
+        },
+        logFiles: {
+          safeExtensions: [],
         },
       },
+      firefoxCacheDir: firefoxCacheDir as AbsolutePath,
     });
   });
 

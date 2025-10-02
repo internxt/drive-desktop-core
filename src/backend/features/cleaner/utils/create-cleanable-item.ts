@@ -1,12 +1,14 @@
 import { Stats } from 'node:fs';
 import { basename } from 'node:path/posix';
 
+import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
+
 import { CleanableItem } from '../types/cleaner.types';
 
-export function createCleanableItem({ filePath, stat }: { filePath: string; stat: Stats }) {
+export function createCleanableItem({ absolutePath, stat }: { absolutePath: AbsolutePath; stat: Stats }) {
   return {
-    fullPath: filePath,
-    fileName: basename(filePath),
+    absolutePath,
+    fileName: basename(absolutePath),
     sizeInBytes: stat.size,
   } as CleanableItem;
 }

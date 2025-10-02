@@ -1,4 +1,4 @@
-import { CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerViewModel, ExtendedCleanerReport, CleanerSection, CleanerSectionKey } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
@@ -6,16 +6,16 @@ import { SectionItem } from './section-item';
 import { SectionsListHeadertype } from './sections-list-header-type';
 import { Separator } from './separator';
 
-type Props = {
-  report: ExtendedCleanerReport;
+type Props<T extends Record<string, CleanerSection> = {}> = {
+  report: ExtendedCleanerReport<T>;
   viewModel: CleanerViewModel;
   isAllSelected: boolean;
   isPartiallySelected: boolean;
   sectionConfig: SectionConfig;
   useTranslationContext: () => LocalContextProps;
   onSelectAll: () => void;
-  onToggleSection: (sectionName: string) => void;
-  onToggleSectionExpansion: (sectionName: string) => void;
+  onToggleSection: (sectionName: CleanerSectionKey) => void;
+  onToggleSectionExpansion: (sectionName: CleanerSectionKey) => void;
 };
 
 export function SectionsList({
@@ -46,7 +46,7 @@ export function SectionsList({
         {Object.entries(report).map(([sectionName, section], index) => (
           <SectionItem
             key={sectionName}
-            sectionName={sectionName}
+            sectionName={sectionName as CleanerSectionKey}
             section={section}
             showSeparatorOnTop={index > 0}
             viewModel={viewModel}

@@ -1,9 +1,9 @@
-import { CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport, CleanerSection } from '@/backend/features/cleaner/types/cleaner.types';
 
 export type SectionConfig = Record<string, { name: string; color: string }>;
 
-export type CleanerContextType = {
-  report: ExtendedCleanerReport | null;
+export type CleanerContextType<T extends Record<string, CleanerSection> = {}> = {
+  report: ExtendedCleanerReport<T> | null;
   loading: boolean;
   isCleanerAvailable: boolean;
   cleaningState: {
@@ -15,7 +15,7 @@ export type CleanerContextType = {
     spaceGained: string;
   };
   diskSpace: number;
-  sectionKeys: CleanerSectionKey[];
+  sectionKeys: CleanerSectionKey<ExtendedCleanerReport<T>>[];
   generateReport: (force?: boolean) => Promise<void>;
   startCleanup: (viewModel: CleanerViewModel) => void;
   stopCleanup: () => void;

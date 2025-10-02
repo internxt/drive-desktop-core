@@ -1,4 +1,3 @@
-import { logger } from '@/backend/core/logger/logger';
 import { Button } from '@/frontend/components/button';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
@@ -13,7 +12,7 @@ export function LockedState({ useTranslationContext, openUrl }: Readonly<Props>)
     try {
       await openUrl('https://internxt.com/pricing');
     } catch (error) {
-      logger.error({ msg: 'Failed to open pricing page', error });
+      console.error({ msg: 'Failed to open pricing page', error });
     }
   };
 

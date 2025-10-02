@@ -1,4 +1,4 @@
-import { CleanableItem, CleanerSectionKey, CleanerReport, CleanerSectionViewModel, CleanerViewModel } from '../types/cleaner.types';
+import { CleanableItem, CleanerSectionKey, CleanerReport, CleanerSectionViewModel, CleanerViewModel, CleanerSection, ExtendedCleanerReport } from '../types/cleaner.types';
 
 type SelectedItemsForSectionProps = {
   sectionViewModel: CleanerSectionViewModel;
@@ -6,24 +6,24 @@ type SelectedItemsForSectionProps = {
 };
 export function getSelectedItemsForSection({ sectionViewModel, sectionItems }: SelectedItemsForSectionProps) {
   if (sectionViewModel.selectedAll) {
-    return sectionItems.filter((item) => !sectionViewModel.exceptions.includes(item.fullPath));
+    return sectionItems.filter((item) => !sectionViewModel.exceptions.includes(item.absolutePath));
   } else {
-    return sectionItems.filter((item) => sectionViewModel.exceptions.includes(item.fullPath));
+    return sectionItems.filter((item) => sectionViewModel.exceptions.includes(item.absolutePath));
   }
 }
 
-type AllItemsToDeleteProps = {
+type AllItemsToDeleteProps<T extends Record<string, CleanerSection> = {}> = {
   viewModel: CleanerViewModel;
-  report: CleanerReport;
-  cleanerSectionKeys: CleanerSectionKey[];
+  report: ExtendedCleanerReport<T>;
+  cleanerSectionKeys: CleanerSectionKey<ExtendedCleanerReport<T>>[];
 };
 
-export function getAllItemsToDelete({ viewModel, report, cleanerSectionKeys }: AllItemsToDeleteProps) {
+export function getAllItemsToDelete<T extends Record<string, CleanerSection> = {}>({ viewModel, report, cleanerSectionKeys }: AllItemsToDeleteProps<T>) {
   const itemsToDelete: CleanableItem[] = [];
 
   for (const sectionKey of cleanerSectionKeys) {
     const section = report[sectionKey];
-    const sectionViewModel = viewModel[sectionKey];
+    const sectionViewModel = viewModel[sectionKey as keyof CleanerViewModel];
 
     if (sectionViewModel) {
       const selectedItems = getSelectedItemsForSection({ sectionViewModel, sectionItems: section.items });
