@@ -16,7 +16,7 @@ function createInitialState(): CleanerState {
   };
 }
 
-const state: CleanerState = createInitialState();
+const state = createInitialState();
 
 function reset() {
   const newState = createInitialState();

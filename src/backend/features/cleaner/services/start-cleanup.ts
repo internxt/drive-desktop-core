@@ -6,14 +6,14 @@ import { CleanerViewModel, CleanupProgress, CleanerReport, CleanerSectionKey } f
 import { getAllItemsToDelete } from '../utils/selection-utils';
 import { deleteFileSafely } from './delete-file-saftly';
 
-type StartCleanupProps = {
+type Props = {
   viewModel: CleanerViewModel;
   storedCleanerReport: CleanerReport | null;
   emitProgress: (progress: CleanupProgress) => void;
   cleanerSectionKeys: CleanerSectionKey[];
 };
 
-export async function startCleanup({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: StartCleanupProps) {
+export async function startCleanup({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: Props) {
   if (cleanerStore.state.isCleanupInProgress) {
     logger.warn({ tag: 'CLEANER', msg: 'Cleanup already in progress, ignoring new request' });
     return;

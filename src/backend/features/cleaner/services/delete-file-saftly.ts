@@ -1,7 +1,6 @@
 import { unlink } from 'node:fs/promises';
 
 import { logger } from '@/backend/core/logger/logger';
-import { throwWrapper } from '@/backend/core/utils/throw-wrapper';
 import { FileSystemModule } from '@/backend/infra/file-system/file-system.module';
 import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
@@ -13,14 +12,12 @@ type Props = {
 
 export async function deleteFileSafely({ absolutePath }: Props) {
   try {
-    const statsOrThrow = throwWrapper(FileSystemModule.stat);
-    const data = await statsOrThrow({ absolutePath });
+    const { size } = await FileSystemModule.statThrow({ absolutePath });
 
-    const fileSize = data?.size;
     await unlink(absolutePath);
 
     cleanerStore.state.deletedFilesCount++;
-    cleanerStore.state.totalSpaceGained += fileSize ?? 0;
+    cleanerStore.state.totalSpaceGained += size;
   } catch (error) {
     logger.warn({
       tag: 'CLEANER',
