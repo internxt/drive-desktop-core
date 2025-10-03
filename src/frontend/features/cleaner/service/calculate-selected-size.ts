@@ -1,37 +1,16 @@
 import { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 
-function calculateExceptionsSize(section: CleanerSection, exceptionPaths: string[]): number {
-  let size = 0;
-  for (const exceptionPath of exceptionPaths) {
-    const item = section.items.find((item) => item.fullPath === exceptionPath);
-    if (item) {
-      size += item.sizeInBytes;
-    }
-  }
-  return size;
-}
+import { calculateSectionSize } from './calculate-section-size';
 
-function calculateSectionSize(section: CleanerSection, sectionViewModel: CleanerViewModel[string]): number {
-  if (sectionViewModel.selectedAll) {
-    const exceptionsSize = calculateExceptionsSize(section, sectionViewModel.exceptions);
-    return section.totalSizeInBytes - exceptionsSize;
-  }
-  return calculateExceptionsSize(section, sectionViewModel.exceptions);
-}
+type Props<T> = { viewModel: CleanerViewModel; report: T };
 
-export function calculateSelectedSize<T extends Record<string, CleanerSection>>({
-  viewModel,
-  report,
-}: {
-  viewModel: CleanerViewModel;
-  report: T;
-}): number {
+export function calculateSelectedSize<T extends Record<string, CleanerSection>>({ viewModel, report }: Props<T>) {
   let totalSize = 0;
 
   for (const [sectionKey, sectionViewModel] of Object.entries(viewModel)) {
     const section = report[sectionKey as keyof T];
     if (section) {
-      totalSize += calculateSectionSize(section, sectionViewModel);
+      totalSize += calculateSectionSize({ section, sectionViewModel });
     }
   }
 
