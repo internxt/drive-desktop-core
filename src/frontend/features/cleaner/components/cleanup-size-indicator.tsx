@@ -18,9 +18,9 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
       </div>
 
       <div className="relative mb-8 h-36 w-64">
-        <svg className="h-full w-full" viewBox="0 0 200 100">
+        <svg className="h-full w-full" viewBox="0 0 200 120">
           <path
-            d="M 20 80 A 80 80 0 0 1 180 80"
+            d="M 20 100 A 80 80 0 0 1 180 100"
             fill="none"
             stroke="#E5E7EB"
             className="dark:stroke-gray-600"
@@ -34,15 +34,15 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
                 segmentDetails.reduce(
                   (acc, segment, index) => {
                     const radius = 80;
-                    const circumference = Math.PI * radius;
-                    const strokeLength = (segment.percentage / 100) * circumference;
-                    const strokeDasharray = `${strokeLength} ${circumference}`;
+                    const semiCircumference = Math.PI * radius; // solo semicircunferencia
+                    const strokeLength = (segment.percentage / 100) * semiCircumference;
+                    const strokeDasharray = `${strokeLength} ${semiCircumference}`;
                     const strokeDashoffset = -acc.offset;
 
                     acc.elements.push(
                       <path
                         key={index}
-                        d="M 20 80 A 80 80 0 0 1 180 80"
+                        d="M 20 100 A 80 80 0 0 1 180 100"
                         fill="none"
                         stroke={segment.color}
                         strokeWidth="12"
