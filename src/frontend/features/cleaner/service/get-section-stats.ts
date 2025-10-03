@@ -2,20 +2,26 @@ import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleane
 
 import { getSelectedItems } from './get-selected-items';
 
-type Selected = 'none' | 'partial' | 'all';
-
 export function getSectionStats({ viewModel, allItems }: { viewModel: CleanerSectionViewModel; allItems: Array<{ fullPath: string }> }) {
   const selectedItems = getSelectedItems({ viewModel, allItems });
   const selectedCount = selectedItems.length;
   const totalCount = allItems.length;
 
-  let selected: Selected = 'partial';
-  if (selectedCount === 0) selected = 'none';
-  else if (selectedCount === totalCount) selected = 'all';
+  if (totalCount === 0) {
+    return {
+      selectedCount: 0,
+      totalCount: 0,
+      isAllSelected: false,
+      isPartiallySelected: false,
+      isNoneSelected: true,
+    };
+  }
 
   return {
     selectedCount,
     totalCount,
-    selected,
+    isAllSelected: selectedCount === totalCount,
+    isPartiallySelected: selectedCount > 0 && selectedCount < totalCount,
+    isNoneSelected: selectedCount === 0,
   };
 }

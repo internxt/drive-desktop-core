@@ -1,57 +1,86 @@
 import { describe, it, expect } from 'vitest';
 
-import { mockProps } from '@/tests/vitest/utils.helper.test';
+import type { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 
 import { getSectionStats } from './get-section-stats';
 
-describe('get-section-stats', () => {
-  let props: Parameters<typeof getSectionStats>[0];
-
-  beforeEach(() => {
-    props = mockProps<typeof getSectionStats>({
-      viewModel: { selectedAll: true },
-      allItems: [
-        { fullPath: '/path/to/file1.txt' },
-        { fullPath: '/path/to/file2.txt' },
-        { fullPath: '/path/to/file3.txt' },
-        { fullPath: '/path/to/file4.txt' },
-      ],
-    });
-  });
+describe('getSectionStats', () => {
+  const mockItems = [
+    { fullPath: '/path/to/file1.txt' },
+    { fullPath: '/path/to/file2.txt' },
+    { fullPath: '/path/to/file3.txt' },
+    { fullPath: '/path/to/file4.txt' },
+  ];
 
   it('should return stats indicating no items', () => {
     // Given
-    props.allItems = [];
+    const viewModel: CleanerSectionViewModel = {
+      selectedAll: true,
+      exceptions: [],
+    };
     // When
-    const result = getSectionStats(props);
+    const result = getSectionStats({ viewModel, allItems: [] });
     // Then
-    expect(result).toMatchObject({ selectedCount: 0, totalCount: 0, selected: 'none' });
+    expect(result).toMatchObject({
+      selectedCount: 0,
+      totalCount: 0,
+      isAllSelected: false,
+      isPartiallySelected: false,
+      isNoneSelected: true,
+    });
   });
 
   it('should return all selected when no exceptions', () => {
     // Given
-    props.viewModel.exceptions = [];
+    const viewModel: CleanerSectionViewModel = {
+      selectedAll: true,
+      exceptions: [],
+    };
     // When
-    const result = getSectionStats(props);
+    const result = getSectionStats({ viewModel, allItems: mockItems });
     // Then
-    expect(result).toMatchObject({ selectedCount: 4, totalCount: 4, selected: 'all' });
+    expect(result).toMatchObject({
+      selectedCount: 4,
+      totalCount: 4,
+      isAllSelected: true,
+      isPartiallySelected: false,
+      isNoneSelected: false,
+    });
   });
 
   it('should return partially selected when some exceptions exist', () => {
     // Given
-    props.viewModel.exceptions = ['/path/to/file2.txt', '/path/to/file4.txt'];
+    const viewModel: CleanerSectionViewModel = {
+      selectedAll: true,
+      exceptions: ['/path/to/file2.txt', '/path/to/file4.txt'],
+    };
     // When
-    const result = getSectionStats(props);
+    const result = getSectionStats({ viewModel, allItems: mockItems });
     // Then
-    expect(result).toMatchObject({ selectedCount: 2, totalCount: 4, selected: 'partial' });
+    expect(result).toMatchObject({
+      selectedCount: 2,
+      totalCount: 4,
+      isAllSelected: false,
+      isPartiallySelected: true,
+      isNoneSelected: false,
+    });
   });
 
   it('should return none selected when all items are exceptions', () => {
     // Given
-    props.viewModel.exceptions = ['/path/to/file1.txt', '/path/to/file2.txt', '/path/to/file3.txt', '/path/to/file4.txt'];
+    const viewModel: CleanerSectionViewModel = {
+      selectedAll: true,
+      exceptions: ['/path/to/file1.txt', '/path/to/file2.txt', '/path/to/file3.txt', '/path/to/file4.txt'],
+    };
     // When
-    const result = getSectionStats(props);
+    const result = getSectionStats({ viewModel, allItems: mockItems });
     // Then
-    expect(result).toMatchObject({ selectedCount: 0, totalCount: 4, selected: 'none' });
+    expect(result).toMatchObject({
+      selectedCount: 0,
+      totalCount: 4,
+      isAllSelected: false,
+      isPartiallySelected: false,
+      isNoneSelected: true,
+    });
   });
 });
