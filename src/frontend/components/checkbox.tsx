@@ -52,7 +52,7 @@ export function Checkbox(props: CheckboxProps) {
         </div>
       </div>
 
-      <p>{props.label}</p>
+      <p className="overflow-hidden text-ellipsis whitespace-nowrap">{props.label}</p>
     </label>
   );
 }

@@ -34,7 +34,7 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
                 segmentDetails.reduce(
                   (acc, segment, index) => {
                     const radius = 80;
-                    const semiCircumference = Math.PI * radius; // solo semicircunferencia
+                    const semiCircumference = Math.PI * radius;
                     const strokeLength = (segment.percentage / 100) * semiCircumference;
                     const strokeDasharray = `${strokeLength} ${semiCircumference}`;
                     const strokeDashoffset = -acc.offset;
@@ -63,7 +63,7 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
           )}
         </svg>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center pt-6">
+        <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ paddingTop: '50px' }}>
           <div className="text-gray-900 text-3xl font-bold dark:text-gray-100">{formatFileSize({ bytes: selectedSize })}</div>
           <SavedSpaceIndicator totalSize={totalSize} selectedSize={selectedSize} useTranslationContext={useTranslationContext} />
         </div>
