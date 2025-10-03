@@ -38,7 +38,7 @@ export function fn({ prop1, prop2 }: Props) {}
 
 ### Testing
 
-See `docs/TESTING.md`.
+See [docs/TESTING.md](https://github.com/internxt/drive-desktop-core/blob/master/docs/TESTING.md).
 
 ### Imports
 

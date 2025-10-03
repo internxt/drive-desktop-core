@@ -1,184 +1,72 @@
-import type { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import type { CleanerSection, CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { calculateChartSegments } from './calculate-chart-segments';
+import * as calculateSectionSizeModule from './calculate-section-size';
 
-describe('calculateChartSegments', () => {
-  const createMockReport = {
-    appCache: {
-      totalSizeInBytes: 1000,
-      items: [
-        { fullPath: '/cache/file1.tmp', fileName: 'file1.tmp', sizeInBytes: 400 },
-        { fullPath: '/cache/file2.tmp', fileName: 'file2.tmp', sizeInBytes: 300 },
-        { fullPath: '/cache/file3.tmp', fileName: 'file3.tmp', sizeInBytes: 300 },
-      ],
-    },
-    logFiles: {
-      totalSizeInBytes: 2000,
-      items: [
-        { fullPath: '/logs/app.log', fileName: 'app.log', sizeInBytes: 800 },
-        { fullPath: '/logs/error.log', fileName: 'error.log', sizeInBytes: 1200 },
-      ],
-    },
-    webCache: {
-      totalSizeInBytes: 1500,
-      items: [{ fullPath: '/web/cache1', fileName: 'cache1', sizeInBytes: 1500 }],
-    },
-  };
+describe('calculate-chart-segments', () => {
+  const getSectionSelectionStats = vi.fn();
+  const calculateSectionSizeMock = partialSpyOn(calculateSectionSizeModule, 'calculateSectionSize');
 
-  const createMockSectionConfig = {
-    appCache: { name: 'App Cache', color: '#FF6B6B' },
-    logFiles: { name: 'Log Files', color: '#4ECDC4' },
-    webCache: { name: 'Web Cache', color: '#45B7D1' },
-  };
+  let props: Parameters<typeof calculateChartSegments>[0];
 
-  const getSectionSelectionStatsMock = ({
-    selectedCount,
-    totalCount,
-    isAllSelected,
-  }: {
-    selectedCount: number;
-    totalCount: number;
-    isAllSelected: boolean;
-  }) =>
-    vi.fn(() => {
-      return {
-        selectedCount,
-        totalCount,
-        isAllSelected,
-        isPartiallySelected: !isAllSelected && selectedCount > 0,
-        isNoneSelected: selectedCount === 0,
-      };
+  beforeEach(() => {
+    getSectionSelectionStats.mockReturnValue(1);
+
+    props = mockProps<typeof calculateChartSegments>({
+      totalSize: 4500,
+      getSectionSelectionStats,
+      report: { appCache: {}, logFiles: {}, webCache: {} },
+      viewModel: { appCache: {}, logFiles: {}, webCache: {} },
+      sectionConfig: {
+        appCache: { name: 'App Cache', color: '#FF6B6B' },
+        logFiles: { name: 'Log Files', color: '#4ECDC4' },
+        webCache: { name: 'Web Cache', color: '#45B7D1' },
+      },
     });
+  });
 
   it('should calculate segments correctly with no exceptions', () => {
     // Given
-    const viewModel: CleanerViewModel = {
-      appCache: { selectedAll: true, exceptions: [] },
-      logFiles: { selectedAll: true, exceptions: [] },
-      webCache: { selectedAll: true, exceptions: [] },
-    };
-    const getSectionSelectionStats = getSectionSelectionStatsMock({ selectedCount: 3, totalCount: 3, isAllSelected: true });
+    calculateSectionSizeMock.mockReturnValueOnce(1000).mockReturnValueOnce(2000).mockReturnValueOnce(1500);
     // When
-    const result = calculateChartSegments({
-      viewModel,
-      report: createMockReport,
-      totalSize: 4500,
-      getSectionSelectionStats,
-      sectionConfig: createMockSectionConfig,
-    });
+    const result = calculateChartSegments(props);
     // Then
-    expect(result).toMatchObject([
-      {
-        color: '#FF6B6B',
-        percentage: (1000 / 4500) * 100,
-        size: 1000,
-      },
-      {
-        color: '#4ECDC4',
-        percentage: (2000 / 4500) * 100,
-        size: 2000,
-      },
-      {
-        color: '#45B7D1',
-        percentage: (1500 / 4500) * 100,
-        size: 1500,
-      },
-    ]);
-  });
-
-  it('should subtract exceptions from total size', () => {
-    // Given
-    const viewModelSingle: CleanerViewModel = {
-      appCache: { selectedAll: true, exceptions: ['/cache/file1.tmp', '/cache/file2.tmp'] },
-      logFiles: { selectedAll: false, exceptions: [] },
-      webCache: { selectedAll: false, exceptions: [] },
-    };
-    const getSectionSelectionStats = getSectionSelectionStatsMock({ selectedCount: 1, totalCount: 3, isAllSelected: false });
-    // When
-    const result = calculateChartSegments({
-      viewModel: viewModelSingle,
-      report: createMockReport,
-      totalSize: 4500,
-      getSectionSelectionStats,
-      sectionConfig: createMockSectionConfig,
-    });
-    // Then
-    expect(result).toMatchObject([
-      {
-        color: '#FF6B6B',
-        percentage: (300 / 4500) * 100,
-        size: 300,
-      },
+    expect(result).toStrictEqual([
+      { color: '#FF6B6B', percentage: (1000 / 4500) * 100, size: 1000 },
+      { color: '#4ECDC4', percentage: (2000 / 4500) * 100, size: 2000 },
+      { color: '#45B7D1', percentage: (1500 / 4500) * 100, size: 1500 },
     ]);
   });
 
   it('should skip sections with no selected items', () => {
     // Given
-    const viewModel: CleanerViewModel = {
-      appCache: { selectedAll: false, exceptions: [] },
-      logFiles: { selectedAll: true, exceptions: [] },
-      webCache: { selectedAll: false, exceptions: [] },
-    };
-    const getSectionSelectionStats = getSectionSelectionStatsMock({ selectedCount: 1, totalCount: 3, isAllSelected: false });
+    calculateSectionSizeMock.mockReturnValueOnce(0).mockReturnValueOnce(2000).mockReturnValueOnce(0);
     // When
-    const result = calculateChartSegments({
-      viewModel,
-      report: createMockReport,
-      totalSize: 4500,
-      getSectionSelectionStats,
-      sectionConfig: createMockSectionConfig,
-    });
-
-    expect(result).toMatchObject([
-      {
-        color: '#4ECDC4',
-        percentage: (2000 / 4500) * 100,
-        size: 2000,
-      },
-    ]);
+    const result = calculateChartSegments(props);
+    // Then
+    expect(result).toStrictEqual([{ color: '#4ECDC4', percentage: (2000 / 4500) * 100, size: 2000 }]);
   });
 
   it('should use default color when section config is missing', () => {
     // Given
-    const viewModel: CleanerViewModel = {
-      unknownSection: { selectedAll: true, exceptions: [] },
-    };
-    const report: Record<string, CleanerSection> = {
-      unknownSection: {
-        totalSizeInBytes: 1000,
-        items: [{ fullPath: '/test', fileName: 'test', sizeInBytes: 1000 }],
-      },
-    };
-    const getSectionSelectionStats = getSectionSelectionStatsMock({ selectedCount: 1, totalCount: 1, isAllSelected: true });
+    calculateSectionSizeMock.mockReturnValueOnce(1000);
+    props.viewModel = { unknownSection: {} as CleanerSectionViewModel };
+    props.report = { unknownSection: {} as CleanerSection };
     // When
-    const result = calculateChartSegments({
-      viewModel,
-      report,
-      totalSize: 1000,
-      getSectionSelectionStats,
-      sectionConfig: createMockSectionConfig,
-    });
+    const result = calculateChartSegments(props);
     // Then
-    expect(result).toHaveLength(1);
-    expect(result[0]!.color).toBe('#6B7280');
+    expect(result).toStrictEqual([{ color: '#6B7280', percentage: (1000 / 4500) * 100, size: 1000 }]);
   });
 
   it('should handle zero totalSize correctly', () => {
     // Given
-    const viewModel: CleanerViewModel = {
-      appCache: { selectedAll: true, exceptions: [] },
-    };
-    const getSectionSelectionStats = getSectionSelectionStatsMock({ selectedCount: 1, totalCount: 1, isAllSelected: true });
+    calculateSectionSizeMock.mockReturnValueOnce(1000);
+    props.totalSize = 0;
+    props.viewModel = { appCache: {} as CleanerSectionViewModel };
     // When
-    const result = calculateChartSegments({
-      viewModel,
-      report: createMockReport,
-      totalSize: 0,
-      getSectionSelectionStats,
-      sectionConfig: createMockSectionConfig,
-    });
+    const result = calculateChartSegments(props);
     // Then
-    expect(result).toHaveLength(1);
-    expect(result[0]!.percentage).toBe(0);
+    expect(result).toStrictEqual([{ color: '#FF6B6B', percentage: 0, size: 1000 }]);
   });
 });
