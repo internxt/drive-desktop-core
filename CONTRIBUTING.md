@@ -31,14 +31,14 @@ backend
 type Props = {
   prop1: A;
   prop2: B;
-}
+};
 
 export function fn({ prop1, prop2 }: Props) {}
 ```
 
 ### Testing
 
-See `docs/TESTING.md`.
+See [docs/TESTING.md](https://github.com/internxt/drive-desktop-core/blob/master/docs/TESTING.md).
 
 ### Imports
 
@@ -56,6 +56,7 @@ import { stat } from 'node:fs';
 ---
 
 We recommend always creating functions using the `function` keyword because:
+
 - We use the eslint `no-use-before-define` rule and we need to skip checking functions because they are hoisted (we cannot do this with arrow functions).
 
 We only use arrow functions when we want to define a function using a type.
@@ -90,6 +91,7 @@ function connect({ host, port = 5432 }: { host: string; port?: number }) {}
 ---
 
 We believe that using return types presents more problems than advantages:
+
 - Naming return types.
 - Maintaining return types.
 
@@ -110,13 +112,12 @@ function getNumber() {
 
 ---
 
-Use logger.error for errors that should be logged in `drive-important.log` and logger.warn for all other errors. Almost all errors should be logged with logger.error.
-Do not concatenate strings in msg, otherwise it's more difficult to extend a log and also we won't have multiple colors for each prop.
+Use logger.error for errors that should be logged in `drive-important.log` and logger.warn for all other errors. Almost all errors should be logged with logger.error. Do not concatenate strings in msg, otherwise it's more difficult to extend a log and also we won't have multiple colors for each prop.
 
 ```ts
 logger.debug({
-  tag: "TAG",
-  msg: "Some message",
+  tag: 'TAG',
+  msg: 'Some message',
   prop1,
   prop2,
 });
