@@ -2,8 +2,6 @@ import { Dirent } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path/posix';
 
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
-
 import { scanDirectory } from '../../scan/scan-directory';
 import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { isFirefoxProfileDirectory } from '../../utils/is-firefox-profile-directory';
@@ -11,7 +9,7 @@ import { isSafeWebBrowserFile } from '../../utils/is-safe-web-browser-file';
 
 type Props = {
   ctx: CleanerContext;
-  firefoxCacheDir: AbsolutePath;
+  firefoxCacheDir: string;
 };
 
 export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) {
@@ -34,7 +32,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
   for (const profileDir of profileDirs) {
     const profileCachePath = join(firefoxCacheDir, profileDir);
 
-    const cache2Path = join(profileCachePath, 'cache2') as AbsolutePath;
+    const cache2Path = join(profileCachePath, 'cache2');
     scanPromises.push(
       scanDirectory({
         ctx,
@@ -43,7 +41,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
       }),
     );
 
-    const thumbnailsPath = join(profileCachePath, 'thumbnails') as AbsolutePath;
+    const thumbnailsPath = join(profileCachePath, 'thumbnails');
     scanPromises.push(
       scanDirectory({
         ctx,
@@ -52,7 +50,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
       }),
     );
 
-    const startupCachePath = join(profileCachePath, 'startupCache') as AbsolutePath;
+    const startupCachePath = join(profileCachePath, 'startupCache');
     scanPromises.push(
       scanDirectory({
         ctx,

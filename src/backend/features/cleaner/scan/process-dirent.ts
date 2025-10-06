@@ -2,7 +2,6 @@ import { Dirent } from 'node:fs';
 import { stat } from 'node:fs/promises';
 
 import { logger } from '@/backend/core/logger/logger';
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
 import { CleanerContext } from '../types/cleaner.types';
 import { createCleanableItem } from '../utils/create-cleanable-item';
@@ -12,7 +11,7 @@ import { scanDirectory } from './scan-directory';
 type Props = {
   ctx: CleanerContext;
   entry: Dirent;
-  absolutePath: AbsolutePath;
+  absolutePath: string;
   customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
   customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
 };
@@ -22,18 +21,18 @@ export async function processDirent({ ctx, entry, absolutePath, customFileFilter
     if (entry.isFile()) {
       const fileStats = await stat(absolutePath);
       const wasAccessed = wasAccessedWithinLastHour({ fileStats });
-      const shouldInclude = customFileFilter?.({ ctx, fileName: entry.name }) ?? true;
+      const isIncluded = customFileFilter?.({ ctx, fileName: entry.name }) ?? true;
 
-      if (wasAccessed || !shouldInclude) {
+      if (wasAccessed || !isIncluded) {
         return [];
       }
 
       const item = createCleanableItem({ absolutePath, stat: fileStats });
       return [item];
     } else if (entry.isDirectory()) {
-      const isFiltered = customDirectoryFilter?.({ folderName: entry.name }) || false;
+      const isExcluded = customDirectoryFilter?.({ folderName: entry.name });
 
-      if (isFiltered) {
+      if (isExcluded) {
         return [];
       }
 

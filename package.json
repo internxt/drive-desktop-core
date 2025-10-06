@@ -14,7 +14,7 @@
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
-    "type-check": "tsc",
+    "tsc": "tsc",
     "find-deadcode": "ts-prune -i index.ts -e",
     "========== Testing ==========": "",
     "test": "vitest",

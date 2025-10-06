@@ -10,7 +10,7 @@ type Props = {
 export async function getFilteredDirectories({ baseDir, customDirectoryFilter }: Props) {
   const dirents = await fs.readdir(baseDir, { withFileTypes: true });
   return dirents.filter((dirent) => {
-    const isFiltered = customDirectoryFilter?.({ folderName: dirent.name });
-    return dirent.isDirectory() && !isInternxtRelated({ name: dirent.name }) && !isFiltered;
+    const isExcluded = customDirectoryFilter?.({ folderName: dirent.name });
+    return dirent.isDirectory() && !isInternxtRelated({ name: dirent.name }) && !isExcluded;
   });
 }

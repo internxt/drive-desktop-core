@@ -2,7 +2,6 @@ import { stat, readdir } from 'node:fs/promises';
 import { join } from 'node:path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
 import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import { isInternxtRelated } from '../utils/is-file-internxt-related';
@@ -10,7 +9,7 @@ import { processDirent } from './process-dirent';
 
 type Props = {
   ctx: CleanerContext;
-  absolutePath: AbsolutePath;
+  absolutePath: string;
   customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
   customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
 };
@@ -32,7 +31,7 @@ export async function scanDirectory({ ctx, absolutePath, customFileFilter, custo
       const cleanableItems = await processDirent({
         ctx,
         entry: dirent,
-        absolutePath: fullPath as AbsolutePath,
+        absolutePath,
         customFileFilter,
         customDirectoryFilter,
       });

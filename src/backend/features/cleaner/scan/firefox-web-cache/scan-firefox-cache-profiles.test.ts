@@ -1,7 +1,6 @@
 import { Dirent } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as scanDirectoryModule from '../../scan/scan-directory';
@@ -36,22 +35,7 @@ describe('scanFirefoxCacheProfiles', () => {
     mockedScanDirectory.mockResolvedValue([]);
     mockedIsFirefoxProfileDirectory.mockReturnValue(false);
     readdirMock.mockResolvedValue([]);
-    props = mockProps<typeof scanFirefoxCacheProfiles>({
-      ctx: {
-        browser: {
-          criticalExtensions: [],
-          criticalFilenames: [],
-        },
-        appCache: {
-          criticalExtensions: [],
-          criticalKeywords: [],
-        },
-        logFiles: {
-          safeExtensions: [],
-        },
-      },
-      firefoxCacheDir: firefoxCacheDir as AbsolutePath,
-    });
+    props = mockProps<typeof scanFirefoxCacheProfiles>({ firefoxCacheDir });
   });
 
   it('should return empty array when no entries found in cache directory', async () => {

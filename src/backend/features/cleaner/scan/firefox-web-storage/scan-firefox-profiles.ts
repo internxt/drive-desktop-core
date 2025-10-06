@@ -2,8 +2,6 @@ import { Dirent } from 'node:fs';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path/posix';
 
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
-
 import { scanDirectory } from '../../scan/scan-directory';
 import { CleanableItem, CleanerContext } from '../../types/cleaner.types';
 import { isFirefoxProfileDirectory } from '../../utils/is-firefox-profile-directory';
@@ -11,7 +9,7 @@ import { isSafeWebBrowserFile } from '../../utils/is-safe-web-browser-file';
 
 type Props = {
   ctx: CleanerContext;
-  firefoxProfilesDir: AbsolutePath;
+  firefoxProfilesDir: string;
 };
 
 export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
@@ -32,7 +30,7 @@ export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
   const scanPromises: Promise<CleanableItem[]>[] = [];
 
   for (const profileDir of profileDirs) {
-    const profilePath = join(firefoxProfilesDir, profileDir) as AbsolutePath;
+    const profilePath = join(firefoxProfilesDir, profileDir);
 
     scanPromises.push(
       scanDirectory({

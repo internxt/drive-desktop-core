@@ -1,7 +1,6 @@
 import { Stats } from 'node:fs';
 import { stat } from 'node:fs/promises';
 
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { mockProps, partialSpyOn, deepMocked, calls } from '@/tests/vitest/utils.helper.test';
 
@@ -18,7 +17,7 @@ describe('processDirent', () => {
   const createCleanableItemMock = partialSpyOn(createCleanableItemMocule, 'createCleanableItem');
   const scanDirectoryMock = partialSpyOn(scanDirectoryModule, 'scanDirectory');
 
-  const absolutePath = '/test/test.txt' as AbsolutePath;
+  const absolutePath = '/test/test.txt';
   const name = 'test.txt';
   const mockCleanableItem = {
     absolutePath,
