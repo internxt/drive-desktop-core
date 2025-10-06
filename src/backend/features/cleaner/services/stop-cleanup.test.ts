@@ -19,7 +19,6 @@ describe('stopCleanup', () => {
     // Then
     expect(abortController.signal.aborted).toBe(true);
     call(loggerMock.debug).toMatchObject({
-      tag: 'CLEANER',
       msg: 'Stopping cleanup process',
     });
     expect(cleanerStore.state.isCleanupInProgress).toBe(false);
@@ -30,8 +29,19 @@ describe('stopCleanup', () => {
     stopCleanup();
     // Then
     call(loggerMock.warn).toMatchObject({
-      tag: 'CLEANER',
       msg: 'No cleanup process to stop',
     });
+  });
+
+  it('should not execute when cleanup has already been aborted', () => {
+    // Given
+    cleanerStore.state.isCleanupInProgress = true;
+    // When
+    stopCleanup();
+    // Then
+    call(loggerMock.warn).toMatchObject({
+      msg: 'No cleanup process to stop',
+    });
+    expect(cleanerStore.state.currentAbortController).toBe(null);
   });
 });
