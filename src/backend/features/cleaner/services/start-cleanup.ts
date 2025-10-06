@@ -55,7 +55,7 @@ export async function startCleanup<T extends Record<string, CleanerSection> = {}
     }
 
     if (!item) return;
-    await deleteFileSafely({ absolutePath: item.absolutePath });
+    await deleteFileSafely({ absolutePath: item.fullPath });
 
     const progress = Math.round(((i + 1) / cleanerStore.state.totalFilesToDelete) * 100);
     emitProgress({

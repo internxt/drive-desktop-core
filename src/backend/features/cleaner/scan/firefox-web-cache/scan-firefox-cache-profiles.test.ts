@@ -25,7 +25,7 @@ describe('scanFirefoxCacheProfiles', () => {
     }) as unknown as Dirent<Buffer>;
 
   const createMockItem = (fileName: string, size: number, basePath: string): CleanableItem => ({
-    absolutePath: `${basePath}/${fileName}` as AbsolutePath,
+    fullPath: `${basePath}/${fileName}`,
     fileName,
     sizeInBytes: size,
   });

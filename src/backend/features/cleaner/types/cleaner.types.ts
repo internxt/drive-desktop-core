@@ -1,7 +1,5 @@
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
-
 export type CleanableItem = {
-  absolutePath: AbsolutePath;
+  fullPath: string;
   fileName: string;
   sizeInBytes: number;
 };

@@ -7,7 +7,7 @@ import { CleanableItem } from '../types/cleaner.types';
 
 export function createCleanableItem({ absolutePath, stat }: { absolutePath: AbsolutePath; stat: Stats }) {
   return {
-    absolutePath,
+    fullPath: absolutePath,
     fileName: basename(absolutePath),
     sizeInBytes: stat.size,
   } as CleanableItem;
