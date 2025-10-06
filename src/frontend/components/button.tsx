@@ -5,6 +5,7 @@ const sizes = {
   xl: 'h-11 px-5 rounded-lg text-base',
   '2xl': 'h-12 px-5 rounded-lg text-lg',
 };
+
 type Props = {
   variant?: 'primary' | 'danger' | 'secondary' | 'primaryLight' | 'dangerLight';
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
