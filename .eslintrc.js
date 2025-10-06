@@ -57,6 +57,7 @@ module.exports = {
     'sonarjs/todo-tag': 'off',
     'unicorn/catch-error-name': 'error',
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+    'unicorn/no-array-for-each': 'error',
     'unicorn/prefer-node-protocol': 'error',
     'padding-line-between-statements': [
       'error',

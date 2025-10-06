@@ -43,7 +43,7 @@ describe('name-of-file', () => {
 
 ## Expect
 
-We use only `toHaveLength`, `toBe` or `toMatchObject`. To check the calls of a depMock we use `calls`. Why? `calls` is going to return an array with all calls of a depMock so we can check in the same line the number of calls and the content of them.
+To check the calls of a depMock we use `call` (just one call) or `calls` (0 or more calls). We use only `toHaveLength`, `toBe`, `toMatchObject` and `toStrictEqual` for assertions.
 
 ```ts
 import * as depModule from 'module';
@@ -58,6 +58,8 @@ describe('name-of-file', () => {
     expect(res).toHaveLength();
     expect(res).toBe();
     expect(res).toMatchObject();
+    expect(res).toStrictEqual();
+    call(depMock).toMatchObject();
     calls(depMock).toHaveLength();
     calls(depMock).toMatchObject();
   });
