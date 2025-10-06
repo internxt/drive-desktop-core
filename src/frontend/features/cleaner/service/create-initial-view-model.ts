@@ -5,15 +5,15 @@ type Props = {
   selectedAll?: boolean;
 };
 
-export function createInitialViewModel({ selectedAll = true }: Props) {
-  const viewModel: CleanerViewModel = {
-    appCache: { selectedAll, exceptions: [] },
-    logFiles: { selectedAll, exceptions: [] },
-    trash: { selectedAll, exceptions: [] },
-    webCache: { selectedAll, exceptions: [] },
-    webStorage: { selectedAll, exceptions: [] },
-    platformSpecific: { selectedAll, exceptions: [] },
-  };
+export function createInitialViewModel({ cleanerSectionKeys, selectedAll = true }: Props) {
+  const viewModel = {} as unknown as CleanerViewModel;
+
+  for (const sectionKey of cleanerSectionKeys) {
+    viewModel[sectionKey] = {
+      selectedAll,
+      exceptions: [],
+    };
+  }
 
   return viewModel;
 }
