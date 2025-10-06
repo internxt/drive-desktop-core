@@ -20,6 +20,7 @@ export function CleaningView({ useCleaner, useTranslationContext }: Readonly<Pro
     setInitialCleaningState();
     void generateReport(true);
   }
+
   return (
     <div className="flex w-full flex-col items-center justify-center">
       <div className="flex h-full max-h-[320px] w-full max-w-[590px] flex-col items-center justify-center gap-10 p-5">
