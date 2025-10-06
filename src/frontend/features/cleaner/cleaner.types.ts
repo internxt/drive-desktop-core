@@ -1,5 +1,7 @@
 import { CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 
+export type SectionConfig = Record<string, { name: string; color: string }>;
+
 export type CleanerContextType = {
   report: ExtendedCleanerReport | null;
   loading: boolean;
@@ -19,5 +21,3 @@ export type CleanerContextType = {
   stopCleanup: () => void;
   setInitialCleaningState: () => void;
 };
-
-export type SectionConfig = Record<string, { name: string; color: string }>;
