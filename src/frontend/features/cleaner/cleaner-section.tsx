@@ -55,19 +55,17 @@ export function CleanerSection({ active, useCleaner, useTranslationContext, open
     return (
       <div className="flex h-full w-full flex-col gap-4">
         {!report && !loading && (
-          <>
-            <GenerateReportView
-              useTranslationContext={useTranslationContext}
-              onGenerateReport={handleGenerateReport}
-              {...useCleanerViewModelHook}
-            />
-          </>
+          <GenerateReportView
+            useTranslationContext={useTranslationContext}
+            onGenerateReport={handleGenerateReport}
+            {...useCleanerViewModelHook}
+          />
         )}
         {loading && <LoadingView useTranslationContext={useTranslationContext} />}
         {report && (
           <>
             <div className="flex-1">
-              <>TODO</>
+              TODO
               {/* <CleanerView report={report} {...useCleanerViewModelHook} /> */}
             </div>
             <div className="flex justify-center">
