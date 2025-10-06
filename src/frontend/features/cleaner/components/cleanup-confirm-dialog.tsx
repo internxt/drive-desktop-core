@@ -18,7 +18,7 @@ export function CleanupConfirmDialog({ isVisible, onConfirm, onCancel, useTransl
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onCancel} />
+      <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onCancel} role="button" />
 
       {/* Dialog */}
       <div className="dark:bg-gray-800 relative mx-4 w-full max-w-md rounded-lg bg-surface p-6 shadow-xl">
