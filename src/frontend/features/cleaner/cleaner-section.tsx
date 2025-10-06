@@ -57,13 +57,11 @@ export function CleanerSection({ active, sectionConfig, useCleaner, useTranslati
     return (
       <div className="flex h-full w-full flex-col gap-4">
         {!report && !loading && (
-          <>
-            <GenerateReportView
-              useTranslationContext={useTranslationContext}
-              onGenerateReport={handleGenerateReport}
-              {...useCleanerViewModelHook}
-            />
-          </>
+          <GenerateReportView
+            useTranslationContext={useTranslationContext}
+            onGenerateReport={handleGenerateReport}
+            {...useCleanerViewModelHook}
+          />
         )}
         {loading && <LoadingView useTranslationContext={useTranslationContext} />}
         {report && (

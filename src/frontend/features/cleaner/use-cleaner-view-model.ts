@@ -114,4 +114,5 @@ export function useCleanerViewModel(sectionKeys: CleanerSectionKey[]) {
     getGlobalSelectionStats,
   };
 }
+
 export type CleanerViewModelHook = ReturnType<typeof useCleanerViewModel>;

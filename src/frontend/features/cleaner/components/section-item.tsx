@@ -8,7 +8,7 @@ import { formatFileSize } from '../service/format-file-size';
 import { getSectionStats } from '../service/get-section-stats';
 import { Separator } from './separator';
 
-type SectionItemProps = {
+type Props = {
   sectionName: string;
   section: CleanerSection;
   showSeparatorOnTop: boolean;
@@ -26,7 +26,7 @@ export function SectionItem({
   sectionConfig,
   onToggleSection,
   onToggleSectionExpansion,
-}: Readonly<SectionItemProps>) {
+}: Readonly<Props>) {
   const config = sectionConfig[sectionName];
   const sectionViewModel = viewModel[sectionName];
 
@@ -34,8 +34,8 @@ export function SectionItem({
 
   const stats = getSectionStats({ viewModel: sectionViewModel, allItems: section.items });
 
-  const isSectionAllSelected = stats.isAllSelected;
-  const isSectionPartiallySelected = stats.isPartiallySelected;
+  const isSectionAllSelected = stats.selected === 'all';
+  const isSectionPartiallySelected = stats.selected === 'partial';
   const isEmpty = stats.totalCount === 0;
 
   return (

@@ -7,6 +7,7 @@ type Props = {
 
 export function LoadingView({ useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
+
   return (
     <div className="flex h-full flex-col items-center justify-center p-5" data-testid="loading-state-container">
       <div className="mt-12">
