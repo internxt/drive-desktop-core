@@ -8,8 +8,5 @@ type Props = {
 export function isSafeWebBrowserFile({ ctx, fileName }: Props) {
   const lowerName = fileName.toLowerCase();
 
-  return !(
-    ctx.browser.criticalExtensions.some((ext) => lowerName.endsWith(ext)) ||
-    ctx.browser.criticalFilenames.includes(lowerName)
-  );
+  return !(ctx.browser.criticalExtensions.some((ext) => lowerName.endsWith(ext)) || ctx.browser.criticalFilenames.includes(lowerName));
 }

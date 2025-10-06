@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
+import type { CleanerSection, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { Button } from '@/frontend/components/button';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
-import { CleanerSection, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { CleanerContextType, SectionConfig } from './cleaner.types';
 import { CleanupConfirmDialog } from './components/cleanup-confirm-dialog';
 import { useCleanerViewModel } from './use-cleaner-view-model';

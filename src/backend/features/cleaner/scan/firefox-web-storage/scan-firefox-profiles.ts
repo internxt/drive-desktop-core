@@ -15,7 +15,6 @@ type Props = {
 };
 
 export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
-
   let entries: Dirent[];
   try {
     entries = await readdir(firefoxProfilesDir, { withFileTypes: true });

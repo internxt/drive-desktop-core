@@ -1,9 +1,9 @@
+import { CleanerSection, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { CleanerContextType } from '../cleaner.types';
 import { CleaningFinished } from '../components/cleaning-finished';
 import { CleaningProcess } from '../components/cleaning-process';
-import { CleanerSection, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 
 type Props<T extends Record<string, CleanerSection> = {}> = {
   useCleaner: () => CleanerContextType<ExtendedCleanerReport<T>>;

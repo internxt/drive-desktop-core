@@ -1,6 +1,7 @@
 import { Stats } from 'node:fs';
 import { stat } from 'node:fs/promises';
 
+import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { mockProps, partialSpyOn, deepMocked, calls } from '@/tests/vitest/utils.helper.test';
 
@@ -8,7 +9,6 @@ import * as createCleanableItemMocule from '../utils/create-cleanable-item';
 import * as wasAccessedWithinLastHourModule from '../utils/was-accessed-within-last-hour';
 import { processDirent } from './process-dirent';
 import * as scanDirectoryModule from './scan-directory';
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
 vi.mock(import('node:fs/promises'));
 

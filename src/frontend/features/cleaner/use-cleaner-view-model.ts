@@ -10,7 +10,9 @@ import { isItemSelected } from './service/is-item-selected';
 import { toggleItem } from './service/toggle-item';
 import { toggleSelectAll } from './service/toggle-select-all';
 
-export function useCleanerViewModel<T extends Record<string, CleanerSection> = {}>(sectionKeys: CleanerSectionKey<ExtendedCleanerReport<T>>[]) {
+export function useCleanerViewModel<T extends Record<string, CleanerSection> = {}>(
+  sectionKeys: CleanerSectionKey<ExtendedCleanerReport<T>>[],
+) {
   const keys = sectionKeys;
   const [viewModel, setViewModel] = useState<CleanerViewModel>(createInitialViewModel({ cleanerSectionKeys: keys }));
 

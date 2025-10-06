@@ -1,12 +1,12 @@
 import { Dirent } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
 
+import { AbsolutePath } from '@/backend';
 import { mockProps, partialSpyOn, deepMocked } from '@/tests/vitest/utils.helper.test';
 
 import * as isFirefoxProfileDirectoryModule from '../../utils/is-firefox-profile-directory';
 import * as wasAccessedWithinLastHourModule from '../../utils/was-accessed-within-last-hour';
 import { scanFirefoxProfiles } from './scan-firefox-profiles';
-import { AbsolutePath } from '@/backend';
 
 vi.mock(import('node:fs/promises'));
 
