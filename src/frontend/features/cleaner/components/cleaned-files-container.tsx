@@ -5,6 +5,7 @@ type Props = {
   freeSpaceGained: string;
   useTranslationContext: () => LocalContextProps;
 };
+
 export function CleanedFilesContainer({ deletedFiles, freeSpaceGained, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
   return (

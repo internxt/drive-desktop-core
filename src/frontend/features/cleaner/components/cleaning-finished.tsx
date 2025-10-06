@@ -11,6 +11,7 @@ type Props = {
   onFinish: () => void;
   useTranslationContext: () => LocalContextProps;
 };
+
 export function CleaningFinished({ deletedFiles, freeSpaceGained, onFinish, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
   return (
