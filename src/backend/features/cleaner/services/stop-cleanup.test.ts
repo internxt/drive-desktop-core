@@ -14,10 +14,8 @@ describe('stopCleanup', () => {
     cleanerStore.state.isCleanupInProgress = true;
     const abortController = new AbortController();
     cleanerStore.state.currentAbortController = abortController;
-
     // When
     stopCleanup();
-
     // Then
     expect(abortController.signal.aborted).toBe(true);
     call(loggerMock.debug).toMatchObject({
