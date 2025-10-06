@@ -1,6 +1,8 @@
 import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 
-export function toggleItem({ viewModel, itemPath }: { viewModel: CleanerSectionViewModel; itemPath: string }) {
+type Props = { viewModel: CleanerSectionViewModel; itemPath: string };
+
+export function toggleItem({ viewModel, itemPath }: Props) {
   const exceptions = [...viewModel.exceptions];
   const exceptionIndex = exceptions.indexOf(itemPath);
 

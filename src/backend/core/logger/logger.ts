@@ -52,7 +52,9 @@ function getTagStr(tag?: TTag): string {
       return 'sync';
     case 'CLEANER':
       return 'clea';
-    default:
+    case 'PRODUCTS':
+      return 'prod';
+    case undefined:
       return '    ';
   }
 }
