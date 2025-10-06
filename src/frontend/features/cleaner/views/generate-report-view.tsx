@@ -8,6 +8,7 @@ type Props = {
 
 export function GenerateReportView({ onGenerateReport, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
+
   return (
     <div className="flex flex-col items-center p-5" data-testid="generate-report-container">
       <div className="flex flex-col items-center gap-4 text-center" data-testid="generate-report-content">

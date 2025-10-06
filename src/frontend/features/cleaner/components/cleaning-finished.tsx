@@ -14,6 +14,7 @@ type Props = {
 
 export function CleaningFinished({ deletedFiles, freeSpaceGained, onFinish, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
+
   return (
     <div className="flex w-full flex-col items-center gap-4" data-testid="clean-finished-container">
       <div className="flex w-full max-w-[450px] flex-col text-center">
