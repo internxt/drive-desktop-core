@@ -14,7 +14,7 @@ export type CleanerSectionViewModel = {
   exceptions: string[];
 };
 
-export type CleanerSectionKey = 'appCache' | 'logFiles' | 'trash' | 'webStorage' | 'webCache' | 'platformSpecific';
+export type CleanerSectionKey = 'appCache' | 'logFiles' | 'trash' | 'webStorage' | 'webCache' | 'windowsSpecific';
 export type CleanerReport = Record<CleanerSectionKey, CleanerSection>;
 export type CleanerViewModel = Record<CleanerSectionKey, CleanerSectionViewModel>;
 
