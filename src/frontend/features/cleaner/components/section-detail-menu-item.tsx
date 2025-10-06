@@ -4,7 +4,7 @@ import { Checkbox } from '@/frontend/components/checkbox';
 import { formatFileSize } from '../service/format-file-size';
 import { Separator } from './separator';
 
-type SectionDetailMenuItemProps = {
+type Props = {
   item: CleanableItem;
   sectionName: CleanerSectionKey;
   showSeparatorOnTop: boolean;
@@ -12,13 +12,7 @@ type SectionDetailMenuItemProps = {
   onToggleItem: (sectionKey: CleanerSectionKey, itemPath: string) => void;
 };
 
-export function SectionDetailMenuItem({
-  item,
-  sectionName,
-  showSeparatorOnTop,
-  isSelected,
-  onToggleItem,
-}: Readonly<SectionDetailMenuItemProps>) {
+export function SectionDetailMenuItem({ item, sectionName, showSeparatorOnTop, isSelected, onToggleItem }: Readonly<Props>) {
   return (
     <div key={item.absolutePath}>
       {showSeparatorOnTop && <Separator size="small" />}

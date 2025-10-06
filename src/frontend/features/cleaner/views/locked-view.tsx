@@ -5,16 +5,17 @@ type Props = {
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
 };
+
 export function LockedState({ useTranslationContext, openUrl }: Readonly<Props>) {
   const { translate } = useTranslationContext();
 
-  const handleOpenPricingPage = async () => {
+  async function handleOpenPricingPage() {
     try {
       await openUrl('https://internxt.com/pricing');
     } catch (error) {
       console.error({ msg: 'Failed to open pricing page', error });
     }
-  };
+  }
 
   return (
     <div className="flex flex-col items-center p-5" data-testid="locked-state-container">

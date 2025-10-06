@@ -59,9 +59,7 @@ export function useCleanerViewModel<T extends Record<string, CleanerSection> = {
         : {
             selectedCount: 0,
             totalCount: 0,
-            isAllSelected: false,
-            isPartiallySelected: false,
-            isNoneSelected: true,
+            selected: 'none' as const,
           };
     },
     [viewModel],
@@ -90,8 +88,8 @@ export function useCleanerViewModel<T extends Record<string, CleanerSection> = {
         };
       }
 
-      const allSelected = nonEmptySectionStats.every((stats) => stats.isAllSelected);
-      const noneSelected = nonEmptySectionStats.every((stats) => stats.isNoneSelected);
+      const allSelected = nonEmptySectionStats.every((stats) => stats.selected === 'all');
+      const noneSelected = nonEmptySectionStats.every((stats) => stats.selected === 'none');
       const partiallySelected = !allSelected && !noneSelected;
 
       return {
@@ -116,4 +114,5 @@ export function useCleanerViewModel<T extends Record<string, CleanerSection> = {
     getGlobalSelectionStats,
   };
 }
+
 export type CleanerViewModelHook = ReturnType<typeof useCleanerViewModel>;

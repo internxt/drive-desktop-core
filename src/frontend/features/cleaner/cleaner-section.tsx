@@ -20,7 +20,8 @@ type Props<T extends Record<string, CleanerSection> = {}> = {
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
 };
-export function CleanerSection<T extends Record<string, CleanerSection> = {}>({ active, sectionConfig, useCleaner, useTranslationContext, openUrl }: Readonly<Props<T>>) {
+
+export function CleanerSection({ active, sectionConfig, useCleaner, useTranslationContext, openUrl }: Readonly<Props>) {
   const { translate } = useTranslationContext();
   const { cleaningState, isCleanerAvailable, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
   const useCleanerViewModelHook = useCleanerViewModel(sectionKeys);
@@ -57,13 +58,11 @@ export function CleanerSection<T extends Record<string, CleanerSection> = {}>({ 
     return (
       <div className="flex h-full w-full flex-col gap-4">
         {!report && !loading && (
-          <>
-            <GenerateReportView
-              useTranslationContext={useTranslationContext}
-              onGenerateReport={handleGenerateReport}
-              {...useCleanerViewModelHook}
-            />
-          </>
+          <GenerateReportView
+            useTranslationContext={useTranslationContext}
+            onGenerateReport={handleGenerateReport}
+            {...useCleanerViewModelHook}
+          />
         )}
         {loading && <LoadingView useTranslationContext={useTranslationContext} />}
         {report && (

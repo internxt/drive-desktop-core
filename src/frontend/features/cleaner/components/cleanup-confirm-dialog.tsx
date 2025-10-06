@@ -3,15 +3,16 @@ import { X } from '@phosphor-icons/react';
 import { Button } from '@/frontend/components/button';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
-type CleanupConfirmDialogProps = {
+type Props = {
   isVisible: boolean;
   onConfirm: () => void;
   onCancel: () => void;
   useTranslationContext: () => LocalContextProps;
 };
 
-export function CleanupConfirmDialog({ isVisible, onConfirm, onCancel, useTranslationContext }: Readonly<CleanupConfirmDialogProps>) {
+export function CleanupConfirmDialog({ isVisible, onConfirm, onCancel, useTranslationContext }: Readonly<Props>) {
   if (!isVisible) return null;
+
   const { translate } = useTranslationContext();
 
   return (

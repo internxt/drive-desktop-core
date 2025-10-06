@@ -2,7 +2,6 @@ import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleane
 import { mockProps } from '@/tests/vitest/utils.helper.test';
 
 import { getSelectedItems } from './get-selected-items';
-import { AbsolutePath } from '@/backend';
 
 describe('get-selected-items', () => {
   let props: Parameters<typeof getSelectedItems>[0];
@@ -13,7 +12,7 @@ describe('get-selected-items', () => {
         selectedAll: false,
         exceptions: [],
       } as CleanerSectionViewModel,
-      allItems: [{ absolutePath: '/path/to/file1' as AbsolutePath }, { absolutePath: '/path/to/file2' as AbsolutePath }, { absolutePath: '/path/to/file3' as AbsolutePath }],
+      allItems: [{ fullPath: '/path/to/file1' }, { fullPath: '/path/to/file2' }, { fullPath: '/path/to/file3' }],
     });
   });
 

@@ -12,7 +12,12 @@ type StartCleanupProps<T extends Record<string, CleanerSection> = {}> = {
   cleanerSectionKeys: CleanerSectionKey<ExtendedCleanerReport<T>>[];
 };
 
-export async function startCleanup<T extends Record<string, CleanerSection> = {}>({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: StartCleanupProps<T>) {
+export async function startCleanup<T extends Record<string, CleanerSection> = {}>({
+  viewModel,
+  storedCleanerReport,
+  emitProgress,
+  cleanerSectionKeys,
+}: StartCleanupProps<T>) {
   if (cleanerStore.state.isCleanupInProgress) {
     logger.warn({ tag: 'CLEANER', msg: 'Cleanup already in progress, ignoring new request' });
     return;
@@ -80,4 +85,4 @@ export async function startCleanup<T extends Record<string, CleanerSection> = {}
   });
 
   cleanerStore.reset();
-};
+}

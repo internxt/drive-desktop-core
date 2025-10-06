@@ -8,8 +8,10 @@ type Props = {
   segmentDetails: Array<{ color: string; percentage: number; size: number }>;
   useTranslationContext: () => LocalContextProps;
 };
+
 export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
+
   return (
     <div className="flex w-1/2 flex-col items-center justify-center bg-surface p-6 dark:bg-gray-5">
       <div className="mb-8 text-center">
@@ -82,11 +84,11 @@ function SavedSpaceIndicator({
   useTranslationContext: () => LocalContextProps;
 }>) {
   const { translate } = useTranslationContext();
-  const savedSpacePercentage = totalSize > 0 ? ((selectedSize / totalSize) * 100).toFixed(2) : '0.00';
+  const savedSpacePercentage = totalSize > 0 ? (selectedSize / totalSize) * 100 : 0;
 
   return (
     <div className="text-gray-500 dark:text-gray-400 mt-1 text-center text-sm">
-      {translate('settings.cleaner.sizeIndicatorView.saveUpTo')} {savedSpacePercentage}%
+      {translate('settings.cleaner.sizeIndicatorView.saveUpTo')} {savedSpacePercentage.toFixed(2)}%
       <br />
       {translate('settings.cleaner.sizeIndicatorView.ofYourSpace')}
     </div>
