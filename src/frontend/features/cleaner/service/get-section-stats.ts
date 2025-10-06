@@ -3,8 +3,9 @@ import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleane
 import { getSelectedItems } from './get-selected-items';
 
 type Selected = 'none' | 'partial' | 'all';
+type Props = { viewModel: CleanerSectionViewModel; allItems: Array<{ fullPath: string }> };
 
-export function getSectionStats({ viewModel, allItems }: { viewModel: CleanerSectionViewModel; allItems: Array<{ fullPath: string }> }) {
+export function getSectionStats({ viewModel, allItems }: Props) {
   const selectedItems = getSelectedItems({ viewModel, allItems });
   const selectedCount = selectedItems.length;
   const totalCount = allItems.length;

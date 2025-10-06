@@ -12,6 +12,7 @@ type Props = {
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
 };
+
 export function CleanerSection({ active, useCleaner, useTranslationContext, openUrl }: Readonly<Props>) {
   // const { translate } = useTranslationContext();
   const { cleaningState, isCleanerAvailable } = useCleaner();
