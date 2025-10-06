@@ -4,10 +4,13 @@ import { ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
+import { CleanupSizeIndicator } from '../components/cleanup-size-indicator';
+import { SectionDetailMenu } from '../components/section-detail-menu';
 import { SectionsList } from '../components/sections-list';
+import { calculateChartSegments } from '../service/calculate-chart-segments';
 import { CleanerViewModelHook } from '../use-cleaner-view-model';
 
-type Props = {
+type CleanerViewProps = {
   report: ExtendedCleanerReport;
   diskSpace: number;
   sectionConfig: SectionConfig;
@@ -17,23 +20,26 @@ type Props = {
 export function CleanerView({
   report,
   viewModel,
-  // diskSpace,
+  diskSpace,
   sectionConfig,
   useTranslationContext,
   toggleSection,
-  // toggleItemSelection,
+  toggleItemSelection,
   selectAllSections,
   deselectAllSections,
-  // getSectionSelectionStats,
-  // getTotalSelectedSize,
+  getSectionSelectionStats,
+  getTotalSelectedSize,
   getGlobalSelectionStats,
-}: Props) {
-  const [, /*sectionDetailMenu*/ setSectionDetailMenu] = useState<string | null>(null); // const totalSize = useMemo(() => {
-  //   return Object.values(report).reduce((sum, section) => sum + section.totalSizeInBytes, 0);
-  // }, [report]);
-  // const selectedSize = useMemo(() => {
-  //   return getTotalSelectedSize(report);
-  // }, [getTotalSelectedSize, report]);
+}: CleanerViewProps) {
+  const [sectionDetailMenu, setSectionDetailMenu] = useState<string | null>(null);
+
+  const totalSize = useMemo(() => {
+    return Object.values(report).reduce((sum, section) => sum + section.totalSizeInBytes, 0);
+  }, [report]);
+
+  const selectedSize = useMemo(() => {
+    return getTotalSelectedSize(report);
+  }, [getTotalSelectedSize, report]);
 
   const toggleSectionExpansion = (sectionKey: string) => {
     setSectionDetailMenu((prev) => (prev === sectionKey ? null : sectionKey));
@@ -49,9 +55,11 @@ export function CleanerView({
     } else {
       selectAllSections();
     }
-  }; // const segmentDetails = useMemo(() => {
-  //   return calculateChartSegments({ viewModel, report, totalSize, getSectionSelectionStats, sectionConfig });
-  // }, [viewModel, report, totalSize, getSectionSelectionStats]);
+  };
+
+  const segmentDetails = useMemo(() => {
+    return calculateChartSegments({ viewModel, report, totalSize, getSectionSelectionStats, sectionConfig });
+  }, [viewModel, report, totalSize, getSectionSelectionStats]);
 
   return (
     <div className="relative flex h-full overflow-hidden rounded-lg border border-gray-10 bg-surface shadow-sm dark:bg-gray-5">
@@ -70,19 +78,26 @@ export function CleanerView({
           onToggleSectionExpansion={toggleSectionExpansion}
         />
         {/* Right Panel */}
-        {/* <CleanupSizeIndicator selectedSize={selectedSize} totalSize={diskSpace} segmentDetails={segmentDetails} /> */}
+        <CleanupSizeIndicator
+          selectedSize={selectedSize}
+          totalSize={diskSpace}
+          segmentDetails={segmentDetails}
+          useTranslationContext={useTranslationContext}
+        />
       </div>
       {/* Section Detail Menu */}
-      {/* {sectionDetailMenu && (
-        <SectionDetailMenu
-          sectionName={sectionDetailMenu}
-          report={report}
-          viewModel={viewModel}
-          onClose={() => setSectionDetailMenu(null)}
-          onToggleSection={toggleSection}
-          onToggleItem={toggleItemSelection}
-        />
-      )} */}
+      {sectionDetailMenu && (
+        <SectionDetailMenu
+          sectionName={sectionDetailMenu}
+          report={report}
+          viewModel={viewModel}
+          sectionConfig={sectionConfig}
+          onClose={() => setSectionDetailMenu(null)}
+          onToggleSection={toggleSection}
+          onToggleItem={toggleItemSelection}
+          useTranslationContext={useTranslationContext}
+        />
+      )}
     </div>
   );
 }

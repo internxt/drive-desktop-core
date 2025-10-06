@@ -74,8 +74,6 @@ export function CleanerSection({ active, sectionConfig, useCleaner, useTranslati
                 {...useCleanerViewModelHook}
                 useTranslationContext={useTranslationContext}
               />
-              TODO
-              {/* <CleanerView report={report} {...useCleanerViewModelHook} /> */}
             </div>
             <div className="flex justify-center">
               <Button className={'hover:cursor-pointer'} variant={'primary'} size="md" onClick={handleCleanupClick}>
