@@ -49,7 +49,7 @@ describe('processDirent', () => {
       // Then
       expect(result).toStrictEqual([mockCleanableItem]);
       expect(wasAccessedWithinLastHourMock).toBeCalledWith({ fileStats: expect.any(Object) });
-      expect(createCleanableItemMock).toBeCalledWith({ fullPath, stat: expect.any(Object) });
+      expect(createCleanableItemMock).toBeCalledWith({ filePath: fullPath, stat: expect.any(Object) });
     });
 
     it('should return empty array when file was accessed within last hour', async () => {

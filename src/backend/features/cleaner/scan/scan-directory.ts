@@ -31,7 +31,7 @@ export async function scanDirectory({ ctx, dirPath, customFileFilter, customDire
       const cleanableItems = await processDirent({
         ctx,
         entry: dirent,
-        dirPath: fullPath,
+        fullPath,
         customFileFilter,
         customDirectoryFilter,
       });
