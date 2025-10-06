@@ -5,8 +5,10 @@ type Props = {
   freeSpaceGained: string;
   useTranslationContext: () => LocalContextProps;
 };
+
 export function CleanedFilesContainer({ deletedFiles, freeSpaceGained, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
+
   return (
     <div className="flex h-full w-full items-stretch gap-5 rounded-xl bg-surface py-4">
       <div className="flex w-full flex-row justify-center gap-5">
