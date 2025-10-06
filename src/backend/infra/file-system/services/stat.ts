@@ -9,11 +9,11 @@ class StatError extends Error {
   }
 }
 
-type TProps = {
+type Props = {
   absolutePath: string;
 };
 
-export async function stat({ absolutePath }: TProps) {
+export async function stat({ absolutePath }: Props) {
   try {
     const stat = await fs.stat(absolutePath);
 
