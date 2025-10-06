@@ -1,4 +1,4 @@
-import { CleanerViewModel, ExtendedCleanerReport, CleanerSection, CleanerSectionKey } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerViewModel, CleanerSectionKey, CleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
@@ -6,8 +6,8 @@ import { SectionItem } from './section-item';
 import { SectionsListHeadertype } from './sections-list-header-type';
 import { Separator } from './separator';
 
-type Props<T extends Record<string, CleanerSection> = {}> = {
-  report: ExtendedCleanerReport<T>;
+type Props = {
+  report: CleanerReport;
   viewModel: CleanerViewModel;
   isAllSelected: boolean;
   isPartiallySelected: boolean;

@@ -1,16 +1,15 @@
-import { CleanerSection, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { CleanerContextType } from '../cleaner.types';
 import { CleaningFinished } from '../components/cleaning-finished';
 import { CleaningProcess } from '../components/cleaning-process';
 
-type Props<T extends Record<string, CleanerSection> = {}> = {
-  useCleaner: () => CleanerContextType<ExtendedCleanerReport<T>>;
+type Props = {
+  useCleaner: () => CleanerContextType;
   useTranslationContext: () => LocalContextProps;
 };
 
-export function CleaningView<T extends Record<string, CleanerSection> = {}>({ useCleaner, useTranslationContext }: Readonly<Props<T>>) {
+export function CleaningView({ useCleaner, useTranslationContext }: Readonly<Props>) {
   const { cleaningState, generateReport, stopCleanup, setInitialCleaningState } = useCleaner();
 
   function handleStopCleaning() {

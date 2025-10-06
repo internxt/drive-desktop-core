@@ -1,19 +1,19 @@
-import { CleanerSection, CleanerSectionKey, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSectionKey, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 
-type Props<T extends Record<string, CleanerSection>> = {
-  cleanerSectionKeys: CleanerSectionKey<T>[];
+type Props = {
+  cleanerSectionKeys: CleanerSectionKey[];
   selectedAll?: boolean;
 };
 
-export function createInitialViewModel<T extends Record<string, CleanerSection>>({ cleanerSectionKeys, selectedAll = true }: Props<T>) {
-  const viewModel: CleanerViewModel = {};
-
-  for (const sectionKey of cleanerSectionKeys) {
-    viewModel[sectionKey as string] = {
-      selectedAll,
-      exceptions: [],
-    };
-  }
+export function createInitialViewModel({ selectedAll = true }: Props) {
+  const viewModel: CleanerViewModel = {
+    appCache: { selectedAll, exceptions: [] },
+    logFiles: { selectedAll, exceptions: [] },
+    trash: { selectedAll, exceptions: [] },
+    webCache: { selectedAll, exceptions: [] },
+    webStorage: { selectedAll, exceptions: [] },
+    platformSpecific: { selectedAll, exceptions: [] },
+  };
 
   return viewModel;
 }

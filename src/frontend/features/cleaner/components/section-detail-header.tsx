@@ -1,12 +1,13 @@
 import { CaretDoubleRight } from '@phosphor-icons/react';
 
+import { CleanerSectionKey } from '@/backend/features/cleaner/types/cleaner.types';
 import { Checkbox } from '@/frontend/components/checkbox';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
 
 type Props = {
-  sectionName: string;
+  sectionName: CleanerSectionKey;
   isAllSelected: boolean;
   isPartiallySelected: boolean;
   sectionConfig: SectionConfig;
@@ -33,7 +34,7 @@ export function SectionDetailHeader({
         <div className="text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:cursor-pointer" onClick={onClose}>
           <CaretDoubleRight color="#0066ff" weight="bold" />
         </div>
-        <h3 className="text-gray-900 text-lg font-semibold dark:text-gray-100">{sectionConfig[sectionName]?.name}</h3>
+        <h3 className="text-gray-900 text-lg font-semibold dark:text-gray-100">{sectionConfig[sectionName].name}</h3>
       </div>
       <Checkbox
         checked={isAllSelected || isPartiallySelected}
