@@ -1,4 +1,6 @@
-export function ProgresBar({ progress }: Readonly<{ progress: number }>) {
+type Props = { progress: number };
+
+export function ProgresBar({ progress }: Readonly<Props>) {
   return (
     <div className="flex w-full flex-col items-center gap-1">
       <div className="flex h-1.5 w-full flex-col rounded-full bg-primary/10">
