@@ -36,7 +36,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
     scanPromises.push(
       scanDirectory({
         ctx,
-        absolutePath: cache2Path,
+        dirPath: cache2Path,
         customFileFilter: isSafeWebBrowserFile,
       }),
     );
@@ -45,7 +45,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
     scanPromises.push(
       scanDirectory({
         ctx,
-        absolutePath: thumbnailsPath,
+        dirPath: thumbnailsPath,
         customFileFilter: isSafeWebBrowserFile,
       }),
     );
@@ -54,7 +54,7 @@ export async function scanFirefoxCacheProfiles({ ctx, firefoxCacheDir }: Props) 
     scanPromises.push(
       scanDirectory({
         ctx,
-        absolutePath: startupCachePath,
+        dirPath: startupCachePath,
         customFileFilter: isSafeWebBrowserFile,
       }),
     );

@@ -9,29 +9,29 @@ import { processDirent } from './process-dirent';
 
 type Props = {
   ctx: CleanerContext;
-  absolutePath: string;
+  dirPath: string;
   customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
   customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
 };
 
-export async function scanDirectory({ ctx, absolutePath, customFileFilter, customDirectoryFilter }: Props) {
+export async function scanDirectory({ ctx, dirPath, customFileFilter, customDirectoryFilter }: Props) {
   try {
-    const folderStats = await stat(absolutePath);
+    const folderStats = await stat(dirPath);
     if (!folderStats.isDirectory()) {
       return [];
     }
 
-    const dirents = await readdir(absolutePath, { withFileTypes: true });
+    const dirents = await readdir(dirPath, { withFileTypes: true });
     const items: CleanableItem[] = [];
 
     for (const dirent of dirents) {
-      const fullPath = join(absolutePath, dirent.name);
+      const fullPath = join(dirPath, dirent.name);
       if (isInternxtRelated({ name: fullPath })) continue;
 
       const cleanableItems = await processDirent({
         ctx,
         entry: dirent,
-        absolutePath,
+        dirPath: fullPath,
         customFileFilter,
         customDirectoryFilter,
       });
@@ -43,7 +43,7 @@ export async function scanDirectory({ ctx, absolutePath, customFileFilter, custo
     logger.warn({
       tag: 'CLEANER',
       msg: 'Directory does not exist or cannot be accessed, skipping',
-      absolutePath,
+      dirPath,
       error,
     });
   }

@@ -11,15 +11,15 @@ import { scanDirectory } from './scan-directory';
 type Props = {
   ctx: CleanerContext;
   entry: Dirent;
-  absolutePath: string;
+  fullPath: string;
   customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
   customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
 };
 
-export async function processDirent({ ctx, entry, absolutePath, customFileFilter, customDirectoryFilter }: Props) {
+export async function processDirent({ ctx, entry, fullPath, customFileFilter, customDirectoryFilter }: Props) {
   try {
     if (entry.isFile()) {
-      const fileStats = await stat(absolutePath);
+      const fileStats = await stat(fullPath);
       const wasAccessed = wasAccessedWithinLastHour({ fileStats });
       const isIncluded = customFileFilter?.({ ctx, fileName: entry.name }) ?? true;
 
@@ -27,7 +27,7 @@ export async function processDirent({ ctx, entry, absolutePath, customFileFilter
         return [];
       }
 
-      const item = createCleanableItem({ absolutePath, stat: fileStats });
+      const item = createCleanableItem({ fullPath, stat: fileStats });
       return [item];
     } else if (entry.isDirectory()) {
       const isExcluded = customDirectoryFilter?.({ folderName: entry.name });
@@ -38,7 +38,7 @@ export async function processDirent({ ctx, entry, absolutePath, customFileFilter
 
       return await scanDirectory({
         ctx,
-        absolutePath,
+        dirPath: fullPath,
         customFileFilter,
         customDirectoryFilter,
       });
@@ -47,7 +47,7 @@ export async function processDirent({ ctx, entry, absolutePath, customFileFilter
     logger.warn({
       tag: 'CLEANER',
       msg: 'File or folder with path cannot be accessed, skipping',
-      absolutePath,
+      fullPath,
     });
   }
 

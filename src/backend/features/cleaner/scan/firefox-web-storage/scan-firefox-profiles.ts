@@ -35,7 +35,7 @@ export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
     scanPromises.push(
       scanDirectory({
         ctx,
-        absolutePath: profilePath,
+        dirPath: profilePath,
         customFileFilter: isSafeWebBrowserFile,
       }),
     );

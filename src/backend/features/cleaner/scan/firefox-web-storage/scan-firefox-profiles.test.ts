@@ -72,17 +72,17 @@ describe('scanFirefoxProfiles', () => {
     // Then
     expect(result).toMatchObject([
       {
-        absolutePath: '/home/user/.mozilla/firefox/profile.default/regular-file.txt',
+        fullPath: '/home/user/.mozilla/firefox/profile.default/regular-file.txt',
         fileName: 'regular-file.txt',
         sizeInBytes: 2048,
       },
       {
-        absolutePath: '/home/user/.mozilla/firefox/profile.default/prefs.js',
+        fullPath: '/home/user/.mozilla/firefox/profile.default/prefs.js',
         fileName: 'prefs.js',
         sizeInBytes: 2048,
       },
       {
-        absolutePath: '/home/user/.mozilla/firefox/profile.default/bookmarks.html',
+        fullPath: '/home/user/.mozilla/firefox/profile.default/bookmarks.html',
         fileName: 'bookmarks.html',
         sizeInBytes: 2048,
       },
