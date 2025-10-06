@@ -13,13 +13,13 @@ describe('createCleanableItem', () => {
   it('should create a CleanableItem with correct properties', () => {
     // Given
     const mockStat = { size: 1024 } as Stats;
-    const absolutePath = '/mock/path/example.txt';
+    const filePath = '/mock/path/example.txt';
     mockedBasename.mockReturnValue('example.txt');
     // When
-    const result = createCleanableItem({ absolutePath, stat: mockStat });
+    const result = createCleanableItem({ filePath, stat: mockStat });
     // Then
     expect(result).toStrictEqual({
-      fullPath: absolutePath,
+      fullPath: filePath,
       fileName: 'example.txt',
       sizeInBytes: 1024,
     });

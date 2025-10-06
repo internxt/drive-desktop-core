@@ -1,7 +1,6 @@
 import { join } from 'node:path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
 import { CleanerContext } from '../types/cleaner.types';
 import { getFilteredDirectories } from '../utils/get-filtered-directories';
@@ -9,7 +8,7 @@ import { scanDirectory } from './scan-directory';
 
 type Props = {
   ctx: CleanerContext;
-  baseDir: AbsolutePath;
+  baseDir: string;
   subPath: string;
   customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
   customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
@@ -20,10 +19,10 @@ export async function scanSubDirectory({ ctx, baseDir, subPath, customDirectoryF
     const directories = await getFilteredDirectories({ baseDir, customDirectoryFilter });
 
     const scanPromises = directories.map((directory) => {
-      const dirPath = join(baseDir, directory.name, subPath) as AbsolutePath;
+      const dirPath = join(baseDir, directory.name, subPath);
       return scanDirectory({
         ctx,
-        absolutePath: dirPath,
+        dirPath,
         customFileFilter,
       });
     });

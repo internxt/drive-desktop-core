@@ -1,6 +1,5 @@
 import { Dirent } from 'node:fs';
 
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 import { mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { CleanableItem } from '../types/cleaner.types';
@@ -21,15 +20,15 @@ describe('scanSubDirectory', () => {
       isFile: () => !isDirectory,
     }) as unknown as Dirent<string>;
 
-  const mockBaseDir = '/home/user/.cache' as AbsolutePath;
+  const mockBaseDir = '/home/user/.cache';
   const mockSubDir = 'cache';
 
   const createCleanableItemMock = (appName: string, fileName: string, size: number, basePath = mockBaseDir) =>
     ({
-      absolutePath: `${basePath}/${appName}/${fileName}`,
+      fullPath: `${basePath}/${appName}/${fileName}`,
       fileName,
       sizeInBytes: size,
-    }) as unknown as CleanableItem;
+    }) as CleanableItem;
 
   let props: Parameters<typeof scanSubDirectory>[0];
 
@@ -43,7 +42,7 @@ describe('scanSubDirectory', () => {
 
   it('should scan directories given a certain subPath', async () => {
     // Given
-    const mockBaseDir = '/home/user/.local/share' as AbsolutePath;
+    const mockBaseDir = '/home/user/.local/share';
     props.baseDir = mockBaseDir;
     const mockDirents = [createMockDirent('app1'), createMockDirent('app2')];
     const mockApp1Items = [createCleanableItemMock('app1', 'file1.cache', 1024, mockBaseDir)];
@@ -55,8 +54,8 @@ describe('scanSubDirectory', () => {
     // Then
     expect(result).toStrictEqual([...mockApp1Items, ...mockApp2Items]);
     expect(mockedGetFilteredDirectories).toBeCalledWith({ baseDir: mockBaseDir, customDirectoryFilter: undefined });
-    expect(mockedScanDirectory).toBeCalledWith(expect.objectContaining({ absolutePath: `${mockBaseDir}/app1/${mockSubDir}` }));
-    expect(mockedScanDirectory).toBeCalledWith(expect.objectContaining({ absolutePath: `${mockBaseDir}/app2/${mockSubDir}` }));
+    expect(mockedScanDirectory).toBeCalledWith(expect.objectContaining({ dirPath: `${mockBaseDir}/app1/${mockSubDir}` }));
+    expect(mockedScanDirectory).toBeCalledWith(expect.objectContaining({ dirPath: `${mockBaseDir}/app2/${mockSubDir}` }));
   });
 
   it('should handle scanDirectory errors gracefully', async () => {
