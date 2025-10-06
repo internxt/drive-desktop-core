@@ -7,7 +7,7 @@ import { SectionConfig } from '../cleaner.types';
 import { SectionsList } from '../components/sections-list';
 import { CleanerViewModelHook } from '../use-cleaner-view-model';
 
-type CleanerViewProps = {
+type Props = {
   report: ExtendedCleanerReport;
   diskSpace: number;
   sectionConfig: SectionConfig;
@@ -27,7 +27,7 @@ export function CleanerView({
   // getSectionSelectionStats,
   // getTotalSelectedSize,
   getGlobalSelectionStats,
-}: CleanerViewProps) {
+}: Props) {
   const [sectionDetailMenu, setSectionDetailMenu] = useState<string | null>(null); // const totalSize = useMemo(() => {
   //   return Object.values(report).reduce((sum, section) => sum + section.totalSizeInBytes, 0);
   // }, [report]);
