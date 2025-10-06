@@ -1,5 +1,5 @@
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
-import { call, calls, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
+import { call, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { cleanerStore } from '../stores/cleaner.store';
 import * as getAllItemsToDeleteModule from '../utils/selection-utils';
@@ -11,8 +11,7 @@ const mockedGetAllItemsToDelete = partialSpyOn(getAllItemsToDeleteModule, 'getAl
 const mockedDeleteFileSafely = partialSpyOn(deleteFileSafelyModule, 'deleteFileSafely');
 
 describe('stopCleanup', () => {
-
-  let  props: Parameters<typeof startCleanup>[0];
+  let props: Parameters<typeof startCleanup>[0];
   beforeEach(() => {
     cleanerStore.reset();
     props = mockProps<typeof startCleanup>({
@@ -23,7 +22,7 @@ describe('stopCleanup', () => {
       storedCleanerReport: {
         appCache: {
           totalSizeInBytes: 1000,
-        	items: [{ fullPath: '/cache/file1.tmp', fileName: 'file1.tmp', sizeInBytes: 400 }],
+          items: [{ fullPath: '/cache/file1.tmp', fileName: 'file1.tmp', sizeInBytes: 400 }],
         },
         logFiles: {
           totalSizeInBytes: 500,
@@ -31,7 +30,7 @@ describe('stopCleanup', () => {
         },
       },
       emitProgress: vi.fn(),
-			cleanerSectionKeys: ['appCache', 'logFiles'],
+      cleanerSectionKeys: ['appCache', 'logFiles'],
     });
   });
 
