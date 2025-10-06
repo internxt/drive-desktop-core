@@ -11,4 +11,4 @@ export function stopCleanup() {
   logger.debug({ tag: 'CLEANER', msg: 'Stopping cleanup process' });
   cleanerStore.state.currentAbortController.abort();
   cleanerStore.reset();
-};
+}
