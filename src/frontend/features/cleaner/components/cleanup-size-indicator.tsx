@@ -8,8 +8,10 @@ type Props = {
   segmentDetails: Array<{ color: string; percentage: number; size: number }>;
   useTranslationContext: () => LocalContextProps;
 };
+
 export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
+
   return (
     <div className="flex w-1/2 flex-col items-center justify-center bg-surface p-6 dark:bg-gray-5">
       <div className="mb-8 text-center">

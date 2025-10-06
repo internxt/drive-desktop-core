@@ -39,8 +39,8 @@ export function SectionDetailMenu({
   if (!sectionViewModel) return <></>;
   const stats = getSectionStats({ viewModel: sectionViewModel, allItems: sectionData.items });
 
-  const isAllSelected = stats.isAllSelected;
-  const isPartiallySelected = stats.isPartiallySelected;
+  const isAllSelected = stats.selected === 'all';
+  const isPartiallySelected = stats.selected === 'partial';
   const isEmpty = stats.totalCount === 0;
 
   const handleSelectAll = () => {
