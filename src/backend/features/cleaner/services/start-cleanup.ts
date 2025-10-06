@@ -25,7 +25,6 @@ export async function startCleanup({ viewModel, storedCleanerReport, emitProgres
   }
 
   const itemsToDelete = getAllItemsToDelete({ viewModel, report: storedCleanerReport, cleanerSectionKeys });
-  cleanerStore.state.currentAbortController = new AbortController();
   cleanerStore.state.totalFilesToDelete = itemsToDelete.length;
   cleanerStore.state.isCleanupInProgress = true;
 

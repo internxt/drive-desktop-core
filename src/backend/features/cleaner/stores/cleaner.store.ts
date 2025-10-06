@@ -1,5 +1,5 @@
 type CleanerState = {
-  currentAbortController: AbortController | null;
+  currentAbortController: AbortController;
   totalFilesToDelete: number;
   deletedFilesCount: number;
   totalSpaceGained: number;
@@ -8,7 +8,7 @@ type CleanerState = {
 
 function createInitialState(): CleanerState {
   return {
-    currentAbortController: null,
+    currentAbortController: new AbortController(),
     totalFilesToDelete: 0,
     deletedFilesCount: 0,
     totalSpaceGained: 0,
