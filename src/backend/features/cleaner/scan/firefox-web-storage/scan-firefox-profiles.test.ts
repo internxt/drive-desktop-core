@@ -30,13 +30,13 @@ describe('scanFirefoxProfiles', () => {
     readdirMock.mockResolvedValue([]);
 
     props = mockProps<typeof scanFirefoxProfiles>({
+      firefoxProfilesDir,
       ctx: {
         browser: {
           criticalExtensions: [],
           criticalFilenames: [],
         },
       },
-      firefoxProfilesDir,
     });
   });
 

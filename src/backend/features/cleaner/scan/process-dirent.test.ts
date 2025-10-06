@@ -17,10 +17,10 @@ describe('processDirent', () => {
   const createCleanableItemMock = partialSpyOn(createCleanableItemMocule, 'createCleanableItem');
   const scanDirectoryMock = partialSpyOn(scanDirectoryModule, 'scanDirectory');
 
-  const absolutePath = '/test/test.txt';
+  const fullPath = '/test/test.txt';
   const name = 'test.txt';
   const mockCleanableItem = {
-    absolutePath,
+    fullPath,
     fileName: name,
     sizeInBytes: 1024,
   };
@@ -32,7 +32,7 @@ describe('processDirent', () => {
   beforeEach(() => {
     statMock.mockResolvedValue(createMockStats());
     wasAccessedWithinLastHourMock.mockReturnValue(false);
-    props = mockProps<typeof processDirent>({ entry: { name }, absolutePath });
+    props = mockProps<typeof processDirent>({ entry: { name }, fullPath });
   });
 
   describe('for files', () => {
@@ -49,7 +49,7 @@ describe('processDirent', () => {
       // Then
       expect(result).toStrictEqual([mockCleanableItem]);
       expect(wasAccessedWithinLastHourMock).toBeCalledWith({ fileStats: expect.any(Object) });
-      expect(createCleanableItemMock).toBeCalledWith({ absolutePath, stat: expect.any(Object) });
+      expect(createCleanableItemMock).toBeCalledWith({ fullPath, stat: expect.any(Object) });
     });
 
     it('should return empty array when file was accessed within last hour', async () => {
