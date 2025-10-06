@@ -31,7 +31,15 @@ export function CleanerView({
   getTotalSelectedSize,
   getGlobalSelectionStats,
 }: CleanerViewProps) {
-  const [sectionDetailMenu, setSectionDetailMenu] = useState<CleanerSectionKey | null>(null);
+  const [sectionDetailMenu, setSectionDetailMenu] = useState<string | null>(null);
+
+  const totalSize = useMemo(() => {
+    return Object.values(report).reduce((sum, section) => sum + section.totalSizeInBytes, 0);
+  }, [report]);
+
+  const selectedSize = useMemo(() => {
+    return getTotalSelectedSize(report);
+  }, [getTotalSelectedSize, report]);
 
   const totalSize = useMemo(() => {
     return Object.values(report).reduce((sum, section) => sum + section.totalSizeInBytes, 0);

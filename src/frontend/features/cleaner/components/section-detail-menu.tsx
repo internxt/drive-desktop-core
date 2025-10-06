@@ -1,7 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRef } from 'react';
 
-import { CleanerSection, CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
@@ -11,14 +11,14 @@ import { SectionDetailHeader } from './section-detail-header';
 import { SectionDetailMenuItem } from './section-detail-menu-item';
 import { Separator } from './separator';
 
-type Props<T extends Record<string, CleanerSection> = {}> = {
-  sectionName: CleanerSectionKey<ExtendedCleanerReport<T>>;
-  report: ExtendedCleanerReport<T>;
-  viewModel: CleanerViewModel<T>;
+type Props = {
+  sectionName: string;
+  report: ExtendedCleanerReport;
+  viewModel: CleanerViewModel;
   sectionConfig: SectionConfig;
   onClose: () => void;
-  onToggleSection: (sectionKey: CleanerSectionKey) => void;
-  onToggleItem: (sectionKey: CleanerSectionKey, itemPath: string) => void;
+  onToggleSection: (sectionKey: string) => void;
+  onToggleItem: (sectionKey: string, itemPath: string) => void;
   useTranslationContext: () => LocalContextProps;
 };
 
@@ -34,7 +34,7 @@ export function SectionDetailMenu({
 }: Readonly<Props>) {
   if (!sectionName) return null;
 
-  const sectionData = report[sectionName];
+  const sectionData = report[sectionName as keyof ExtendedCleanerReport];
   const sectionViewModel = viewModel[sectionName];
   if (!sectionViewModel) return null;
 
@@ -88,7 +88,7 @@ export function SectionDetailMenu({
             {virtualizer.getVirtualItems().map((virtualItem) => {
               const item = items[virtualItem.index];
               if (!item) return <></>;
-              const isSelected = isItemSelected({ viewModel: sectionViewModel, itemPath: item.absolutePath });
+              const isSelected = isItemSelected({ viewModel: sectionViewModel, itemPath: item.fullPath });
 
               return (
                 <div
