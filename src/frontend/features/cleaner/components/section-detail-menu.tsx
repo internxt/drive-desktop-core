@@ -32,22 +32,24 @@ export function SectionDetailMenu({
   onToggleItem,
   useTranslationContext,
 }: Readonly<Props>) {
-  if (!sectionName) return <></>;
+  if (!sectionName) return null;
 
   const sectionData = report[sectionName as keyof ExtendedCleanerReport];
   const sectionViewModel = viewModel[sectionName];
-  if (!sectionViewModel) return <></>;
+  if (!sectionViewModel) return null;
+
   const stats = getSectionStats({ viewModel: sectionViewModel, allItems: sectionData.items });
 
   const isAllSelected = stats.selected === 'all';
   const isPartiallySelected = stats.selected === 'partial';
   const isEmpty = stats.totalCount === 0;
 
-  const handleSelectAll = () => {
+  function handleSelectAll() {
     if (!isEmpty) {
       onToggleSection(sectionName);
     }
-  };
+  }
+
   const parentRef = useRef<HTMLDivElement>(null);
   const items = sectionData.items;
 
