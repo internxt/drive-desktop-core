@@ -1,23 +1,18 @@
 import { logger } from '@/backend/core/logger/logger';
 
 import { cleanerStore } from '../stores/cleaner.store';
-import { CleanerViewModel, CleanupProgress, CleanerSectionKey, ExtendedCleanerReport, CleanerSection } from '../types/cleaner.types';
+import { CleanerViewModel, CleanupProgress, CleanerSectionKey, CleanerReport } from '../types/cleaner.types';
 import { getAllItemsToDelete } from '../utils/selection-utils';
 import { deleteFileSafely } from './delete-file-saftly';
 
-type StartCleanupProps<T extends Record<string, CleanerSection> = {}> = {
+type Props = {
   viewModel: CleanerViewModel;
-  storedCleanerReport: ExtendedCleanerReport<T> | null;
+  storedCleanerReport: CleanerReport | null;
   emitProgress: (progress: CleanupProgress) => void;
-  cleanerSectionKeys: CleanerSectionKey<ExtendedCleanerReport<T>>[];
+  cleanerSectionKeys: CleanerSectionKey[];
 };
 
-export async function startCleanup<T extends Record<string, CleanerSection> = {}>({
-  viewModel,
-  storedCleanerReport,
-  emitProgress,
-  cleanerSectionKeys,
-}: StartCleanupProps<T>) {
+export async function startCleanup({ viewModel, storedCleanerReport, emitProgress, cleanerSectionKeys }: Props) {
   if (cleanerStore.state.isCleanupInProgress) {
     logger.warn({ tag: 'CLEANER', msg: 'Cleanup already in progress, ignoring new request' });
     return;

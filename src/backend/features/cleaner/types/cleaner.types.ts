@@ -8,26 +8,15 @@ export type CleanerSection = {
   totalSizeInBytes: number;
   items: CleanableItem[];
 };
-export type CleanerReport = {
-  appCache: CleanerSection;
-  logFiles: CleanerSection;
-  trash: CleanerSection;
-  webStorage: CleanerSection;
-  webCache: CleanerSection;
-};
-
-export type ExtendedCleanerReport<T extends Record<string, CleanerSection> = {}> = CleanerReport & T;
-
-export type CleanerSectionKey<T extends Record<string, CleanerSection> = CleanerReport> = keyof T;
 
 export type CleanerSectionViewModel = {
   selectedAll: boolean;
   exceptions: string[];
 };
 
-export type CleanerViewModel<T extends Record<string, CleanerSection> = {}> = {
-  [sectionKey in CleanerSectionKey<ExtendedCleanerReport<T>>]: CleanerSectionViewModel;
-};
+export type CleanerSectionKey = 'appCache' | 'logFiles' | 'trash' | 'webStorage' | 'webCache' | 'platformSpecific';
+export type CleanerReport = Record<CleanerSectionKey, CleanerSection>;
+export type CleanerViewModel = Record<CleanerSectionKey, CleanerSectionViewModel>;
 
 export type CleanupProgress = {
   currentCleaningPath: string;
@@ -57,10 +46,3 @@ export type CleanerContext = {
   appCache: AppCacheContext;
   logFiles: LogFilesContext;
 };
-export const CLEANER_SECTION_KEYS: readonly CleanerSectionKey<ExtendedCleanerReport>[] = [
-  'appCache',
-  'logFiles',
-  'trash',
-  'webStorage',
-  'webCache',
-] as const;

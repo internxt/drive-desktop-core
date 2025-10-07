@@ -1,4 +1,4 @@
-import { CleanableItem } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanableItem, CleanerSectionKey } from '@/backend/features/cleaner/types/cleaner.types';
 import { Checkbox } from '@/frontend/components/checkbox';
 
 import { formatFileSize } from '../service/format-file-size';
@@ -6,10 +6,10 @@ import { Separator } from './separator';
 
 type Props = {
   item: CleanableItem;
-  sectionName: string;
+  sectionName: CleanerSectionKey;
   showSeparatorOnTop: boolean;
   isSelected: boolean;
-  onToggleItem: (sectionKey: string, itemPath: string) => void;
+  onToggleItem: (sectionKey: CleanerSectionKey, itemPath: string) => void;
 };
 
 export function SectionDetailMenuItem({ item, sectionName, showSeparatorOnTop, isSelected, onToggleItem }: Readonly<Props>) {

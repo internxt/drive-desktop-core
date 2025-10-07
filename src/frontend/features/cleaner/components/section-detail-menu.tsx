@@ -1,7 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRef } from 'react';
 
-import { CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerReport, CleanerSectionKey, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { SectionConfig } from '../cleaner.types';
@@ -12,13 +12,13 @@ import { SectionDetailMenuItem } from './section-detail-menu-item';
 import { Separator } from './separator';
 
 type Props = {
-  sectionName: string;
-  report: ExtendedCleanerReport;
+  sectionName: CleanerSectionKey;
+  report: CleanerReport;
   viewModel: CleanerViewModel;
   sectionConfig: SectionConfig;
   onClose: () => void;
-  onToggleSection: (sectionKey: string) => void;
-  onToggleItem: (sectionKey: string, itemPath: string) => void;
+  onToggleSection: (sectionKey: CleanerSectionKey) => void;
+  onToggleItem: (sectionKey: CleanerSectionKey, itemPath: string) => void;
   useTranslationContext: () => LocalContextProps;
 };
 
@@ -34,7 +34,7 @@ export function SectionDetailMenu({
 }: Readonly<Props>) {
   if (!sectionName) return null;
 
-  const sectionData = report[sectionName as keyof ExtendedCleanerReport];
+  const sectionData = report[sectionName];
   const sectionViewModel = viewModel[sectionName];
   if (!sectionViewModel) return null;
 

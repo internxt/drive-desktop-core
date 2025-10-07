@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import type { CleanerSection, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 import { Button } from '@/frontend/components/button';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
@@ -13,10 +12,10 @@ import { GenerateReportView } from './views/generate-report-view';
 import { LoadingView } from './views/loading-view';
 import { LockedState } from './views/locked-view';
 
-type Props<T extends Record<string, CleanerSection> = {}> = {
+type Props = {
   active: boolean;
   sectionConfig: SectionConfig;
-  useCleaner: () => CleanerContextType<ExtendedCleanerReport<T>>;
+  useCleaner: () => CleanerContextType;
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
 };

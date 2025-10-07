@@ -13,7 +13,7 @@ export function LockedState({ useTranslationContext, openUrl }: Readonly<Props>)
     try {
       await openUrl('https://internxt.com/pricing');
     } catch (error) {
-      console.error({ msg: 'Failed to open pricing page', error });
+      reportError(error);
     }
   }
 
