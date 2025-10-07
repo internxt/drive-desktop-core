@@ -8,10 +8,8 @@ type Props = {
   segmentDetails: Array<{ color: string; percentage: number; size: number }>;
   useTranslationContext: () => LocalContextProps;
 };
-
 export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, useTranslationContext }: Readonly<Props>) {
   const { translate } = useTranslationContext();
-
   return (
     <div className="flex w-1/2 flex-col items-center justify-center bg-surface p-6 dark:bg-gray-5">
       <div className="mb-8 text-center">
@@ -20,9 +18,9 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
       </div>
 
       <div className="relative mb-8 h-36 w-64">
-        <svg className="h-full w-full" viewBox="0 0 200 100">
+        <svg className="h-full w-full" viewBox="0 0 200 120">
           <path
-            d="M 20 80 A 80 80 0 0 1 180 80"
+            d="M 20 100 A 80 80 0 0 1 180 100"
             fill="none"
             stroke="#E5E7EB"
             className="dark:stroke-gray-600"
@@ -36,15 +34,15 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
                 segmentDetails.reduce(
                   (acc, segment, index) => {
                     const radius = 80;
-                    const circumference = Math.PI * radius;
-                    const strokeLength = (segment.percentage / 100) * circumference;
-                    const strokeDasharray = `${strokeLength} ${circumference}`;
+                    const semiCircumference = Math.PI * radius;
+                    const strokeLength = (segment.percentage / 100) * semiCircumference;
+                    const strokeDasharray = `${strokeLength} ${semiCircumference}`;
                     const strokeDashoffset = -acc.offset;
 
                     acc.elements.push(
                       <path
                         key={index}
-                        d="M 20 80 A 80 80 0 0 1 180 80"
+                        d="M 20 100 A 80 80 0 0 1 180 100"
                         fill="none"
                         stroke={segment.color}
                         strokeWidth="12"
@@ -65,7 +63,7 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
           )}
         </svg>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center pt-6">
+        <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ paddingTop: '50px' }}>
           <div className="text-gray-900 text-3xl font-bold dark:text-gray-100">{formatFileSize({ bytes: selectedSize })}</div>
           <SavedSpaceIndicator totalSize={totalSize} selectedSize={selectedSize} useTranslationContext={useTranslationContext} />
         </div>

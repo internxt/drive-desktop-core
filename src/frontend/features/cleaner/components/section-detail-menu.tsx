@@ -78,7 +78,10 @@ export function SectionDetailMenu({
       />
       <Separator classname="mx-2" />
       <div className="flex h-full flex-1 flex-col p-4">
-        <div ref={parentRef} className="bg-space flex-1 overflow-auto rounded-lg dark:bg-gray-5" style={{ height: '100%' }}>
+        <div
+          ref={parentRef}
+          className="bg-space flex-1 overflow-auto rounded-lg dark:bg-gray-5"
+          style={{ height: '100%', paddingBottom: '32px' }}>
           <div
             style={{
               height: `${virtualizer.getTotalSize()}px`,

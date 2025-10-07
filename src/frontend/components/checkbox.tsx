@@ -37,7 +37,7 @@ export function Checkbox({ disabled = false, checked, label, customClassName = '
         </div>
       </div>
 
-      <p>{label}</p>
+      <p className="overflow-hidden text-ellipsis whitespace-nowrap">{label}</p>
     </label>
   );
 }
