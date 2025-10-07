@@ -30,13 +30,11 @@ describe('scanFirefoxProfiles', () => {
     readdirMock.mockResolvedValue([]);
 
     props = mockProps<typeof scanFirefoxProfiles>({
+      firefoxProfilesDir,
       ctx: {
         browser: {
-          paths: {
-            storage: {
-              firefoxProfile: firefoxProfilesDir,
-            },
-          },
+          criticalExtensions: [],
+          criticalFilenames: [],
         },
       },
     });
@@ -56,11 +54,6 @@ describe('scanFirefoxProfiles', () => {
     // Given
     props.ctx.browser.criticalExtensions = ['.sqlite', '.sqlite3', '.db'];
     props.ctx.browser.criticalFilenames = ['cookies', 'webappsstore', 'chromeappsstore'];
-    props.ctx.browser.specificCriticalFile = {
-      chrome: [],
-      firefox: [],
-      edge: [],
-    };
     const profileEntries = [createMockDirent('profile.default')];
     const profileFiles = [
       createMockDirent('cookies.sqlite', false),

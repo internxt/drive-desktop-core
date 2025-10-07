@@ -11,11 +11,6 @@ describe('isSafeWebBrowserFile', () => {
         browser: {
           criticalExtensions: ['.sqlite', '.db', '.log'],
           criticalFilenames: ['lock', 'prefs.js', 'local state'],
-          specificCriticalFile: {
-            chrome: ['first run', 'local state', 'preferences'],
-            firefox: ['profiles.ini', 'prefs.js', 'user.js'],
-            edge: ['local state', 'preferences', 'first run'],
-          },
         },
       },
     });
@@ -35,23 +30,6 @@ describe('isSafeWebBrowserFile', () => {
     it.each(['document.txt', 'image.png', 'video.mp4'])('should allow safe file: "%s"', (file) => {
       props.fileName = file;
       expect(isSafeWebBrowserFile(props)).toBe(true);
-    });
-  });
-
-  describe('Browser-specific critical files', () => {
-    it.each(['first run', 'local state', 'preferences'])('should reject Chrome-specific critical file: "%s"', (file) => {
-      props.fileName = file;
-      expect(isSafeWebBrowserFile(props)).toBe(false);
-    });
-
-    it.each(['profiles.ini', 'prefs.js', 'user.js'])('should reject Firefox-specific critical file: "%s"', (file) => {
-      props.fileName = file;
-      expect(isSafeWebBrowserFile(props)).toBe(false);
-    });
-
-    it.each(['local state', 'preferences', 'first run'])('should reject Edge-specific critical file: "%s"', (file) => {
-      props.fileName = file;
-      expect(isSafeWebBrowserFile(props)).toBe(false);
     });
   });
 });

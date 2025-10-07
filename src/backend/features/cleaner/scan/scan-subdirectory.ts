@@ -10,8 +10,8 @@ type Props = {
   ctx: CleanerContext;
   baseDir: string;
   subPath: string;
-  customDirectoryFilter?: ({ directoryName }: { directoryName: string }) => boolean;
-  customFileFilter?: ({ fileName }: { fileName: string }) => boolean;
+  customDirectoryFilter?: ({ folderName }: { folderName: string }) => boolean;
+  customFileFilter?: ({ ctx, fileName }: { ctx: CleanerContext; fileName: string }) => boolean;
 };
 
 export async function scanSubDirectory({ ctx, baseDir, subPath, customDirectoryFilter, customFileFilter }: Props) {

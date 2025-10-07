@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSectionKey, CleanerViewModel, CleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 
 import { calculateSelectedSize } from './service/calculate-selected-size';
 import { createInitialViewModel } from './service/create-initial-view-model';
@@ -14,17 +14,17 @@ export function useCleanerViewModel(sectionKeys: CleanerSectionKey[]) {
   const keys = sectionKeys;
   const [viewModel, setViewModel] = useState<CleanerViewModel>(createInitialViewModel({ cleanerSectionKeys: keys }));
 
-  const toggleSection = useCallback((sectionKey: string) => {
+  const toggleSection = useCallback((sectionKey: CleanerSectionKey) => {
     setViewModel((prev) => ({
       ...prev,
-      [sectionKey]: toggleSelectAll({ viewModel: prev[sectionKey]! }),
+      [sectionKey]: toggleSelectAll({ viewModel: prev[sectionKey] }),
     }));
   }, []);
 
-  const toggleItemSelection = useCallback((sectionKey: string, itemPath: string) => {
+  const toggleItemSelection = useCallback((sectionKey: CleanerSectionKey, itemPath: string) => {
     setViewModel((prev) => ({
       ...prev,
-      [sectionKey]: toggleItem({ viewModel: prev[sectionKey]!, itemPath }),
+      [sectionKey]: toggleItem({ viewModel: prev[sectionKey], itemPath }),
     }));
   }, []);
 
@@ -37,25 +37,25 @@ export function useCleanerViewModel(sectionKeys: CleanerSectionKey[]) {
   }, []);
 
   const isItemSelectedInSection = useCallback(
-    (sectionKey: string, itemPath: string) => {
-      return isItemSelected({ viewModel: viewModel[sectionKey]!, itemPath });
+    (sectionKey: CleanerSectionKey, itemPath: string) => {
+      return isItemSelected({ viewModel: viewModel[sectionKey], itemPath });
     },
     [viewModel],
   );
 
   const getSelectedItemsForSection = useCallback(
-    (sectionKey: string, report: ExtendedCleanerReport) => {
-      const section = report[sectionKey as keyof ExtendedCleanerReport];
-      return section ? getSelectedItems({ viewModel: viewModel[sectionKey]!, allItems: section.items }) : [];
+    (sectionKey: CleanerSectionKey, report: CleanerReport) => {
+      const section = report[sectionKey];
+      return section ? getSelectedItems({ viewModel: viewModel[sectionKey], allItems: section.items }) : [];
     },
     [viewModel],
   );
 
   const getSectionSelectionStats = useCallback(
-    (sectionKey: string, report: ExtendedCleanerReport) => {
-      const section = report[sectionKey as keyof ExtendedCleanerReport];
+    (sectionKey: CleanerSectionKey, report: CleanerReport) => {
+      const section = report[sectionKey];
       return section
-        ? getSectionStats({ viewModel: viewModel[sectionKey]!, allItems: section.items })
+        ? getSectionStats({ viewModel: viewModel[sectionKey], allItems: section.items })
         : {
             selectedCount: 0,
             totalCount: 0,
@@ -66,15 +66,15 @@ export function useCleanerViewModel(sectionKeys: CleanerSectionKey[]) {
   );
 
   const getTotalSelectedSize = useCallback(
-    (report: ExtendedCleanerReport) => {
+    (report: CleanerReport) => {
       return calculateSelectedSize({ viewModel, report });
     },
     [viewModel],
   );
 
   const getGlobalSelectionStats = useCallback(
-    (report: ExtendedCleanerReport) => {
-      const allSectionStats = Object.keys(viewModel).map((sectionKey) => getSectionSelectionStats(sectionKey, report));
+    (report: CleanerReport) => {
+      const allSectionStats = Object.keys(viewModel).map((sectionKey) => getSectionSelectionStats(sectionKey as CleanerSectionKey, report));
 
       // Only consider non-empty sections for global selection logic
       const nonEmptySectionStats = allSectionStats.filter((stats) => stats.totalCount > 0);

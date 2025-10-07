@@ -2,7 +2,6 @@ import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { calls, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { cleanerStore } from '../stores/cleaner.store';
-import type { CleanerReport, CleanerSectionKey, CleanerViewModel } from '../types/cleaner.types';
 import * as getAllItemsToDeleteModule from '../utils/selection-utils';
 import * as deleteFileSafelyModule from './delete-file-saftly';
 import { startCleanup } from './start-cleanup';
@@ -12,33 +11,29 @@ const mockedDeleteFileSafely = partialSpyOn(deleteFileSafelyModule, 'deleteFileS
 
 describe('startCleanup', () => {
   const mockEmitProgress = vi.fn();
-  const mockCleanerSectionKeys: CleanerSectionKey[] = ['appCache', 'logFiles'];
-  const mockViewModel: CleanerViewModel = {
-    appCache: { selectedAll: true, exceptions: [] },
-    logFiles: { selectedAll: true, exceptions: [] },
-  };
-  const mockStoredCleanerReport: CleanerReport = {
-    appCache: {
-      totalSizeInBytes: 1000,
-      items: [{ fullPath: '/cache/file1.tmp', fileName: 'file1.tmp', sizeInBytes: 400 }],
-    },
-    logFiles: {
-      totalSizeInBytes: 500,
-      items: [{ fullPath: '/logs/app.log', fileName: 'app.log', sizeInBytes: 300 }],
-    },
-    trash: { totalSizeInBytes: 0, items: [] },
-    webStorage: { totalSizeInBytes: 0, items: [] },
-    webCache: { totalSizeInBytes: 0, items: [] },
-  };
 
   let props: Parameters<typeof startCleanup>[0];
+
   beforeEach(() => {
     cleanerStore.reset();
+
     props = mockProps<typeof startCleanup>({
-      viewModel: mockViewModel,
-      storedCleanerReport: mockStoredCleanerReport,
+      cleanerSectionKeys: ['appCache', 'logFiles'],
+      viewModel: {
+        appCache: { selectedAll: true, exceptions: [] },
+        logFiles: { selectedAll: true, exceptions: [] },
+      },
+      storedCleanerReport: {
+        appCache: {
+          totalSizeInBytes: 1000,
+          items: [{ fullPath: '/cache/file1.tmp', fileName: 'file1.tmp', sizeInBytes: 400 }],
+        },
+        logFiles: {
+          totalSizeInBytes: 500,
+          items: [{ fullPath: '/logs/app.log', fileName: 'app.log', sizeInBytes: 300 }],
+        },
+      },
       emitProgress: mockEmitProgress,
-      cleanerSectionKeys: mockCleanerSectionKeys,
     });
   });
 
@@ -64,9 +59,9 @@ describe('startCleanup', () => {
     await startCleanup(props);
     // Then
     expect(mockedGetAllItemsToDelete).toHaveBeenCalledWith({
-      viewModel: mockViewModel,
-      report: mockStoredCleanerReport,
-      cleanerSectionKeys: mockCleanerSectionKeys,
+      viewModel: props.viewModel,
+      report: props.storedCleanerReport,
+      cleanerSectionKeys: props.cleanerSectionKeys,
     });
     calls(mockedDeleteFileSafely).toHaveLength(2);
     expect(mockedDeleteFileSafely).toHaveBeenCalledWith({ absolutePath: '/cache/file1.tmp' });

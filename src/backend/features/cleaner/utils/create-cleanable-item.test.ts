@@ -18,7 +18,7 @@ describe('createCleanableItem', () => {
     // When
     const result = createCleanableItem({ filePath, stat: mockStat });
     // Then
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       fullPath: filePath,
       fileName: 'example.txt',
       sizeInBytes: 1024,

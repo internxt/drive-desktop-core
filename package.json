@@ -1,6 +1,6 @@
 {
   "name": "@internxt/drive-desktop-core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Internxt <hello@internxt.com>",
   "license": "MIT",
   "files": [
@@ -23,6 +23,9 @@
     "test:cov": "npm run test:once -- --coverage",
     "========== Other ==========": "",
     "depcheck": "depcheck"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.81.2",

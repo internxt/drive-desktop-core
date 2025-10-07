@@ -1,10 +1,17 @@
+import { appCacheFileFilter } from './filters/app-cache/app-cache-filter';
+import { isDirectoryWebBrowserRelated } from './filters/app-cache/is-directory-web-browser-related';
+import { logFileFilter } from './filters/logs/log-file-filter';
+import { scanFirefoxCacheProfiles } from './scan/firefox-web-cache/scan-firefox-cache-profiles';
+import { scanFirefoxProfiles } from './scan/firefox-web-storage/scan-firefox-profiles';
 import { processDirent } from './scan/process-dirent';
 import { scanDirectory } from './scan/scan-directory';
 import { scanSingleFile } from './scan/scan-single-file';
 import { scanSubDirectory } from './scan/scan-subdirectory';
 import { startCleanup } from './services/start-cleanup';
+import { stopCleanup } from './services/stop-cleanup';
 import { getDiskSpace } from './utils/get-disk-space';
 import { isInternxtRelated } from './utils/is-file-internxt-related';
+import { isSafeWebBrowserFile } from './utils/is-safe-web-browser-file';
 import { getAllItemsToDelete, getSelectedItemsForSection } from './utils/selection-utils';
 
 export const CleanerModule = {
@@ -17,4 +24,11 @@ export const CleanerModule = {
   scanSingleFile,
   scanSubDirectory,
   startCleanup,
+  stopCleanup,
+  appCacheFileFilter,
+  isDirectoryWebBrowserRelated,
+  logFileFilter,
+  isSafeWebBrowserFile,
+  scanFirefoxCacheProfiles,
+  scanFirefoxProfiles,
 };

@@ -35,17 +35,7 @@ describe('scanFirefoxCacheProfiles', () => {
     mockedScanDirectory.mockResolvedValue([]);
     mockedIsFirefoxProfileDirectory.mockReturnValue(false);
     readdirMock.mockResolvedValue([]);
-    props = mockProps<typeof scanFirefoxCacheProfiles>({
-      ctx: {
-        browser: {
-          paths: {
-            cache: {
-              firefoxCacheDir,
-            },
-          },
-        },
-      },
-    });
+    props = mockProps<typeof scanFirefoxCacheProfiles>({ firefoxCacheDir });
   });
 
   it('should return empty array when no entries found in cache directory', async () => {

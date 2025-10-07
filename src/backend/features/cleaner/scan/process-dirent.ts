@@ -21,18 +21,18 @@ export async function processDirent({ ctx, entry, fullPath, customFileFilter, cu
     if (entry.isFile()) {
       const fileStats = await stat(fullPath);
       const wasAccessed = wasAccessedWithinLastHour({ fileStats });
-      const isFiltered = customFileFilter?.({ ctx, fileName: entry.name });
+      const isIncluded = customFileFilter?.({ ctx, fileName: entry.name }) ?? true;
 
-      if (wasAccessed || !isFiltered) {
+      if (wasAccessed || !isIncluded) {
         return [];
       }
 
       const item = createCleanableItem({ filePath: fullPath, stat: fileStats });
       return [item];
     } else if (entry.isDirectory()) {
-      const isFiltered = customDirectoryFilter?.({ folderName: entry.name });
+      const isExcluded = customDirectoryFilter?.({ folderName: entry.name });
 
-      if (isFiltered) {
+      if (isExcluded) {
         return [];
       }
 

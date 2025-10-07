@@ -2,12 +2,11 @@ import { unlink } from 'node:fs/promises';
 
 import { logger } from '@/backend/core/logger/logger';
 import { FileSystemModule } from '@/backend/infra/file-system/file-system.module';
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
 import { cleanerStore } from '../stores/cleaner.store';
 
 type Props = {
-  absolutePath: AbsolutePath;
+  absolutePath: string;
 };
 
 export async function deleteFileSafely({ absolutePath }: Props) {

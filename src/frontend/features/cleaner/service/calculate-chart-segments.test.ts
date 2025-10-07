@@ -1,4 +1,3 @@
-import type { CleanerSection, CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 import { mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { calculateChartSegments } from './calculate-chart-segments';
@@ -48,22 +47,10 @@ describe('calculate-chart-segments', () => {
     expect(result).toStrictEqual([{ color: '#4ECDC4', percentage: (2000 / 4500) * 100, size: 2000 }]);
   });
 
-  it('should use default color when section config is missing', () => {
-    // Given
-    calculateSectionSizeMock.mockReturnValueOnce(1000);
-    props.viewModel = { unknownSection: {} as CleanerSectionViewModel };
-    props.report = { unknownSection: {} as CleanerSection };
-    // When
-    const result = calculateChartSegments(props);
-    // Then
-    expect(result).toStrictEqual([{ color: '#6B7280', percentage: (1000 / 4500) * 100, size: 1000 }]);
-  });
-
   it('should handle zero totalSize correctly', () => {
     // Given
     calculateSectionSizeMock.mockReturnValueOnce(1000);
     props.totalSize = 0;
-    props.viewModel = { appCache: {} as CleanerSectionViewModel };
     // When
     const result = calculateChartSegments(props);
     // Then

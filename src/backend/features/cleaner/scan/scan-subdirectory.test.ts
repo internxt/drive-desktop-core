@@ -28,7 +28,7 @@ describe('scanSubDirectory', () => {
       fullPath: `${basePath}/${appName}/${fileName}`,
       fileName,
       sizeInBytes: size,
-    }) as unknown as CleanableItem;
+    }) as CleanableItem;
 
   let props: Parameters<typeof scanSubDirectory>[0];
 

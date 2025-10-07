@@ -1,4 +1,4 @@
-import { CleanableItem, CleanerSectionKey, CleanerReport, CleanerSectionViewModel, CleanerViewModel } from '../types/cleaner.types';
+import { CleanableItem, CleanerSectionKey, CleanerSectionViewModel, CleanerViewModel, CleanerReport } from '../types/cleaner.types';
 
 type SelectedItemsForSectionProps = {
   sectionViewModel: CleanerSectionViewModel;

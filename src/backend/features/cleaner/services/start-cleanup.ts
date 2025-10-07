@@ -1,8 +1,7 @@
 import { logger } from '@/backend/core/logger/logger';
-import { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
 import { cleanerStore } from '../stores/cleaner.store';
-import { CleanerViewModel, CleanupProgress, CleanerReport, CleanerSectionKey } from '../types/cleaner.types';
+import { CleanerViewModel, CleanupProgress, CleanerSectionKey, CleanerReport } from '../types/cleaner.types';
 import { getAllItemsToDelete } from '../utils/selection-utils';
 import { deleteFileSafely } from './delete-file-saftly';
 
@@ -49,9 +48,8 @@ export async function startCleanup({ viewModel, storedCleanerReport, emitProgres
       break;
     }
 
-    if (!item) continue;
-    // TODO: Change type in getAllItemsToDelete
-    await deleteFileSafely({ absolutePath: item.fullPath as AbsolutePath });
+    if (!item) return;
+    await deleteFileSafely({ absolutePath: item.fullPath });
 
     const progress = Math.round(((i + 1) / cleanerStore.state.totalFilesToDelete) * 100);
     emitProgress({

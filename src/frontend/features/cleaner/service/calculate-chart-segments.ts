@@ -1,27 +1,22 @@
-import { CleanerSection, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerReport, CleanerSectionKey, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 
 import { SectionConfig } from '../cleaner.types';
 import { calculateSectionSize } from './calculate-section-size';
 import { getSectionStats } from './get-section-stats';
 
-type Props<T extends Record<string, CleanerSection>> = {
+type Props = {
   viewModel: CleanerViewModel;
-  report: T;
+  report: CleanerReport;
   totalSize: number;
-  getSectionSelectionStats: (sectionKey: string, report: T) => ReturnType<typeof getSectionStats>;
+  getSectionSelectionStats: (sectionKey: CleanerSectionKey, report: CleanerReport) => ReturnType<typeof getSectionStats>;
   sectionConfig: SectionConfig;
 };
 
-export function calculateChartSegments<T extends Record<string, CleanerSection>>({
-  viewModel,
-  report,
-  totalSize,
-  getSectionSelectionStats,
-  sectionConfig,
-}: Props<T>) {
+export function calculateChartSegments({ viewModel, report, totalSize, getSectionSelectionStats, sectionConfig }: Props) {
   const segments: Array<{ color: string; percentage: number; size: number }> = [];
 
-  for (const [sectionKey, section] of Object.entries(report)) {
+  for (const [rawSectionKey, section] of Object.entries(report)) {
+    const sectionKey = rawSectionKey as CleanerSectionKey;
     const sectionStats = getSectionSelectionStats(sectionKey, report);
     const sectionViewModel = viewModel[sectionKey];
 
@@ -34,7 +29,7 @@ export function calculateChartSegments<T extends Record<string, CleanerSection>>
     if (sectionSelectedSize > 0) {
       const config = sectionConfig[sectionKey];
       segments.push({
-        color: config?.color || '#6B7280',
+        color: config.color,
         percentage: totalSize > 0 ? (sectionSelectedSize / totalSize) * 100 : 0,
         size: sectionSelectedSize,
       });

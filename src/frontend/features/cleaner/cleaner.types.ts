@@ -1,9 +1,9 @@
-import { CleanerSectionKey, CleanerViewModel, ExtendedCleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
+import { CleanerSectionKey, CleanerViewModel, CleanerReport } from '@/backend/features/cleaner/types/cleaner.types';
 
-export type SectionConfig = Record<string, { name: string; color: string }>;
+export type SectionConfig = Record<CleanerSectionKey, { name: string; color: string }>;
 
 export type CleanerContextType = {
-  report: ExtendedCleanerReport | null;
+  report: CleanerReport | null;
   loading: boolean;
   isCleanerAvailable: boolean;
   cleaningState: {

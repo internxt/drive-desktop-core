@@ -29,14 +29,14 @@ describe('scanDirectory', () => {
       fullPath: `${basePath}/${fileName}`,
       fileName,
       sizeInBytes: size,
-    }) as unknown as CleanableItem;
+    }) as CleanableItem;
 
   let props: Parameters<typeof scanDirectory>[0];
 
   beforeEach(() => {
     isInternxtRelatedMock.mockReturnValue(false);
     statMock.mockResolvedValue({ isDirectory: () => true } as unknown as Stats);
-    props = mockProps({ dirPath: mockBasePath });
+    props = mockProps<typeof scanDirectory>({ dirPath: mockBasePath });
   });
 
   it('should return empty array when directory is not a directory', async () => {

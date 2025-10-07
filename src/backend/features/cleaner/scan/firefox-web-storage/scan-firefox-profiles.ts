@@ -9,11 +9,10 @@ import { isSafeWebBrowserFile } from '../../utils/is-safe-web-browser-file';
 
 type Props = {
   ctx: CleanerContext;
+  firefoxProfilesDir: string;
 };
 
-export async function scanFirefoxProfiles({ ctx }: Props) {
-  const firefoxProfilesDir = ctx.browser.paths.storage.firefoxProfile;
-
+export async function scanFirefoxProfiles({ ctx, firefoxProfilesDir }: Props) {
   let entries: Dirent[];
   try {
     entries = await readdir(firefoxProfilesDir, { withFileTypes: true });
