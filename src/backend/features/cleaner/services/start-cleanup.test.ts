@@ -13,11 +13,11 @@ const mockedDeleteFileSafely = partialSpyOn(deleteFileSafelyModule, 'deleteFileS
 describe('startCleanup', () => {
   const mockEmitProgress = vi.fn();
   const mockCleanerSectionKeys: CleanerSectionKey[] = ['appCache', 'logFiles'];
-  const mockViewModel: CleanerViewModel = {
+  const mockViewModel: Partial<CleanerViewModel> = {
     appCache: { selectedAll: true, exceptions: [] },
     logFiles: { selectedAll: true, exceptions: [] },
   };
-  const mockStoredCleanerReport: CleanerReport = {
+  const mockStoredCleanerReport: Partial<CleanerReport> = {
     appCache: {
       totalSizeInBytes: 1000,
       items: [{ fullPath: '/cache/file1.tmp', fileName: 'file1.tmp', sizeInBytes: 400 }],
@@ -26,9 +26,6 @@ describe('startCleanup', () => {
       totalSizeInBytes: 500,
       items: [{ fullPath: '/logs/app.log', fileName: 'app.log', sizeInBytes: 300 }],
     },
-    trash: { totalSizeInBytes: 0, items: [] },
-    webStorage: { totalSizeInBytes: 0, items: [] },
-    webCache: { totalSizeInBytes: 0, items: [] },
   };
 
   let props: Parameters<typeof startCleanup>[0];

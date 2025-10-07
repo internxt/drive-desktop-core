@@ -27,7 +27,7 @@ export async function processDirent({ ctx, entry, fullPath, customFileFilter, cu
         return [];
       }
 
-      const item = createCleanableItem({ fullPath, stat: fileStats });
+      const item = createCleanableItem({ filePath: fullPath, stat: fileStats });
       return [item];
     } else if (entry.isDirectory()) {
       const isExcluded = customDirectoryFilter?.({ folderName: entry.name });
