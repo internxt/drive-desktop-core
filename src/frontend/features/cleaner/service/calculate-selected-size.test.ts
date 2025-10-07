@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
+import { CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 import { mockProps } from '@/tests/vitest/utils.helper.test';
 
 import { calculateSelectedSize } from './calculate-selected-size';
@@ -35,7 +36,7 @@ describe('calculate-selected-size', () => {
       appCache: { selectedAll: true, exceptions: [] },
       logFiles: { selectedAll: true, exceptions: [] },
       webCache: { selectedAll: true, exceptions: [] },
-    } as any;
+    } as Partial<CleanerViewModel> as CleanerViewModel;
     // When
     const result = calculateSelectedSize(props);
     // Then
@@ -48,7 +49,7 @@ describe('calculate-selected-size', () => {
       appCache: { selectedAll: false, exceptions: ['/cache/file1.tmp', '/cache/file2.tmp'] },
       logFiles: { selectedAll: false, exceptions: ['/logs/error.log'] },
       webCache: { selectedAll: true, exceptions: [] },
-    } as any;
+    } as Partial<CleanerViewModel> as CleanerViewModel;
     // When
     const result = calculateSelectedSize(props);
     // Then
@@ -61,7 +62,7 @@ describe('calculate-selected-size', () => {
       appCache: { selectedAll: false, exceptions: [] },
       logFiles: { selectedAll: false, exceptions: [] },
       webCache: { selectedAll: false, exceptions: [] },
-    } as any;
+    } as Partial<CleanerViewModel> as CleanerViewModel;
     // When
     const result = calculateSelectedSize(props);
     // Then
@@ -70,7 +71,7 @@ describe('calculate-selected-size', () => {
 
   it('should handle empty report', () => {
     // Given
-    props.viewModel = {} as any;
+    props.viewModel = {} as Partial<CleanerViewModel> as CleanerViewModel;
     // When
     const result = calculateSelectedSize(props);
     // Then
