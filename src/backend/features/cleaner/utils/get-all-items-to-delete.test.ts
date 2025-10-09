@@ -24,7 +24,7 @@ describe('getAllItemsToDelete', () => {
         logFiles: { totalSizeInBytes: 768, items: mockItems2 },
         trash: { totalSizeInBytes: 4096, items: mockItems3 },
       },
-      viewModel: {} as Partial<CleanerViewModel> as CleanerViewModel,
+      viewModel: {},
       cleanerSectionKeys: ['appCache', 'logFiles', 'trash'],
     });
   });
