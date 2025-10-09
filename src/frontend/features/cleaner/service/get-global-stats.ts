@@ -19,7 +19,7 @@ export function getGlobalStats({ viewModel, report, sectionKeys }: Props) {
       };
     }
 
-    return getSectionStats({ viewModel: viewModel[sectionKey], allItems: section.items })
+    return getSectionStats({ viewModel: viewModel[sectionKey], allItems: section.items });
   });
 
   const nonEmptySectionStats = allSectionStats.filter((stats) => stats.totalCount > 0);

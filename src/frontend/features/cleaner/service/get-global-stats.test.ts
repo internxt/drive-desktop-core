@@ -1,7 +1,7 @@
 import { CleanerReport, CleanerSectionKey, CleanerViewModel } from '@/backend/features/cleaner/types/cleaner.types';
+import { mockProps } from '@/tests/vitest/utils.helper.test';
 
 import { getGlobalStats } from './get-global-stats';
-import { mockProps } from '@/tests/vitest/utils.helper.test';
 
 describe('getGlobalStats', () => {
   const sectionKeys: CleanerSectionKey[] = ['appCache', 'logFiles', 'trash'];
@@ -107,9 +107,9 @@ describe('getGlobalStats', () => {
     } as Partial<CleanerViewModel> as CleanerViewModel;
 
     props.report = {
-        appCache: { totalSizeInBytes: 0, items: [] },
-        logFiles: { totalSizeInBytes: 0, items: [] },
-        trash: { totalSizeInBytes: 0, items: [] },
+      appCache: { totalSizeInBytes: 0, items: [] },
+      logFiles: { totalSizeInBytes: 0, items: [] },
+      trash: { totalSizeInBytes: 0, items: [] },
     } as Partial<CleanerReport> as CleanerReport;
     // When
     const result = getGlobalStats(props);
