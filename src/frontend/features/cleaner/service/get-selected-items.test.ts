@@ -1,4 +1,3 @@
-import { CleanerSectionViewModel } from '@/backend/features/cleaner/types/cleaner.types';
 import { mockProps } from '@/tests/vitest/utils.helper.test';
 
 import { getSelectedItems } from './get-selected-items';
@@ -11,7 +10,7 @@ describe('get-selected-items', () => {
       viewModel: {
         selectedAll: false,
         exceptions: [],
-      } as CleanerSectionViewModel,
+      },
       allItems: [{ fullPath: '/path/to/file1' }, { fullPath: '/path/to/file2' }, { fullPath: '/path/to/file3' }],
     });
   });
@@ -38,7 +37,6 @@ describe('get-selected-items', () => {
 
   it('should return only exceptions when selectedAll is false', () => {
     // Given
-    props.viewModel.selectedAll = false;
     props.viewModel.exceptions = ['/path/to/file1', '/path/to/file3'];
     // When
     const res = getSelectedItems(props);
@@ -48,7 +46,6 @@ describe('get-selected-items', () => {
 
   it('should return empty array when selectedAll is false and no exceptions', () => {
     // Given
-    props.viewModel.selectedAll = false;
     props.viewModel.exceptions = [];
     // When
     const res = getSelectedItems(props);
@@ -58,7 +55,6 @@ describe('get-selected-items', () => {
 
   it('should filter out exceptions that are not in allItems when selectedAll is false', () => {
     // Given
-    props.viewModel.selectedAll = false;
     props.viewModel.exceptions = ['/path/to/file1', '/path/not/in/items'];
     // When
     const res = getSelectedItems(props);

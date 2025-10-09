@@ -2,7 +2,7 @@ import { logger } from '@/backend/core/logger/logger';
 
 import { cleanerStore } from '../stores/cleaner.store';
 import { CleanerViewModel, CleanupProgress, CleanerSectionKey, CleanerReport } from '../types/cleaner.types';
-import { getAllItemsToDelete } from '../utils/selection-utils';
+import { getAllItemsToDelete } from '../utils/get-all-items-to-delete';
 import { deleteFileSafely } from './delete-file-saftly';
 
 type Props = {

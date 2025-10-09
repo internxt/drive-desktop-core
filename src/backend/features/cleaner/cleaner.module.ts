@@ -9,10 +9,11 @@ import { scanSingleFile } from './scan/scan-single-file';
 import { scanSubDirectory } from './scan/scan-subdirectory';
 import { startCleanup } from './services/start-cleanup';
 import { stopCleanup } from './services/stop-cleanup';
+import { getAllItemsToDelete } from './utils/get-all-items-to-delete';
 import { getDiskSpace } from './utils/get-disk-space';
+import { getSelectedItemsForSection } from './utils/get-selected-items-for-section';
 import { isInternxtRelated } from './utils/is-file-internxt-related';
 import { isSafeWebBrowserFile } from './utils/is-safe-web-browser-file';
-import { getAllItemsToDelete, getSelectedItemsForSection } from './utils/selection-utils';
 
 export const CleanerModule = {
   getDiskSpace,
