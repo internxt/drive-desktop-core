@@ -1,22 +1,18 @@
-import { CleanerReport, CleanerSectionKey } from '@/backend/features/cleaner/types/cleaner.types';
 import { mockProps, updateProps } from '@/tests/vitest/utils.helper.test';
 
 import { getGlobalStats } from './get-global-stats';
 
 describe('getGlobalStats', () => {
-  const sectionKeys: CleanerSectionKey[] = ['appCache', 'logFiles', 'trash'];
-
-  const mockReportWithItems = {
-    appCache: { items: [{ fullPath: '/cache/file1.txt' }, { fullPath: '/cache/file2.txt' }] },
-    logFiles: { items: [{ fullPath: '/logs/log1.txt' }] },
-    trash: { items: [] },
-  };
-
   let props: Parameters<typeof getGlobalStats>[0];
+
   beforeEach(() => {
     props = mockProps<typeof getGlobalStats>({
-      report: mockReportWithItems,
-      sectionKeys,
+      sectionKeys: ['appCache', 'logFiles', 'trash'],
+      report: {
+        appCache: { items: [{ fullPath: '/cache/file1.txt' }, { fullPath: '/cache/file2.txt' }] },
+        logFiles: { items: [{ fullPath: '/logs/log1.txt' }] },
+        trash: { items: [] },
+      },
     });
   });
 
@@ -80,11 +76,11 @@ describe('getGlobalStats', () => {
       trash: { selectedAll: true, exceptions: [] },
     });
 
-    props.report = {
+    props.report = updateProps<typeof props.report>({
       appCache: { totalSizeInBytes: 0, items: [] },
       logFiles: { totalSizeInBytes: 0, items: [] },
       trash: { totalSizeInBytes: 0, items: [] },
-    } as Partial<CleanerReport> as CleanerReport;
+    });
     // When
     const result = getGlobalStats(props);
     // Then
