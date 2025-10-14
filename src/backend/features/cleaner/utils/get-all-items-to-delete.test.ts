@@ -31,76 +31,66 @@ describe('getAllItemsToDelete', () => {
 
   it('should return all selected items from all sections', () => {
     // Given
-    const viewModel: CleanerViewModel = {
+    props.viewModel = {
       appCache: { selectedAll: true, exceptions: [] },
       logFiles: { selectedAll: true, exceptions: [] },
       trash: { selectedAll: true, exceptions: [] },
     } as Partial<CleanerViewModel> as CleanerViewModel;
-    props.viewModel = viewModel;
     // When
     const result = getAllItemsToDelete(props);
     // Then
-    expect(result).toHaveLength(5);
     expect(result).toMatchObject([...mockItems1, ...mockItems2, ...mockItems3]);
   });
 
   it('should respect exceptions when selectedAll is true', () => {
     // Given
-    const viewModel: CleanerViewModel = {
+    props.viewModel = {
       appCache: { selectedAll: true, exceptions: ['/cache/file1.txt'] },
       logFiles: { selectedAll: true, exceptions: ['/logs/log2.txt'] },
       trash: { selectedAll: true, exceptions: [] },
     } as Partial<CleanerViewModel> as CleanerViewModel;
-    props.viewModel = viewModel;
     // When
     const result = getAllItemsToDelete(props);
     // Then
-    expect(result).toHaveLength(3);
     expect(result).toMatchObject([{ fullPath: '/cache/file2.txt' }, { fullPath: '/logs/log1.txt' }, { fullPath: '/trash/deleted1.txt' }]);
   });
 
   it('should return only explicitly selected items when selectedAll is false', () => {
     // Given
-    const viewModel: CleanerViewModel = {
+    props.viewModel = {
       appCache: { selectedAll: false, exceptions: ['/cache/file1.txt'] },
       logFiles: { selectedAll: false, exceptions: ['/logs/log2.txt'] },
       trash: { selectedAll: false, exceptions: [] },
     } as Partial<CleanerViewModel> as CleanerViewModel;
-    props.viewModel = viewModel;
     // When
     const result = getAllItemsToDelete(props);
     // Then
-    expect(result).toHaveLength(2);
     expect(result).toMatchObject([{ fullPath: '/cache/file1.txt' }, { fullPath: '/logs/log2.txt' }]);
   });
 
   it('should return empty array when no sections are selected', () => {
     // Given
-    const viewModel: CleanerViewModel = {
+    props.viewModel = {
       appCache: { selectedAll: false, exceptions: [] },
       logFiles: { selectedAll: false, exceptions: [] },
       trash: { selectedAll: false, exceptions: [] },
     } as Partial<CleanerViewModel> as CleanerViewModel;
-    props.viewModel = viewModel;
     // When
     const result = getAllItemsToDelete(props);
     // Then
-    expect(result).toHaveLength(0);
-    expect(result).toEqual([]);
+    expect(result).toStrictEqual([]);
   });
 
   it('should handle mixed selection states across different sections', () => {
     // Given
-    const viewModel: CleanerViewModel = {
+    props.viewModel = {
       appCache: { selectedAll: true, exceptions: ['/cache/file2.txt'] },
       logFiles: { selectedAll: false, exceptions: ['/logs/log1.txt'] },
       trash: { selectedAll: true, exceptions: [] },
     } as Partial<CleanerViewModel> as CleanerViewModel;
-    props.viewModel = viewModel;
     // When
     const result = getAllItemsToDelete(props);
     // Then
-    expect(result).toHaveLength(3);
     expect(result).toMatchObject([{ fullPath: '/cache/file1.txt' }, { fullPath: '/logs/log1.txt' }, { fullPath: '/trash/deleted1.txt' }]);
   });
 });

@@ -16,8 +16,7 @@ describe('toggleItem', () => {
     // When
     const result = toggleItem(props);
     // Then
-    expect(result.exceptions).toHaveLength(2);
-    expect(result.exceptions).toMatchObject(['/path/to/file1.txt', '/path/to/file2.txt']);
+    expect(result.exceptions).toStrictEqual(['/path/to/file1.txt', '/path/to/file2.txt']);
   });
 
   it('should remove item from exceptions when it is present', () => {
@@ -27,8 +26,7 @@ describe('toggleItem', () => {
     // When
     const result = toggleItem(props);
     // Then
-    expect(result.exceptions).toHaveLength(2);
-    expect(result.exceptions).toMatchObject(['/path/to/file1.txt', '/path/to/file3.txt']);
+    expect(result.exceptions).toStrictEqual(['/path/to/file1.txt', '/path/to/file3.txt']);
     expect(result.selectedAll).toBe(false);
   });
 });
