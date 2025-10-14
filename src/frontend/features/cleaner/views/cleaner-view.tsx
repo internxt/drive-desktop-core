@@ -50,7 +50,7 @@ export function CleanerView({
   }, [getGlobalSelectionStats, report]);
 
   const selectAll = () => {
-    if (globalStats.isAllSelected) {
+    if (globalStats === 'all') {
       deselectAllSections();
     } else {
       selectAllSections();
@@ -69,8 +69,8 @@ export function CleanerView({
         <SectionsList
           report={report}
           viewModel={viewModel}
-          isAllSelected={globalStats.isAllSelected}
-          isPartiallySelected={globalStats.isPartiallySelected}
+          isAllSelected={globalStats === 'all'}
+          isPartiallySelected={globalStats === 'partial'}
           sectionConfig={sectionConfig}
           useTranslationContext={useTranslationContext}
           onSelectAll={selectAll}

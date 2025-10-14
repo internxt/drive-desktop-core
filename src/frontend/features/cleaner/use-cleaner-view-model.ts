@@ -4,6 +4,7 @@ import { CleanerSectionKey, CleanerViewModel, CleanerReport } from '@/backend/fe
 
 import { calculateSelectedSize } from './service/calculate-selected-size';
 import { createInitialViewModel } from './service/create-initial-view-model';
+import { getGlobalStats } from './service/get-global-stats';
 import { getSectionStats } from './service/get-section-stats';
 import { getSelectedItems } from './service/get-selected-items';
 import { isItemSelected } from './service/is-item-selected';
@@ -74,31 +75,9 @@ export function useCleanerViewModel(sectionKeys: CleanerSectionKey[]) {
 
   const getGlobalSelectionStats = useCallback(
     (report: CleanerReport) => {
-      const allSectionStats = Object.keys(viewModel).map((sectionKey) => getSectionSelectionStats(sectionKey as CleanerSectionKey, report));
-
-      // Only consider non-empty sections for global selection logic
-      const nonEmptySectionStats = allSectionStats.filter((stats) => stats.totalCount > 0);
-
-      // If all sections are empty, treat as none selected
-      if (nonEmptySectionStats.length === 0) {
-        return {
-          isAllSelected: false,
-          isPartiallySelected: false,
-          isNoneSelected: true,
-        };
-      }
-
-      const allSelected = nonEmptySectionStats.every((stats) => stats.selected === 'all');
-      const noneSelected = nonEmptySectionStats.every((stats) => stats.selected === 'none');
-      const partiallySelected = !allSelected && !noneSelected;
-
-      return {
-        isAllSelected: allSelected,
-        isPartiallySelected: partiallySelected,
-        isNoneSelected: noneSelected,
-      };
+      return getGlobalStats({ viewModel, report, sectionKeys: keys });
     },
-    [viewModel, getSectionSelectionStats],
+    [viewModel, keys],
   );
 
   return {
