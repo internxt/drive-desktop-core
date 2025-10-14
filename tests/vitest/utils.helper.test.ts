@@ -7,6 +7,10 @@ export function mockProps<T extends (...args: any[]) => unknown>(props: DeepPart
   return props as Parameters<T>[0];
 }
 
+export function updateProps<T>(props: DeepPartial<T>) {
+  return props as T;
+}
+
 export function deepMocked<T extends (...args: any[]) => unknown>(fn: T) {
   return vi.mocked(fn) as MockedFunction<(...args: Parameters<T>) => DeepPartial<ReturnType<T>>>;
 }
