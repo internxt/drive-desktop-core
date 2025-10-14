@@ -2,7 +2,7 @@ import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { calls, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
 import { cleanerStore } from '../stores/cleaner.store';
-import * as getAllItemsToDeleteModule from '../utils/selection-utils';
+import * as getAllItemsToDeleteModule from '../utils/get-all-items-to-delete';
 import * as deleteFileSafelyModule from './delete-file-saftly';
 import { startCleanup } from './start-cleanup';
 
