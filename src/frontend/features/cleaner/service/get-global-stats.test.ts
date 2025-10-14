@@ -6,7 +6,7 @@ import { getGlobalStats } from './get-global-stats';
 describe('getGlobalStats', () => {
   const sectionKeys: CleanerSectionKey[] = ['appCache', 'logFiles', 'trash'];
 
-  const mockReportWithItems: CleanerReport = {
+  const mockReportWithItems = {
     appCache: {
       totalSizeInBytes: 1024,
       items: [
@@ -19,7 +19,7 @@ describe('getGlobalStats', () => {
       items: [{ fullPath: '/logs/log1.txt', fileName: 'log1.txt', sizeInBytes: 2048 }],
     },
     trash: { totalSizeInBytes: 0, items: [] },
-  } as Partial<CleanerReport> as CleanerReport;
+  };
 
   let props: Parameters<typeof getGlobalStats>[0];
   beforeEach(() => {
