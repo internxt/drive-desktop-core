@@ -1,6 +1,5 @@
-import { constants, Dirent } from 'node:fs';
+import { Dirent } from 'node:fs';
 import { stat } from 'node:fs/promises';
-import { access } from 'node:fs/promises';
 
 import { logger } from '@/backend/core/logger/logger';
 
@@ -34,8 +33,6 @@ export async function processDirent({ ctx, entry, fullPath, customFileFilter, cu
     if (entry.isDirectory()) {
       const isExcluded = customDirectoryFilter?.({ folderName: entry.name });
       if (isExcluded) return [];
-
-      await access(fullPath, constants.W_OK);
 
       return await scanDirectory({
         ctx,
