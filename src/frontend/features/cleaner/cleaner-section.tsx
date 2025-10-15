@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Button } from '@/frontend/components/button';
+import { SectionSpinner } from '@/frontend/components/section-spinner';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { CleanerContextType, SectionConfig } from './cleaner.types';
@@ -18,9 +19,10 @@ type Props = {
   useCleaner: () => CleanerContextType;
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
+  isSectionLoading: boolean;
 };
 
-export function CleanerSection({ active, sectionConfig, useCleaner, useTranslationContext, openUrl }: Readonly<Props>) {
+export function CleanerSection({ active, sectionConfig, useCleaner, useTranslationContext, openUrl, isSectionLoading }: Readonly<Props>) {
   const { translate } = useTranslationContext();
   const { cleaningState, isCleanerAvailable, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
   const useCleanerViewModelHook = useCleanerViewModel(sectionKeys);
@@ -46,6 +48,8 @@ export function CleanerSection({ active, sectionConfig, useCleaner, useTranslati
   }
 
   function renderContent() {
+    if (isSectionLoading) return <SectionSpinner />;
+
     if (!isCleanerAvailable) {
       return <LockedState useTranslationContext={useTranslationContext} openUrl={openUrl} />;
     }
