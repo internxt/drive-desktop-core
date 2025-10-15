@@ -20,11 +20,20 @@ type Props = {
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
   isSectionLoading: boolean;
+  isAvailable: boolean;
 };
 
-export function CleanerSection({ active, sectionConfig, useCleaner, useTranslationContext, openUrl, isSectionLoading }: Readonly<Props>) {
+export function CleanerSection({
+  active,
+  sectionConfig,
+  useCleaner,
+  useTranslationContext,
+  openUrl,
+  isSectionLoading,
+  isAvailable,
+}: Readonly<Props>) {
   const { translate } = useTranslationContext();
-  const { cleaningState, isCleanerAvailable, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
+  const { cleaningState, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
   const useCleanerViewModelHook = useCleanerViewModel(sectionKeys);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
@@ -50,7 +59,7 @@ export function CleanerSection({ active, sectionConfig, useCleaner, useTranslati
   function renderContent() {
     if (isSectionLoading) return <SectionSpinner />;
 
-    if (!isCleanerAvailable) {
+    if (!isAvailable) {
       return <LockedState useTranslationContext={useTranslationContext} openUrl={openUrl} />;
     }
 
