@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Button } from '@/frontend/components/button';
+import { SectionSpinner } from '@/frontend/components/section-spinner';
 import { LocalContextProps } from '@/frontend/frontend.types';
 
 import { CleanerContextType, SectionConfig } from './cleaner.types';
@@ -18,11 +19,21 @@ type Props = {
   useCleaner: () => CleanerContextType;
   useTranslationContext: () => LocalContextProps;
   openUrl: (url: string) => Promise<void>;
+  isSectionLoading: boolean;
+  isAvailable: boolean;
 };
 
-export function CleanerSection({ active, sectionConfig, useCleaner, useTranslationContext, openUrl }: Readonly<Props>) {
+export function CleanerSection({
+  active,
+  sectionConfig,
+  useCleaner,
+  useTranslationContext,
+  openUrl,
+  isSectionLoading,
+  isAvailable,
+}: Readonly<Props>) {
   const { translate } = useTranslationContext();
-  const { cleaningState, isCleanerAvailable, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
+  const { cleaningState, sectionKeys, loading, report, diskSpace, generateReport, startCleanup } = useCleaner();
   const useCleanerViewModelHook = useCleanerViewModel(sectionKeys);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
@@ -46,7 +57,9 @@ export function CleanerSection({ active, sectionConfig, useCleaner, useTranslati
   }
 
   function renderContent() {
-    if (!isCleanerAvailable) {
+    if (isSectionLoading) return <SectionSpinner />;
+
+    if (!isAvailable) {
       return <LockedState useTranslationContext={useTranslationContext} openUrl={openUrl} />;
     }
 

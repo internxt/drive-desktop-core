@@ -5,7 +5,6 @@ export type SectionConfig = Record<CleanerSectionKey, { name: string; color: str
 export type CleanerContextType = {
   report: CleanerReport | null;
   loading: boolean;
-  isCleanerAvailable: boolean;
   cleaningState: {
     cleaning: boolean;
     cleaningCompleted: boolean;
