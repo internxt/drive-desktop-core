@@ -63,7 +63,7 @@ describe('scanFirefoxProfiles', () => {
       createMockDirent('prefs.js', false),
       createMockDirent('bookmarks.html', false),
     ];
-    statMock.mockResolvedValueOnce({ isDirectory: () => true }).mockResolvedValue({ isFile: () => true, size: 2048 });
+    statMock.mockResolvedValue({ isFile: () => true, size: 2048 });
     readdirMock.mockResolvedValueOnce(profileEntries).mockResolvedValueOnce(profileFiles);
     mockedIsFirefoxProfileDirectory.mockReturnValue(true);
     mockedWasAccessedWithinLastHour.mockReturnValue(false);

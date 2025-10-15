@@ -18,7 +18,7 @@ describe('stat', () => {
 
   it('If file does not exist (ENOENT)', async () => {
     // When
-    const { error } = await stat({ absolutePath: 'not_existing_file' });
+    const { error } = await stat({ absolutePath: 'non_existing_file' });
     // Then
     expect(error?.code).toEqual('NON_EXISTS');
   });

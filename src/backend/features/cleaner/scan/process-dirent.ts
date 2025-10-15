@@ -19,22 +19,20 @@ type Props = {
 export async function processDirent({ ctx, entry, fullPath, customFileFilter, customDirectoryFilter }: Props) {
   try {
     if (entry.isFile()) {
+      const isIncluded = customFileFilter?.({ ctx, fileName: entry.name }) ?? true;
+      if (!isIncluded) return [];
+
       const fileStats = await stat(fullPath);
       const wasAccessed = wasAccessedWithinLastHour({ fileStats });
-      const isIncluded = customFileFilter?.({ ctx, fileName: entry.name }) ?? true;
-
-      if (wasAccessed || !isIncluded) {
-        return [];
-      }
+      if (wasAccessed) return [];
 
       const item = createCleanableItem({ filePath: fullPath, stat: fileStats });
       return [item];
-    } else if (entry.isDirectory()) {
-      const isExcluded = customDirectoryFilter?.({ folderName: entry.name });
+    }
 
-      if (isExcluded) {
-        return [];
-      }
+    if (entry.isDirectory()) {
+      const isExcluded = customDirectoryFilter?.({ folderName: entry.name });
+      if (isExcluded) return [];
 
       return await scanDirectory({
         ctx,
@@ -46,7 +44,7 @@ export async function processDirent({ ctx, entry, fullPath, customFileFilter, cu
   } catch {
     logger.warn({
       tag: 'CLEANER',
-      msg: 'File or folder with path cannot be accessed, skipping',
+      msg: 'File or folder cannot be accessed, skipping',
       fullPath,
     });
   }

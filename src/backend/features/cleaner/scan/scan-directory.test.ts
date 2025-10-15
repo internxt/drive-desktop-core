@@ -1,5 +1,5 @@
-import { Dirent, Stats } from 'node:fs';
-import { stat, readdir } from 'node:fs/promises';
+import { Dirent } from 'node:fs';
+import { readdir } from 'node:fs/promises';
 
 import { deepMocked, mockProps, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
@@ -12,7 +12,6 @@ vi.mock(import('node:fs/promises'));
 
 describe('scanDirectory', () => {
   const readdirMock = deepMocked(readdir);
-  const statMock = deepMocked(stat);
   const mockBasePath = '/test/path';
   const isInternxtRelatedMock = partialSpyOn(isInternxtRelatedModule, 'isInternxtRelated');
   const processDirentMock = partialSpyOn(processDirentModule, 'processDirent');
@@ -35,24 +34,7 @@ describe('scanDirectory', () => {
 
   beforeEach(() => {
     isInternxtRelatedMock.mockReturnValue(false);
-    statMock.mockResolvedValue({ isDirectory: () => true } as unknown as Stats);
     props = mockProps<typeof scanDirectory>({ dirPath: mockBasePath });
-  });
-
-  it('should return empty array when directory is not a directory', async () => {
-    statMock.mockResolvedValue({ isDirectory: () => false } as unknown as Stats);
-    const result = await scanDirectory(props);
-
-    expect(result).toStrictEqual([]);
-    expect(readdirMock).not.toHaveBeenCalled();
-  });
-
-  it('should return empty array when directory cannot be accessed', async () => {
-    statMock.mockRejectedValue(new Error('Permission denied'));
-
-    const result = await scanDirectory(props);
-
-    expect(result).toStrictEqual([]);
   });
 
   it('should scan files in directory correctly', async () => {
@@ -62,7 +44,6 @@ describe('scanDirectory', () => {
     processDirentMock.mockResolvedValue([expectedItem]);
     const result = await scanDirectory(props);
 
-    expect(statMock).toHaveBeenCalled();
     expect(readdirMock).toHaveBeenCalled();
     expect(processDirentMock).toHaveBeenCalled();
     expect(result).toStrictEqual([expectedItem]);

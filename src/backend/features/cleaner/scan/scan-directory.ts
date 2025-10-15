@@ -1,7 +1,7 @@
-import { stat, readdir } from 'node:fs/promises';
 import { join } from 'node:path/posix';
 
 import { logger } from '@/backend/core/logger/logger';
+import { FileSystemModule } from '@/backend/infra/file-system/file-system.module';
 
 import { CleanableItem, CleanerContext } from '../types/cleaner.types';
 import { isInternxtRelated } from '../utils/is-file-internxt-related';
@@ -15,38 +15,37 @@ type Props = {
 };
 
 export async function scanDirectory({ ctx, dirPath, customFileFilter, customDirectoryFilter }: Props) {
-  try {
-    const folderStats = await stat(dirPath);
-    if (!folderStats.isDirectory()) {
-      return [];
-    }
+  const { data: dirents, error } = await FileSystemModule.readdir({ absolutePath: dirPath });
 
-    const dirents = await readdir(dirPath, { withFileTypes: true });
-    const items: CleanableItem[] = [];
-
-    for (const dirent of dirents) {
-      const fullPath = join(dirPath, dirent.name);
-      if (isInternxtRelated({ name: fullPath })) continue;
-
-      const cleanableItems = await processDirent({
-        ctx,
-        entry: dirent,
-        fullPath,
-        customFileFilter,
-        customDirectoryFilter,
+  if (error) {
+    if (error.code !== 'NON_EXISTS') {
+      logger.warn({
+        tag: 'CLEANER',
+        msg: 'Folder cannot be accessed, skipping',
+        dirPath,
+        error: error.code === 'UNKNOWN' ? error : error.code,
       });
-      items.push(...cleanableItems);
     }
 
-    return items;
-  } catch (error) {
-    logger.warn({
-      tag: 'CLEANER',
-      msg: 'Directory does not exist or cannot be accessed, skipping',
-      dirPath,
-      error,
-    });
+    return [];
   }
 
-  return [];
+  const items: CleanableItem[] = [];
+
+  for (const dirent of dirents) {
+    const fullPath = join(dirPath, dirent.name);
+    if (isInternxtRelated({ name: fullPath })) continue;
+
+    const cleanableItems = await processDirent({
+      ctx,
+      entry: dirent,
+      fullPath,
+      customFileFilter,
+      customDirectoryFilter,
+    });
+
+    items.push(...cleanableItems);
+  }
+
+  return items;
 }
