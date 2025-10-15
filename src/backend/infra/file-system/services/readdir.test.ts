@@ -26,9 +26,7 @@ describe('readdir', () => {
   it('If folder access is denied (EPERM)', async () => {
     // Given
     const folder = join(TEST_FILES, v4());
-
     await mkdir(folder);
-
     execSync(`icacls "${folder}" /deny "${process.env.USERNAME}":F`);
     // When
     const { error } = await readdir({ absolutePath: folder });
