@@ -23,7 +23,7 @@ export async function scanDirectory({ ctx, dirPath, customFileFilter, customDire
         tag: 'CLEANER',
         msg: 'Folder cannot be accessed, skipping',
         dirPath,
-        error: error.code !== 'UNKNOWN' ? error.code : error,
+        error: error.code === 'UNKNOWN' ? error : error.code,
       });
     }
 
