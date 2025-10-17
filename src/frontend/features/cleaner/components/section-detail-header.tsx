@@ -31,7 +31,7 @@ export function SectionDetailHeader({
   return (
     <div className="dark:bg-gray-5 flex items-center justify-between p-4">
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1 text-blue-600 hover:cursor-pointer dark:text-blue-400" onClick={onClose}>
+        <div className="flex items-center gap-1 text-blue-600 hover:cursor-pointer dark:text-blue-400" onClick={onClose} aria-hidden="true">
           <CaretDoubleRight color="#0066ff" weight="bold" />
         </div>
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{sectionConfig[sectionName].name}</h3>

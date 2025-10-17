@@ -53,6 +53,7 @@ export function SectionItem({
 
         <div
           className="flex flex-1 items-end justify-end"
+          aria-hidden="true"
           onClick={(e) => {
             e.stopPropagation();
             onToggleSectionExpansion(sectionName);

@@ -32,11 +32,21 @@ export function SectionDetailMenu({
   onToggleItem,
   useTranslationContext,
 }: Readonly<Props>) {
-  if (!sectionName) return null;
+  const parentRef = useRef<HTMLDivElement>(null);
 
-  const sectionData = report[sectionName];
-  const sectionViewModel = viewModel[sectionName];
-  if (!sectionViewModel) return null;
+  const sectionData = sectionName ? report[sectionName] : null;
+  const sectionViewModel = sectionName ? viewModel[sectionName] : null;
+  const items = sectionData?.items || [];
+
+  const virtualizer = useVirtualizer({
+    count: items.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 80,
+    overscan: 10,
+  });
+
+  if (!sectionName) return null;
+  if (!sectionViewModel || !sectionData) return null;
 
   const stats = getSectionStats({ viewModel: sectionViewModel, allItems: sectionData.items });
 
@@ -49,16 +59,6 @@ export function SectionDetailMenu({
       onToggleSection(sectionName);
     }
   }
-
-  const parentRef = useRef<HTMLDivElement>(null);
-  const items = sectionData.items;
-
-  const virtualizer = useVirtualizer({
-    count: items.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 80,
-    overscan: 10,
-  });
 
   return (
     <div

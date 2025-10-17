@@ -43,7 +43,7 @@ export function CleanerSection({
 
   function confirmCleanup() {
     if (report) {
-      startCleanup(useCleanerViewModelHook.viewModel);
+      void startCleanup(useCleanerViewModelHook.viewModel);
     }
     setShowConfirmDialog(false);
   }

@@ -16,7 +16,7 @@ export type CleanerContextType = {
   diskSpace: number;
   sectionKeys: CleanerSectionKey[];
   generateReport: (force?: boolean) => Promise<void>;
-  startCleanup: (viewModel: CleanerViewModel) => void;
+  startCleanup: (viewModel: CleanerViewModel) => Promise<void>;
   stopCleanup: () => void;
   setInitialCleaningState: () => void;
 };
