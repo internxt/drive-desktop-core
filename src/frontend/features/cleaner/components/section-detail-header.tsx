@@ -34,7 +34,6 @@ export function SectionDetailHeader({
         <div
           className="flex items-center gap-1 text-blue-600 hover:cursor-pointer dark:text-blue-400"
           onClick={onClose}
-          role="button"
           aria-hidden="true">
           <CaretDoubleRight color="#0066ff" weight="bold" />
         </div>
