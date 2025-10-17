@@ -41,7 +41,7 @@ export function CleanupSizeIndicator({ selectedSize, totalSize, segmentDetails, 
 
                     acc.elements.push(
                       <path
-                        key={index}
+                        key={`segment-${index}`}
                         d="M 20 100 A 80 80 0 0 1 180 100"
                         fill="none"
                         stroke={segment.color}
