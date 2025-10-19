@@ -1,5 +1,20 @@
 # Testing
 
+## Table of Contents
+
+- [Types](#types)
+- [Describe](#describe)
+- [Mocks](#mocks)
+- [Assert](#assert)
+- [Structure](#structure)
+- [Frontend](#frontend)
+
+## Types
+
+- Unit tests (`service.test.ts`). It just tests the service function inside the file and mocks all other functions.
+- Infra tests (`anything.infra.test.ts`). It tests multiple functions and not only a service function.
+- Long tests (`anything.long.test.ts`). It can test multiple functions or just one. However, we want to keep these tests in a separate runner so as not to block the main runner with slow tests.
+
 ## Describe
 
 Use `name-of-file` in describe. Why?
@@ -22,7 +37,7 @@ describe('name-of-file', () => {
   const depMock = partialSpyOn(depModule, 'dep');
 
   beforeEach(() => {
-    depMock.mockReturnValue('first');
+    depMock.mockReturnValue('value');
   });
 });
 ```
@@ -36,12 +51,12 @@ describe('name-of-file', () => {
   const depMock = deepMocked(dep);
 
   beforeEach(() => {
-    depMock.mockReturnValue('first');
+    depMock.mockReturnValue('value');
   });
 });
 ```
 
-## Expect
+## Assert
 
 To check the calls of a depMock we use `call` (just one call) or `calls` (0 or more calls). We use only `toHaveLength`, `toBe`, `toMatchObject` and `toStrictEqual` for assertions.
 
@@ -59,9 +74,14 @@ describe('name-of-file', () => {
     expect(res).toBe();
     expect(res).toMatchObject();
     expect(res).toStrictEqual();
+
+    call(depMock).toBe();
     call(depMock).toMatchObject();
+    call(depMock).toStrictEqual();
+
     calls(depMock).toHaveLength();
     calls(depMock).toMatchObject();
+    calls(depMock).toStrictEqual();
   });
 });
 ```
@@ -79,21 +99,49 @@ describe('name-of-file', () => {
   let props: Parameters<typeof fn>[0];
 
   beforeEach(() => {
-    dep1Mock.mockReturnValue('first');
-    dep2Mock.mockReturnValue('first');
+    dep1Mock.mockReturnValue('value1');
+    dep2Mock.mockReturnValue('value1');
 
-    props = mockProps<typeof fn>({ prop: 'first' });
+    props = mockProps<typeof fn>({ prop: 'prop1' });
   });
 
   it('should do x when y', () => {
     // Given
-    dep1Mock.mockReturnValue('second');
-    props.prop = 'second';
+    dep1Mock.mockReturnValue('value2');
+    props.prop = 'prop2';
     // When
     const res = fn(props);
     // Then
-    expect(res).toMatchObject({ prop: 'result' });
-    calls(dep1Mock).toMatchObject([{ prop: 'input' }]);
+    expect(res).toMatchObject([{ res: 'value2' }, { res: 'value1' }]);
+    call(dep1Mock).toStrictEqual([{ prop: 'prop2' }]);
+  });
+});
+```
+
+## Frontend
+
+Testing the frontend is more complicated due to all the possible interactions we have. Therefore, to keep it as testable as possible and with as little code as possible, we'll only test the component logic (service).
+
+```ts
+import { renderHook } from '@testing-library/react-hooks';
+import * as depModule from 'module';
+
+describe('name-of-file', () => {
+  const depMock = partialSpyOn(depModule, 'dep');
+
+  it('should do x when y', () => {
+    // Given
+    depMock.mockReturnValue('value1');
+    // When
+    const { result, rerender } = renderHook(() => useComponent());
+    // Then
+    expect(result.current.value).toBe('value1');
+    // Given
+    depMock.mockReturnValue('value2');
+    // When
+    rerender();
+    // Then
+    expect(result.current.value).toBe('value2');
   });
 });
 ```

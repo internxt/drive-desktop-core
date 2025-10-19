@@ -1,26 +1,43 @@
 # Contributing
 
+## Table of Contents
+
+- [Architecture](#architecture)
+- [Code](#code)
+  - [File template](#file-template)
+  - [Testing](#testing)
+  - [Imports](#imports)
+  - [Use function instead of arrow functions by default](#use-function-instead-of-arrow-functions-by-default)
+  - [Use object props instead of multiple props](#use-object-props-instead-of-multiple-props)
+  - [Never use return types if the function infers the type correctly](#never-use-return-types-if-the-function-infers-the-type-correctly)
+  - [Logger](#logger)
+  - [Comments](#comments)
+  - [Frontend](#frontend)
+
 ## Architecture
 
 ```
-backend
-| core
-  | logger
-  | utils
-| infra
-    | drive-server-wip
-    | sqlite
-      sqlite.module.ts
-      | services
-        function1.ts
-        function2.ts
-| features
-    | backups
-    | sync
-        sync.module.ts
-        | services
-          function1.ts
-          function2.ts
+📁 backend
+  📁 core
+    📁 logger
+    📁 utils
+  📁 infra
+      📁 drive-server-wip
+      📁 sqlite
+        📄 sqlite.module.ts
+        📁 services
+          📄 function1.ts
+          📄 function2.ts
+  📁 features
+      📁 backups
+      📁 sync
+          📄 sync.module.ts
+          📁 services
+            📄 function1.ts
+            📄 function2.ts
+📁 frontend
+  📁 core
+  📁 api
 ```
 
 ## Code
@@ -28,10 +45,7 @@ backend
 ### File template
 
 ```ts
-type Props = {
-  prop1: A;
-  prop2: B;
-};
+type Props = { prop1: A; prop2: B };
 
 export function fn({ prop1, prop2 }: Props) {}
 ```
@@ -135,4 +149,34 @@ logger.debug({
  * Also, don't delete these comments. The plan is for it to function as an Architecture Decision Record.
  * Whenever we change something, we should retain the comments from the previous version to see the history of the decision.
  */
+```
+
+### Frontend
+
+We'll follow a structure similar to Angular's with services and components. The service will be a hook that manages all the logic. Both the service and the component will be stored in the same file.
+
+```ts
+export function useComponent() {
+  const { t } = useI18n();
+  const { data, status } = useCustomHook();
+
+  const value = useMemo(() => {
+    switch (status) {
+      case 'loading':
+        return t('loading');
+      case 'error':
+        return '';
+      case 'success': {
+        return data;
+      }
+    }
+  }, [status]);
+
+  return { value };
+}
+
+export function Component() {
+  const { value } = useComponent();
+  return <p>{value}</p>;
+}
 ```
