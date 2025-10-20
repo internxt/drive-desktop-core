@@ -2,7 +2,6 @@ import { en } from './locales/en';
 
 export type Language = 'es' | 'en' | 'fr';
 export type Translation = typeof en;
-export type Translations = Record<Language, Translation>;
 
 /**
  * v2.6.0 Daniel Jiménez
