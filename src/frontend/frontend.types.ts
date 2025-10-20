@@ -1,4 +1,6 @@
+import { Language, TranslationFn } from './core/i18n/i18n.types';
+
 export type LocalContextProps = {
-  translate: (key: string, keysToReplace?: Record<string, string | number>) => string;
-  language: string;
+  translate: TranslationFn;
+  language: Language;
 };
