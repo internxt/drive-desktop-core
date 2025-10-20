@@ -34,8 +34,8 @@ export function SectionDetailMenu({
 }: Readonly<Props>) {
   const parentRef = useRef<HTMLDivElement>(null);
 
-  const sectionData = sectionName ? report[sectionName] : null;
-  const sectionViewModel = sectionName ? viewModel[sectionName] : null;
+  const sectionData = report[sectionName];
+  const sectionViewModel = viewModel[sectionName];
   const items = sectionData?.items || [];
 
   const virtualizer = useVirtualizer({
@@ -44,9 +44,6 @@ export function SectionDetailMenu({
     estimateSize: () => 80,
     overscan: 10,
   });
-
-  if (!sectionName) return null;
-  if (!sectionViewModel || !sectionData) return null;
 
   const stats = getSectionStats({ viewModel: sectionViewModel, allItems: sectionData.items });
 
