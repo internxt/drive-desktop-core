@@ -12,8 +12,7 @@
 ## Types
 
 - Unit tests (`service.test.ts`). It just tests the service function inside the file and mocks all other functions.
-- Infra tests (`anything.infra.test.ts`). It tests multiple functions and not only a service function.
-- Long tests (`anything.long.test.ts`). It can test multiple functions or just one. However, we want to keep these tests in a separate runner so as not to block the main runner with slow tests.
+- Infra tests (`anything.infra.test.ts`). It tests multiple functions and not only a service function or it is a long test. We want to keep these tests in a separate runner so as not to block the main runner with slow tests.
 
 ## Describe
 
