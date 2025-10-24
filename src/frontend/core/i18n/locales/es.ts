@@ -125,15 +125,6 @@ export const es: Translation = {
         title: 'Tus archivos están actualizados',
         subtitle: 'La actividad de sincronización se mostrará aquí',
       },
-      errors: {
-        sync: {},
-        backups: {
-          'folder-not-found': {
-            text: 'No se pudo realizar la copia, no se encuentra la carpeta',
-            action: 'Ver error',
-          },
-        },
-      },
     },
     footer: {
       'action-description': {
@@ -241,11 +232,17 @@ export const es: Translation = {
       'last-backup-had-issues': 'La última copia de seguridad tuvo algunos problemas',
       'see-issues': 'Ver problemas',
       'backing-up': 'Haciendo la copia',
+      enable: {
+        message: 'Guarda una copia de tus archivos más importantes en la nube automáticamente',
+        action: 'Haz una copia de seguridad ahora',
+      },
       action: {
         start: 'Hacer copia',
         stop: 'Stop backup',
-        running: 'Subiendo backup {{progress}}',
         'last-run': 'Última ejecución',
+        download: 'Descargar',
+        stopDownload: 'Detener descarga',
+        downloading: 'Descargando copia de seguridad',
       },
       frequency: {
         title: 'Frecuencia de subida',
@@ -431,7 +428,7 @@ export const es: Translation = {
       CREATE_FOLDER_FAILED: 'Error al crear la carpeta',
       DELETE_ERROR: 'No se pudo eliminar el elemento',
       FILE_MODIFIED: 'Archivo modificado durante la subida',
-      FILE_SIZE_TOO_BIG: 'Archivo es demasiado grande (máximo 20GB)',
+      FILE_SIZE_TOO_BIG: 'Archivo es demasiado grande (máximo 40GB)',
       FOLDER_ACCESS_DENIED: 'La app no tiene permiso para acceder a esta carpeta',
       FOLDER_DOES_NOT_EXIST: 'Carpeta no existe',
       INVALID_WINDOWS_NAME: String.raw`Windows no permite nombres que incluyen los caracteres \ / : * ? " < > |`,

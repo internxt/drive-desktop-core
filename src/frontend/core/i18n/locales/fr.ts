@@ -126,15 +126,6 @@ export const fr: Translation = {
         title: 'Vos fichiers sont à jour',
         subtitle: "L'activité de synchronisation s'affichera ici",
       },
-      errors: {
-        sync: {},
-        backups: {
-          'folder-not-found': {
-            text: 'Impossible de copier, dossier non trouvé',
-            action: "Afficher l'erreur",
-          },
-        },
-      },
     },
     footer: {
       'action-description': {
@@ -242,11 +233,17 @@ export const fr: Translation = {
       'last-backup-had-issues': 'La dernière sauvegarde a rencontré quelques problèmes',
       'see-issues': 'Voir des problèmes',
       'backing-up': 'Sauvegarde...',
+      enable: {
+        message: 'Enregistrez automatiquement une copie de vos fichiers les plus importants dans le cloud',
+        action: 'Faites une sauvegarde maintenant',
+      },
       action: {
         start: 'Faire une copie ',
         stop: 'Arrêter la sauvegarde',
-        running: 'Sauvegarde en cours {{progress}}',
         'last-run': 'Dernière exécution',
+        download: 'Télécharger',
+        stopDownload: 'Arrêter le téléchargement',
+        downloading: 'Téléchargement de la sauvegarde',
       },
       frequency: {
         title: 'Fréquence de téléchargement',
@@ -433,7 +430,7 @@ export const fr: Translation = {
       CREATE_FOLDER_FAILED: 'Erreur lors de la création de la dossier',
       DELETE_ERROR: "Impossible de supprimer l'élément",
       FILE_MODIFIED: 'Fichier modifié lors du téléchargement',
-      FILE_SIZE_TOO_BIG: 'Le fichier est trop grand (max 20GB)',
+      FILE_SIZE_TOO_BIG: 'Le fichier est trop grand (max 40GB)',
       FOLDER_ACCESS_DENIED: "L'app n'a pas le droit d'accéder à cette dossier",
       FOLDER_DOES_NOT_EXIST: 'Dossier non existant',
       INVALID_WINDOWS_NAME: String.raw`Windows ne permet pas les noms contenant les caractères \ / : * ? " < > |`,

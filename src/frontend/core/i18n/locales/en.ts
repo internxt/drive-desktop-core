@@ -123,15 +123,6 @@ export const en = {
         title: 'Your files are up to date',
         subtitle: 'Sync activity will show up here',
       },
-      errors: {
-        sync: {},
-        backups: {
-          'folder-not-found': {
-            text: "Can't upload backup, missing folder",
-            action: 'View error',
-          },
-        },
-      },
     },
     footer: {
       'action-description': {
@@ -239,11 +230,17 @@ export const en = {
       'last-backup-had-issues': 'Last backup had some issues',
       'see-issues': 'See issues',
       'backing-up': 'Backing up...',
+      enable: {
+        message: 'Save a copy of your most important files on the cloud automatically',
+        action: 'Backup now',
+      },
       action: {
         start: 'Backup now',
         stop: 'Stop backup',
-        running: 'Backup in progress {{progress}}',
         'last-run': 'Last updated',
+        download: 'Download',
+        stopDownload: 'Stop download',
+        downloading: 'Downloading backup',
       },
       frequency: {
         title: 'Upload frequency',
@@ -427,7 +424,7 @@ export const en = {
       CREATE_FOLDER_FAILED: 'Failed to create folder',
       DELETE_ERROR: 'Cannot delete item',
       FILE_MODIFIED: 'File modified while uploading',
-      FILE_SIZE_TOO_BIG: 'File size too big (max 20GB)',
+      FILE_SIZE_TOO_BIG: 'File size too big (max 40GB)',
       FOLDER_ACCESS_DENIED: 'The app does not have permission to access this folder',
       FOLDER_DOES_NOT_EXIST: 'Folder does not exist',
       INVALID_WINDOWS_NAME: String.raw`Windows does not allow names that include the characters \ / : * ? " < > |`,
