@@ -6,7 +6,6 @@ on:
 
 jobs:
   check_pr_size:
-    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 1
 
