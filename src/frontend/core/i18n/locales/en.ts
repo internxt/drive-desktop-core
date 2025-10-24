@@ -123,15 +123,6 @@ export const en = {
         title: 'Your files are up to date',
         subtitle: 'Sync activity will show up here',
       },
-      errors: {
-        sync: {},
-        backups: {
-          'folder-not-found': {
-            text: "Can't upload backup, missing folder",
-            action: 'View error',
-          },
-        },
-      },
     },
     footer: {
       'action-description': {
@@ -239,11 +230,17 @@ export const en = {
       'last-backup-had-issues': 'Last backup had some issues',
       'see-issues': 'See issues',
       'backing-up': 'Backing up...',
+      enable: {
+        message: 'Save a copy of your most important files on the cloud automatically',
+        action: 'Backup now',
+      },
       action: {
         start: 'Backup now',
         stop: 'Stop backup',
-        running: 'Backup in progress {{progress}}',
         'last-run': 'Last updated',
+        download: 'Download',
+        stopDownload: 'Stop download',
+        downloading: 'Downloading backup',
       },
       frequency: {
         title: 'Upload frequency',

@@ -126,15 +126,6 @@ export const fr: Translation = {
         title: 'Vos fichiers sont à jour',
         subtitle: "L'activité de synchronisation s'affichera ici",
       },
-      errors: {
-        sync: {},
-        backups: {
-          'folder-not-found': {
-            text: 'Impossible de copier, dossier non trouvé',
-            action: "Afficher l'erreur",
-          },
-        },
-      },
     },
     footer: {
       'action-description': {
@@ -242,11 +233,17 @@ export const fr: Translation = {
       'last-backup-had-issues': 'La dernière sauvegarde a rencontré quelques problèmes',
       'see-issues': 'Voir des problèmes',
       'backing-up': 'Sauvegarde...',
+      enable: {
+        message: 'Enregistrez automatiquement une copie de vos fichiers les plus importants dans le cloud',
+        action: 'Faites une sauvegarde maintenant',
+      },
       action: {
         start: 'Faire une copie ',
         stop: 'Arrêter la sauvegarde',
-        running: 'Sauvegarde en cours {{progress}}',
         'last-run': 'Dernière exécution',
+        download: 'Télécharger',
+        stopDownload: 'Arrêter le téléchargement',
+        downloading: 'Téléchargement de la sauvegarde',
       },
       frequency: {
         title: 'Fréquence de téléchargement',
