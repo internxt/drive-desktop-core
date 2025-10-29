@@ -1,7 +1,6 @@
 import { unlink } from 'node:fs/promises';
 
-import { FileSystemModule } from '@/backend/infra/file-system/file-system.module';
-import type { AbsolutePath } from '@/backend/infra/file-system/file-system.types';
+import { createPath, FileSystemModule } from '@/backend/infra/file-system/file-system.module';
 import { loggerMock } from '@/tests/vitest/mocks.helper.test';
 import { call, deepMocked, partialSpyOn } from '@/tests/vitest/utils.helper.test';
 
@@ -14,7 +13,7 @@ const mockedUnlink = deepMocked(unlink);
 const mockedStatThrow = partialSpyOn(FileSystemModule, 'statThrow');
 
 describe('deleteFileSafely', () => {
-  const testFilePath = '/test/path/file.txt' as AbsolutePath;
+  const testFilePath = createPath('/test/path/file.txt');
 
   beforeEach(() => {
     cleanerStore.reset();

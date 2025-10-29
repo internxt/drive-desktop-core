@@ -1,12 +1,13 @@
-import { throwWrapper } from '@/backend/core/utils/throw-wrapper';
+import { throwAsyncWrapper } from '@/backend/core/utils/throw-wrapper';
 
 import { readdir } from './services/readdir';
 import { stat } from './services/stat';
 
-export type { AbsolutePath, RelativePath } from './file-system.types';
+export type { AbsolutePath, Path, RelativePath } from './file-system.types';
+export { createPath, dirname } from './file-system.types';
 export const FileSystemModule = {
   stat,
-  statThrow: throwWrapper(stat),
+  statThrow: throwAsyncWrapper(stat),
   readdir,
-  readdirThrow: throwWrapper(readdir),
+  readdirThrow: throwAsyncWrapper(readdir),
 };

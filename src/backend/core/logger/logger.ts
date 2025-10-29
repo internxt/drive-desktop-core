@@ -1,6 +1,8 @@
 import ElectronLog from 'electron-log';
 import { inspect } from 'node:util';
 
+import { logPath } from './log-path';
+
 type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS' | 'CLEANER';
 type TLevel = 'debug' | 'warn' | 'error';
 
@@ -8,6 +10,7 @@ export type TLoggerBody = {
   tag?: TTag;
   msg: string;
   workspaceId?: string;
+  path?: string;
   context?: Record<string, unknown>;
   [key: string]: unknown;
 };
@@ -60,7 +63,7 @@ function getTagStr(tag?: TTag): string {
 }
 
 function prepareBody(level: TLevel, rawBody: TLoggerBody) {
-  const { tag, msg, workspaceId, ...rest } = rawBody;
+  const { tag, msg, workspaceId, path, ...rest } = rawBody;
 
   const header = `${getLevelStr(level)} - ${getProcessStr()} - ${getTagStr(tag)}`;
 
@@ -68,6 +71,7 @@ function prepareBody(level: TLevel, rawBody: TLoggerBody) {
     header,
     msg,
     ...(workspaceId && { workspaceId }),
+    ...(path && { path: logPath({ path }) }),
     ...rest,
   };
 
