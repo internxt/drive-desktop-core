@@ -1,8 +1,8 @@
 import { homedir } from 'node:os';
 
-import { createPath } from '@/backend/infra/file-system/file-system.types';
+import { createAbsolutePath } from '@/backend/infra/file-system/file-system.types';
 
-const HOME_DIR = createPath(homedir());
+const HOME_DIR = createAbsolutePath(homedir());
 const HOME_DIR_LENGTH = HOME_DIR.length;
 const INTERNXT_PATTERN = /InternxtDrive - [\w-]+/g;
 
