@@ -427,6 +427,7 @@ export const fr: Translation = {
     },
     errors: {
       ABORTED: 'Avorté',
+      CANNOT_REGISTER_VIRTUAL_DRIVE: 'Le lecteur virtuel ne peut pas être enregistré',
       CREATE_FOLDER_FAILED: 'Erreur lors de la création de la dossier',
       DELETE_ERROR: "Impossible de supprimer l'élément",
       FILE_MODIFIED: 'Fichier modifié lors du téléchargement',

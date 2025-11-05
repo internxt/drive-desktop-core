@@ -425,6 +425,7 @@ export const es: Translation = {
     },
     errors: {
       ABORTED: 'Abortado',
+      CANNOT_REGISTER_VIRTUAL_DRIVE: 'No se puede registrar el drive virtual',
       CREATE_FOLDER_FAILED: 'Error al crear la carpeta',
       DELETE_ERROR: 'No se pudo eliminar el elemento',
       FILE_MODIFIED: 'Archivo modificado durante la subida',

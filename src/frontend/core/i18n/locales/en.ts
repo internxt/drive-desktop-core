@@ -421,6 +421,7 @@ export const en = {
     },
     errors: {
       ABORTED: 'Aborted',
+      CANNOT_REGISTER_VIRTUAL_DRIVE: 'Cannot register virtual drive',
       CREATE_FOLDER_FAILED: 'Failed to create folder',
       DELETE_ERROR: 'Cannot delete item',
       FILE_MODIFIED: 'File modified while uploading',
