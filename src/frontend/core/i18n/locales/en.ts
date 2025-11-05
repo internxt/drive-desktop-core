@@ -187,8 +187,8 @@ export const en = {
       },
       'auto-startup': 'Start Internxt on system startup',
       sync: {
-        folder: 'Internxt Folder',
-        'change-folder': 'Change folder',
+        folder: 'Virtual Drive location',
+        changeLocation: 'Change location',
       },
       'app-info': {
         'open-logs': 'Open logs',

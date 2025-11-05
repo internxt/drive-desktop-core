@@ -188,8 +188,8 @@ export const es: Translation = {
       },
       'auto-startup': 'Iniciar Internxt al arrancar el sistema',
       sync: {
-        folder: 'Carpeta Internxt',
-        'change-folder': 'Cambiar carpeta',
+        folder: 'Ubicación Drive virtual',
+        changeLocation: 'Cambiar ubicación',
       },
       'app-info': {
         'open-logs': 'Abrir registros',
