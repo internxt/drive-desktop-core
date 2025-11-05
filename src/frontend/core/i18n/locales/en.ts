@@ -187,8 +187,8 @@ export const en = {
       },
       'auto-startup': 'Start Internxt on system startup',
       sync: {
-        folder: 'Internxt Folder',
-        'change-folder': 'Change folder',
+        folder: 'Virtual Drive location',
+        changeLocation: 'Change location',
       },
       'app-info': {
         'open-logs': 'Open logs',
@@ -421,6 +421,7 @@ export const en = {
     },
     errors: {
       ABORTED: 'Aborted',
+      CANNOT_REGISTER_VIRTUAL_DRIVE: 'Cannot register virtual drive',
       CREATE_FOLDER_FAILED: 'Failed to create folder',
       DELETE_ERROR: 'Cannot delete item',
       FILE_MODIFIED: 'File modified while uploading',
