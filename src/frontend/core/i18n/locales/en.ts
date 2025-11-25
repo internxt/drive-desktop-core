@@ -1,32 +1,9 @@
 export const en = {
   login: {
-    email: {
-      section: 'Email address',
-    },
-    password: {
-      section: 'Password',
-      placeholder: 'Password',
-      forgotten: 'Forgot your password?',
-      hide: 'Hide',
-      show: 'Show',
-    },
-    action: {
-      login: 'Log in',
-      'is-logging-in': 'Logging you in...',
-    },
-    'create-account': 'Create account',
-    '2fa': {
-      section: 'Authentication code',
-      description: 'You have configured two factor authentication, please enter the 6 digit code',
-      'change-account': 'Change account',
-      'wrong-code': 'Incorrect code, try again',
-    },
-    error: {
-      'empty-fields': 'Incorrect password or email',
-    },
-    warning: {
-      'no-internet': 'No internet connection',
-    },
+    signInBrowser: 'Sign in with browser',
+    createAccount: 'Create account',
+    welcome: 'Welcome to Internxt',
+    noAccount: "Don't have an account?",
   },
   onboarding: {
     slides: {

@@ -2,33 +2,10 @@ import { Translation } from '../i18n.types';
 
 export const fr: Translation = {
   login: {
-    email: {
-      section: 'Adresse électronique',
-    },
-    password: {
-      section: 'Mot de passe',
-      placeholder: 'Mot de passe',
-      forgotten: 'Vous avez oublié votre mot de passe?',
-      hide: 'Cacher',
-      show: 'Afficher',
-    },
-    action: {
-      login: "S'identifier",
-      'is-logging-in': 'Se connecter...',
-    },
-    'create-account': 'Créer un compte',
-    '2fa': {
-      section: "Code d'authentification",
-      description: "Vous avez configuré l'authentification en deux étapes (2FA), veuillez saisir le code à 6 chiffres",
-      'change-account': 'Changer de compte',
-      'wrong-code': 'Code incorrect, veuillez réessayer',
-    },
-    error: {
-      'empty-fields': 'Mot de passe ou courriel incorrect',
-    },
-    warning: {
-      'no-internet': 'Pas de connexion internet',
-    },
+    signInBrowser: 'Se connecter avec le navigateur',
+    createAccount: 'Créer un compte',
+    welcome: 'Bienvenue chez Internxt',
+    noAccount: "Vous n'avez pas de compte ?",
   },
   onboarding: {
     slides: {
