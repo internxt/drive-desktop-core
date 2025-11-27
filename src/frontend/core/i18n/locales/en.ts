@@ -1,6 +1,6 @@
 export const en = {
   login: {
-    signInBrowser: 'Sign in with browser',
+    signInBrowser: 'Log in with browser',
     createAccount: 'Create account',
     welcome: 'Welcome to Internxt',
     noAccount: "Don't have an account?",
