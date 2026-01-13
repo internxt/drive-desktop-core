@@ -81,8 +81,6 @@ export const fr: Translation = {
     body: {
       activity: {
         operation: {
-          CREATE_ERROR: 'Erreur de création',
-          CREATED: 'Créé',
           DELETE_ERROR: 'Erreur de suppression',
           DELETED: 'Déplacé vers la corbeille',
           DOWNLOAD_CANCEL: 'Téléchargement annulé',
@@ -93,6 +91,8 @@ export const fr: Translation = {
           MODIFY_ERROR: 'Erreur de modification',
           MOVE_ERROR: 'Erreur de déplacement',
           MOVED: 'Déplacé',
+          RENAME_ERROR: 'Erreur de renommage',
+          RENAMED: 'Renommé',
           UPLOAD_ERROR: 'Erreur de téléversement',
           UPLOADED: 'Téléversé',
           UPLOADING: 'Téléversement en cours',

@@ -79,8 +79,6 @@ export const en = {
     body: {
       activity: {
         operation: {
-          CREATE_ERROR: 'Create error',
-          CREATED: 'Created',
           DELETE_ERROR: 'Delete error',
           DELETED: 'Moved to trash',
           DOWNLOAD_CANCEL: 'Downloaded Cancel',
@@ -91,6 +89,8 @@ export const en = {
           MODIFY_ERROR: 'Modify error',
           MOVE_ERROR: 'Move error',
           MOVED: 'Moved',
+          RENAME_ERROR: 'Rename error',
+          RENAMED: 'Renamed',
           UPLOAD_ERROR: 'Upload error',
           UPLOADED: 'Uploaded',
           UPLOADING: 'Uploading',
