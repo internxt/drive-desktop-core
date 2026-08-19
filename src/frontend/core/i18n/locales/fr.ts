@@ -68,6 +68,7 @@ export const fr: Translation = {
         support: 'Aide',
         antivirus: 'Antivirus',
         logout: 'Déconnecter',
+        referAndEarn: 'Parrainez et gagnez',
         quit: 'Fermer',
         'logout-confirmation': {
           title: 'Se déconnecter de cet appareil?',
@@ -145,6 +146,7 @@ export const fr: Translation = {
           es: 'Español (Espagnole)',
           en: 'English (Anglaise)',
           fr: 'Français (Français)',
+          de: 'Deutsch (Allemand)',
         },
       },
       theme: {
@@ -200,7 +202,6 @@ export const fr: Translation = {
     backups: {
       title: 'Dossiers de sauvegarde',
       'add-folders': 'Cliquez sur + pour sélectionner les dossiers que vous souhaitez sauvegarder',
-      'selected-folder_one': '{{count}} dossier',
       'selected-folder_other': '{{count}} dossiers',
       activate: 'Sauvegarder vos dossiers',
       'view-backups': 'Parcourir les backups',
@@ -387,25 +388,39 @@ export const fr: Translation = {
       'find-folder': 'Trouver un dossier',
     },
     errors: {
-      ABORTED: 'Avorté',
       CANNOT_REGISTER_VIRTUAL_DRIVE: 'Le lecteur virtuel ne peut pas être enregistré',
-      CREATE_FOLDER_FAILED: 'Erreur lors de la création de la dossier',
-      DELETE_ERROR: "Impossible de supprimer l'élément",
-      FILE_MODIFIED: 'Fichier modifié lors du téléchargement',
-      FILE_SIZE_TOO_BIG: 'Le fichier est trop grand (max 40GB)',
+      EMPTY_FILES_EXCEEDED: 'La limite de fichiers vides est dépassée',
+      EMPTY_FILES_NOT_ALLOWED: 'Les fichiers vides ne sont pas autorisés. Mettez à niveau votre plan pour obtenir plus de fonctionnalités',
+      FILE_SIZE_TOO_BIG: 'Le fichier est trop grand',
       FOLDER_ACCESS_DENIED: "L'app n'a pas le droit d'accéder à cette dossier",
-      FOLDER_DOES_NOT_EXIST: 'Dossier non existant',
-      INVALID_WINDOWS_NAME: String.raw`Windows ne permet pas les noms contenant les caractères \ / : * ? " < > |`,
+      INVALID_WINDOWS_NAME: String.raw`Windows ne permet pas les noms contenant \ / : * ? " < > | ou commençant/terminant par des espaces`,
       NETWORK_CONNECTIVITY_ERROR: 'Erreur de connectivité réseau',
       NOT_ENOUGH_SPACE: "Vous n'avez pas assez d'espace pour compléter l'opération",
-      PARENT_FOLDER_DOES_NOT_EXIST: 'Dossier parent non existant',
-      ROOT_FOLDER_DOES_NOT_EXIST: 'Dossier racine non existant',
       SERVER_INTERNAL_ERROR: 'Erreur de serveur interne',
-      UNKNOWN_DEVICE_NAME: "Impossible d'obtenir le nom de votre appareil",
       WEBSOCKET_CONNECTION_ERROR: 'Erreur de connexion WebSocket',
     },
   },
   common: {
     cancel: 'Annuler',
+    close: 'Fermer',
+  },
+  maxFileSizeRejectionModal: {
+    single: {
+      title: 'Ce fichier est trop volumineux pour votre plan actuel',
+      description: "Votre plan permet de télécharger des fichiers jusqu'à {{limit}}. Mettez à jour votre plan pour télécharger ce fichier.",
+      description_no_suggested_plan: "Votre plan permet de télécharger des fichiers jusqu'à {{limit}}",
+      description_unknown_limit:
+        'Ce fichier depasse la taille de telechargement autorisee pour votre plan actuel. Mettez a jour votre plan pour telecharger des fichiers plus volumineux.',
+    },
+    multiple: {
+      title: 'Certains fichiers sont trop volumineux pour votre plan actuel',
+      description:
+        "Votre plan permet de télécharger des fichiers jusqu'à {{limit}}. Mettez à jour votre plan pour télécharger des fichiers plus volumineux.",
+      description_no_suggested_plan: "Votre plan permet de télécharger des fichiers jusqu'à {{limit}}",
+      description_unknown_limit:
+        'Certains fichiers depassent la taille de telechargement autorisee pour votre plan actuel. Mettez a jour votre plan pour telecharger des fichiers plus volumineux.',
+    },
+    ctaUpgrade: 'Mettre à jour le plan',
+    plan: "{{planName}} -> jusqu'à {{planMaxFileSize}}",
   },
 };

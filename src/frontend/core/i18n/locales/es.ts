@@ -68,6 +68,7 @@ export const es: Translation = {
         support: 'Ayuda',
         antivirus: 'Antivirus',
         logout: 'Cerrar sesión',
+        referAndEarn: 'Recomienda y gana',
         quit: 'Salir',
         'logout-confirmation': {
           title: '¿Cerrar sesión en este dispositivo?',
@@ -145,6 +146,7 @@ export const es: Translation = {
           es: 'Español (Español)',
           en: 'English (Inglés)',
           fr: 'Français (Francés)',
+          de: 'Deutsch (Alemán)',
         },
       },
       theme: {
@@ -200,7 +202,6 @@ export const es: Translation = {
     backups: {
       title: 'Carpetas de copia de seguridad',
       'add-folders': 'Haz clic en + para hacer una copia de seguridad de tus carpetas',
-      'selected-folder_one': '{{count}} carpeta',
       'selected-folder_other': '{{count}} carpetas',
       activate: 'Hacer copia de seguridad de tus carpetas',
       'view-backups': 'Explorar backups',
@@ -386,25 +387,38 @@ export const es: Translation = {
       'find-folder': 'Buscar la carpeta',
     },
     errors: {
-      ABORTED: 'Abortado',
       CANNOT_REGISTER_VIRTUAL_DRIVE: 'No se puede registrar el drive virtual',
-      CREATE_FOLDER_FAILED: 'Error al crear la carpeta',
-      DELETE_ERROR: 'No se pudo eliminar el elemento',
-      FILE_MODIFIED: 'Archivo modificado durante la subida',
-      FILE_SIZE_TOO_BIG: 'Archivo es demasiado grande (máximo 40GB)',
+      EMPTY_FILES_EXCEEDED: 'Se ha superado el límite de archivos vacíos',
+      EMPTY_FILES_NOT_ALLOWED: 'No se permiten archivos vacíos. Mejora tu plan para obtener más funciones',
+      FILE_SIZE_TOO_BIG: 'Archivo es demasiado grande',
       FOLDER_ACCESS_DENIED: 'La app no tiene permiso para acceder a esta carpeta',
-      FOLDER_DOES_NOT_EXIST: 'Carpeta no existe',
-      INVALID_WINDOWS_NAME: String.raw`Windows no permite nombres que incluyen los caracteres \ / : * ? " < > |`,
+      INVALID_WINDOWS_NAME: String.raw`Windows no permite nombres que incluyan \ / : * ? " < > | o que comiencen/terminen con espacios`,
       NETWORK_CONNECTIVITY_ERROR: 'Error de conectividad de red',
       NOT_ENOUGH_SPACE: 'No tienes suficiente espacio para completar la operación',
-      PARENT_FOLDER_DOES_NOT_EXIST: 'Carpeta padre no existe',
-      ROOT_FOLDER_DOES_NOT_EXIST: 'Carpeta raíz no existe',
       SERVER_INTERNAL_ERROR: 'Error interno del servidor',
-      UNKNOWN_DEVICE_NAME: 'No se pudo obtener el nombre de tu dispositivo',
       WEBSOCKET_CONNECTION_ERROR: 'Error de conexión WebSocket',
     },
   },
   common: {
     cancel: 'Cancelar',
+    close: 'Cerrar',
+  },
+  maxFileSizeRejectionModal: {
+    single: {
+      title: 'Este archivo es demasiado grande para su plan actual',
+      description: 'Su plan permite subir archivos de hasta {{limit}}. Actualice su plan para cargar este archivo.',
+      description_no_suggested_plan: 'Su plan permite subir archivos de hasta {{limit}}',
+      description_unknown_limit:
+        'Este archivo supera el tamano de subida permitido para su plan actual. Actualice su plan para subir archivos mas grandes.',
+    },
+    multiple: {
+      title: 'Algunos archivos son demasiado grandes para su plan actual',
+      description: 'Su plan permite subir archivos de hasta {{limit}}. Actualice su plan para cargar archivos más grandes.',
+      description_no_suggested_plan: 'Su plan permite subir archivos de hasta {{limit}}',
+      description_unknown_limit:
+        'Algunos archivos superan el tamano de subida permitido para su plan actual. Actualice su plan para subir archivos mas grandes.',
+    },
+    ctaUpgrade: 'Mejorar plan',
+    plan: '{{planName}} -> hasta {{planMaxFileSize}}',
   },
 };
