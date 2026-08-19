@@ -18,10 +18,10 @@ export function CleanupConfirmDialog({ isVisible, onConfirm, onCancel, useTransl
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div className="bg-opacity-50 absolute inset-0 bg-black backdrop-blur-sm" onClick={onCancel} aria-hidden="true" />
+      <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onCancel} aria-hidden="true" />
 
       {/* Dialog */}
-      <div className="bg-surface relative mx-4 w-full max-w-md rounded-lg p-6 shadow-xl dark:bg-gray-800">
+      <div className="bg-surface relative mx-4 w-2/3 rounded-lg p-6 shadow-xl dark:bg-gray-800">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
