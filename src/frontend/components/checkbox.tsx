@@ -22,7 +22,7 @@ export function Checkbox({ disabled = false, checked, label, customClassName = '
           checked={checked}
           disabled={disabled}
           className={`border-gray-30 h-5 w-5 shrink-0 appearance-none rounded-md border shadow-sm transition-all duration-75 ease-in-out ${
-            disabled ? 'bg-gray-10 border-gray-20 cursor-not-allowed opacity-50' : `cursor-pointer ${checkedClasses}`
+            disabled ? 'border-gray-20 bg-gray-10 cursor-not-allowed opacity-50' : `cursor-pointer ${checkedClasses}`
           }`}
           onClick={(e) => {
             e.preventDefault();

@@ -66,6 +66,7 @@ export const en = {
         support: 'Support',
         antivirus: 'Antivirus',
         logout: 'Log out',
+        referAndEarn: 'Refer and Earn',
         quit: 'Quit',
         'logout-confirmation': {
           title: 'Log out from this device?',
@@ -143,6 +144,7 @@ export const en = {
           es: 'Español (Spanish)',
           en: 'English (English)',
           fr: 'Français (French)',
+          de: 'Deutsch (German)',
         },
       },
       theme: {
@@ -197,7 +199,6 @@ export const en = {
     },
     backups: {
       title: 'Backup folders',
-      'selected-folder_one': '{{count}} folder',
       'selected-folder_other': '{{count}} folders',
       'add-folders': 'Click + to select the folders\n you want to back up',
       activate: 'Back up your folders and files',
@@ -231,7 +232,7 @@ export const en = {
         warning: "Folders won't automatically backup until you click 'Backup now'. This mode is not recommended.",
       },
       folders: {
-        'no-folders': 'empty folder, no folder available',
+        'no-folders': 'No folders available',
         'no-folders-to-download': 'No folders available for download',
         save: 'Save',
         cancel: 'Cancel',
@@ -382,25 +383,38 @@ export const en = {
       'find-folder': 'Find folder',
     },
     errors: {
-      ABORTED: 'Aborted',
       CANNOT_REGISTER_VIRTUAL_DRIVE: 'Cannot register virtual drive',
-      CREATE_FOLDER_FAILED: 'Failed to create folder',
-      DELETE_ERROR: 'Cannot delete item',
-      FILE_MODIFIED: 'File modified while uploading',
-      FILE_SIZE_TOO_BIG: 'File size too big (max 40GB)',
+      EMPTY_FILES_EXCEEDED: 'Empty file limit exceeded',
+      EMPTY_FILES_NOT_ALLOWED: 'Empty files are not allowed. Upgrade your plan to get more features',
+      FILE_SIZE_TOO_BIG: 'File size too big',
       FOLDER_ACCESS_DENIED: 'The app does not have permission to access this folder',
-      FOLDER_DOES_NOT_EXIST: 'Folder does not exist',
-      INVALID_WINDOWS_NAME: String.raw`Windows does not allow names that include the characters \ / : * ? " < > |`,
+      INVALID_WINDOWS_NAME: String.raw`Windows does not allow names that include \ / : * ? " < > | or start/end with spaces`,
       NETWORK_CONNECTIVITY_ERROR: 'Network connectivity error.',
       NOT_ENOUGH_SPACE: 'You have not enough space to complete the operation',
-      PARENT_FOLDER_DOES_NOT_EXIST: 'Parent folder does not exist',
-      ROOT_FOLDER_DOES_NOT_EXIST: 'Root folder does not exist',
       SERVER_INTERNAL_ERROR: 'Server internal error.',
-      UNKNOWN_DEVICE_NAME: "Could not retrieve your device's name",
       WEBSOCKET_CONNECTION_ERROR: 'WebSocket connection error',
     },
   },
   common: {
     cancel: 'Cancel',
+    close: 'Close',
+  },
+  maxFileSizeRejectionModal: {
+    single: {
+      title: 'This file is too large for your current plan',
+      description: 'Your plan allows uploading files up to {{limit}}. Upgrade your plan to upload this file.',
+      description_no_suggested_plan: 'Your plan allows uploading files up to {{limit}}',
+      description_unknown_limit:
+        'This file exceeds the upload size allowed for your current plan. Upgrade your plan to upload larger files.',
+    },
+    multiple: {
+      title: 'Some files are too large for your current plan',
+      description: 'Your plan allows uploading files up to {{limit}}. Upgrade your plan to upload larger files.',
+      description_no_suggested_plan: 'Your plan allows uploading files up to {{limit}}',
+      description_unknown_limit:
+        'Some files exceed the upload size allowed for your current plan. Upgrade your plan to upload larger files.',
+    },
+    ctaUpgrade: 'Upgrade plan',
+    plan: '{{planName}} -> up to {{planMaxFileSize}}',
   },
 };

@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   plugins: ['@typescript-eslint', 'import', 'unicorn', '@tanstack/query', 'sonarjs'],
   extends: [
     'plugin:prettier/recommended',
@@ -7,7 +8,7 @@ module.exports = {
     'plugin:sonarjs/recommended-legacy',
   ],
   parser: '@typescript-eslint/parser',
-  ignorePatterns: ['node_modules', 'build', 'coverage'],
+  ignorePatterns: ['node_modules', 'build', 'coverage', 'test-files'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],

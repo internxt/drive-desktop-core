@@ -12,7 +12,7 @@ import { getUserAvailableProducts } from './get-user-available-products';
 describe('getUserAvailableProducts', () => {
   const userAvailableProductsMapperMock = partialSpyOn(userAvailableProductsMapperFile, 'userAvailableProductsMapper');
   const getPaymentsClientMock = partialSpyOn(getPaymentsClientFile, 'getPaymentsClient');
-  const loggerErrorMock = partialSpyOn(logger, 'error');
+  const loggerErrorMock = partialSpyOn(logger, 'sentryError');
   const paymentsClientMock = mockDeep<Payments>();
   const props = mockProps<typeof getUserAvailableProducts>({
     paymentsClientConfig: {},
@@ -60,7 +60,7 @@ describe('getUserAvailableProducts', () => {
     expect(userAvailableProductsMapperMock).not.toHaveBeenCalled();
     expect(loggerErrorMock).toHaveBeenCalledWith({
       tag: 'PRODUCTS',
-      msg: 'Failed to get user available products with error:',
+      msg: 'Get user products error',
       error: mockError,
     });
     expect(result).toBeUndefined();
