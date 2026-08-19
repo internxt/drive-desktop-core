@@ -12,6 +12,10 @@ export type TLoggerBody = {
   [key: string]: unknown;
 };
 
+export type LoggerSentryErrorBody = TLoggerBody & {
+  error: unknown;
+};
+
 function getLevelStr(level: TLevel): string {
   switch (level) {
     case 'debug':
@@ -55,6 +59,7 @@ function getTagStr(tag?: TTag): string {
     case 'PRODUCTS':
       return 'prod';
     case undefined:
+    default:
       return '    ';
   }
 }
@@ -98,8 +103,19 @@ function error(rawBody: TLoggerBody) {
   return new Error(rawBody.msg, { cause: rawBody.exc });
 }
 
+function sentryError(rawBody: LoggerSentryErrorBody, sentryExtras?: Record<string, unknown>) {
+  const err = error(rawBody);
+
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { captureSentryException } = require('../sentry/sentry') as typeof import('../sentry/sentry');
+  captureSentryException(rawBody, sentryExtras);
+
+  return err;
+}
+
 export const logger = {
   debug,
   warn,
   error,
+  sentryError,
 };
