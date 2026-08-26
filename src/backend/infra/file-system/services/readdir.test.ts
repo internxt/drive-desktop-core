@@ -1,6 +1,5 @@
-import { execSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
-import { mkdir } from 'node:fs/promises';
+import { chmod, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { cwd } from 'node:process';
 
@@ -27,10 +26,15 @@ describe('readdir', () => {
     // Given
     const folder = join(TEST_FILES, randomUUID());
     await mkdir(folder);
-    execSync(`icacls "${folder}" /deny "${process.env.USERNAME}":F`);
+    await chmod(folder, 0o000);
     // When
-    const { error } = await readdir({ absolutePath: folder });
-    // Then
-    expect(error?.code).toEqual('NO_ACCESS');
+    try {
+      const { error } = await readdir({ absolutePath: folder });
+      // Then
+      expect(error?.code).toEqual('NO_ACCESS');
+    } finally {
+      await chmod(folder, 0o755);
+      await rm(folder, { recursive: true });
+    }
   });
 });
