@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { chmod, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { cwd } from 'node:process';
+import { execSync } from 'node:child_process';
 
 import { TEST_FILES } from '@/tests/vitest/mocks.helper.test';
 
