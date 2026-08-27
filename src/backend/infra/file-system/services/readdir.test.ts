@@ -26,7 +26,11 @@ describe('readdir', () => {
     // Given
     const folder = join(TEST_FILES, randomUUID());
     await mkdir(folder);
-    await chmod(folder, 0o000);
+     if (process.platform === 'win32') {
+      execSync(`icacls "${folder}" /deny "${process.env.USERNAME}":F`);
+    } else {
+      await chmod(folder, 0o000);
+    }
     // When
     try {
       const { error } = await readdir({ absolutePath: folder });
