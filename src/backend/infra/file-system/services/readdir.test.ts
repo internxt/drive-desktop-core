@@ -37,7 +37,11 @@ describe('readdir', () => {
       // Then
       expect(error?.code).toEqual('NO_ACCESS');
     } finally {
-      await chmod(folder, 0o755);
+      if (process.platform === 'win32') {
+        execSync(`icacls "${folder}" /reset`);
+      } else {
+        await chmod(folder, 0o755);
+      }
       await rm(folder, { recursive: true });
     }
   });
