@@ -1,8 +1,8 @@
+import { execSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { chmod, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { cwd } from 'node:process';
-import { execSync } from 'node:child_process';
 
 import { TEST_FILES } from '@/tests/vitest/mocks.helper.test';
 
@@ -27,7 +27,7 @@ describe('readdir', () => {
     // Given
     const folder = join(TEST_FILES, randomUUID());
     await mkdir(folder);
-     if (process.platform === 'win32') {
+    if (process.platform === 'win32') {
       execSync(`icacls "${folder}" /deny "${process.env.USERNAME}":F`);
     } else {
       await chmod(folder, 0o000);
