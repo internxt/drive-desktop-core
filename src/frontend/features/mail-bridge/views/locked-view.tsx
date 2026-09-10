@@ -1,10 +1,10 @@
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
 import { FeatureCard } from '../components/feature-card';
-import { LockedKeyIcon } from '../icons/locked-key-icon';
 import { CloudIcon } from '../icons/cloud-icon';
-import { LockIcon } from '../icons/lock-icon';
 import { EnvelopeSimpleIcon } from '../icons/envelope-simple-icon';
+import { LockIcon } from '../icons/lock-icon';
+import { LockedKeyIcon } from '../icons/locked-key-icon';
 
 type Props = {
   useTranslationContext: () => LocalContextProps;

@@ -1,5 +1,5 @@
-import type { LocalContextProps } from '@/frontend/frontend.types';
 import type { UserAvailableProducts } from '@/backend/features/payments/payments.types';
+import type { LocalContextProps } from '@/frontend/frontend.types';
 
 import type { MailBridgeViewModel } from '../mail-bridge.types';
 import { LockedView } from './locked-view';
@@ -34,13 +34,7 @@ export function MailBridgeView({
   onStartOnLoginChange,
 }: Readonly<Props>) {
   if (!availableProducts?.mail) {
-    return (
-      <LockedView
-        useTranslationContext={useTranslationContext}
-        onUpgradePlan={onUpgradePlan}
-        onComparePlans={onComparePlans}
-      />
-    );
+    return <LockedView useTranslationContext={useTranslationContext} onUpgradePlan={onUpgradePlan} onComparePlans={onComparePlans} />;
   }
 
   if (viewModel.status === 'stopped') {

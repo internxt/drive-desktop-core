@@ -417,7 +417,8 @@ export const en = {
     },
     turnedOffView: {
       title: 'Mail Bridge is off',
-      description: 'Turn it on and Internxt opens a local IMAP/SMTP bridge for {{email}}, the account you’re already signed in with. Nothing else to configure and no extra login.',
+      description:
+        'Turn it on and Internxt opens a local IMAP/SMTP bridge for {{email}}, the account you’re already signed in with. Nothing else to configure and no extra login.',
       activate: {
         title: 'Activate Mail Bridge',
         description: 'Starts the local bridge and begins decrypting your mailbox.',

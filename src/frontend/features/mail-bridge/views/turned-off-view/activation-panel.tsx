@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Checkbox } from '@/frontend/components/checkbox';
 
 import { ActivateMailBridgeButton } from './activate-mail-bridge-button';
+
 type Props = {
   title: string;
   description: string;

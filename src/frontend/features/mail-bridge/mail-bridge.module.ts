@@ -1,6 +1,6 @@
 import type { MailBridgeViewModel } from './mail-bridge.types';
-import { MailBridgeView } from './views/mail-bridge-view';
 import { LockedView } from './views/locked-view';
+import { MailBridgeView } from './views/mail-bridge-view';
 
 export type { MailBridgeStatus, MailBridgeViewModel } from './mail-bridge.types';
 
