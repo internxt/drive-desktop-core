@@ -393,7 +393,7 @@ export const fr: Translation = {
       EMPTY_FILES_NOT_ALLOWED: 'Les fichiers vides ne sont pas autorisés. Mettez à niveau votre plan pour obtenir plus de fonctionnalités',
       FILE_SIZE_TOO_BIG: 'Le fichier est trop grand',
       FOLDER_ACCESS_DENIED: "L'app n'a pas le droit d'accéder à cette dossier",
-      INVALID_WINDOWS_NAME: String.raw`Windows ne permet pas les noms contenant \ / : * ? " < > | ou commençant/terminant par des espaces`,
+      INVALID_WINDOWS_NAME: String.raw`Windows ne permet pas les noms contenant \ / : * ? " < > | ou se terminant par un espace ou un point`,
       NETWORK_CONNECTIVITY_ERROR: 'Erreur de connectivité réseau',
       NOT_ENOUGH_SPACE: "Vous n'avez pas assez d'espace pour compléter l'opération",
       SERVER_INTERNAL_ERROR: 'Erreur de serveur interne',
