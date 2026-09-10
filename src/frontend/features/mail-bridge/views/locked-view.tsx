@@ -1,5 +1,3 @@
-import { Cloud, EnvelopeSimple, Lock } from '@phosphor-icons/react';
-
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
 import { FeatureCard } from '../components/feature-card';

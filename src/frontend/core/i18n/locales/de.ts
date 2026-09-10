@@ -417,6 +417,20 @@ export const de: Translation = {
       signedInAs: 'Angemeldet als {{email}}',
       signedInAsWithPlan: 'Angemeldet als {{email}} · {{planName}}-Tarif',
     },
+    turnedOffView: {
+      title: 'Mail Bridge ist ausgeschaltet',
+      description: 'Schalten Sie es ein und Internxt oeffnet eine lokale IMAP/SMTP-Bridge fuer {{email}}, das Konto, bei dem Sie bereits angemeldet sind. Keine weitere Konfiguration und keine zusaetzliche Anmeldung noetig.',
+      activate: {
+        title: 'Mail Bridge aktivieren',
+        description: 'Startet die lokale Bridge und beginnt mit der Entschluesselung Ihres Postfachs.',
+        action: 'Aktivieren',
+      },
+      startOnLogin: {
+        title: 'Mail Bridge beim Start von Internxt aktivieren',
+        description: 'Standardmaessig ausgeschaltet: Bridge bleibt inaktiv, bis Sie sie einschalten. Daher laeuft kein Hintergrundprozess, sofern Sie das nicht moechten.',
+      },
+      securityNotice: 'Bridge lauscht nur auf 127.0.0.1. Ihre Schluessel verlassen dieses Geraet nie.',
+    },
   },
   maxFileSizeRejectionModal: {
     single: {
