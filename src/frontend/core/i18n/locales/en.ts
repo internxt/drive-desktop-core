@@ -135,6 +135,7 @@ export const en = {
         BACKUPS: 'backups',
         ANTIVIRUS: 'Antivirus',
         CLEANER: 'Cleaner',
+        MAIL_BRIDGE: 'Mail Bridge',
       },
     },
     general: {
@@ -398,6 +399,22 @@ export const en = {
   common: {
     cancel: 'Cancel',
     close: 'Close',
+  },
+  mailBridge: {
+    lockedView: {
+      title: 'Mail Bridge is part of Premium',
+      description:
+        'Bridge decrypts your Internxt mailbox locally so you can read and send mail from Apple Mail, Outlook or Thunderbird. Your current plan does not include it yet.',
+      features: {
+        anyClient: { title: 'Read in any client', description: 'Apple Mail, Outlook, Thunderbird.' },
+        localDecryption: { title: 'Local decryption', description: 'Keys never leave this device.' },
+        sameAccount: { title: 'Same account', description: 'Uses the mailbox you already have.' },
+      },
+      upgradePlan: 'Upgrade plan',
+      comparePlans: 'Compare plans',
+      signedInAs: 'Signed in as {{email}}',
+      signedInAsWithPlan: 'Signed in as {{email}} · {{planName}} plan',
+    },
   },
   maxFileSizeRejectionModal: {
     single: {

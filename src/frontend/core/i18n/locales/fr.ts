@@ -137,6 +137,7 @@ export const fr: Translation = {
         BACKUPS: 'Sauvegardes',
         ANTIVIRUS: 'Antivirus',
         CLEANER: 'Cleaner',
+        MAIL_BRIDGE: 'Mail Bridge',
       },
     },
     general: {
@@ -403,6 +404,22 @@ export const fr: Translation = {
   common: {
     cancel: 'Annuler',
     close: 'Fermer',
+  },
+  mailBridge: {
+    lockedView: {
+      title: 'Mail Bridge fait partie de Premium',
+      description:
+        'Bridge déchiffre votre boîte mail Internxt localement afin que vous puissiez lire et envoyer des e-mails depuis Apple Mail, Outlook ou Thunderbird. Votre offre actuelle ne l’inclut pas encore.',
+      features: {
+        anyClient: { title: 'Lire dans n’importe quel client', description: 'Apple Mail, Outlook, Thunderbird.' },
+        localDecryption: { title: 'Déchiffrement local', description: 'Les clés ne quittent jamais cet appareil.' },
+        sameAccount: { title: 'Même compte', description: 'Utilise la boîte mail que vous avez déjà.' },
+      },
+      upgradePlan: 'Mettre à niveau',
+      comparePlans: 'Comparer les offres',
+      signedInAs: 'Connecté en tant que {{email}}',
+      signedInAsWithPlan: 'Connecté en tant que {{email}} · offre {{planName}}',
+    },
   },
   maxFileSizeRejectionModal: {
     single: {
