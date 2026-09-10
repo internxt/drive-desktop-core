@@ -1,8 +1,10 @@
-import { Cloud } from '@phosphor-icons/react';
+import { Cloud } from '@phosphor-icons/react'
 
 type Props = {
-  size: number;
-};
+  size: number
+}
 export function CloudIcon({ size }: Readonly<Props>) {
-  return <Cloud size={size} />;
+  return (
+    <Cloud size={size} />
+  )
 }
