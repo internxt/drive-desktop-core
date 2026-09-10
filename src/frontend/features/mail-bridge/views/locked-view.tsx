@@ -3,10 +3,10 @@ import { Cloud, EnvelopeSimple, Lock } from '@phosphor-icons/react';
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
 import { FeatureCard } from '../components/feature-card';
-import { CloudIcon } from '../icons/cloud-icon';
-import { EnvelopeSimpleIcon } from '../icons/envelope-simple-icon';
-import { LockIcon } from '../icons/lock-icon';
 import { LockedKeyIcon } from '../icons/locked-key-icon';
+import { CloudIcon } from '../icons/cloud-icon';
+import { LockIcon } from '../icons/lock-icon';
+import { EnvelopeSimpleIcon } from '../icons/envelope-simple-icon';
 
 type Props = {
   useTranslationContext: () => LocalContextProps;
