@@ -10,6 +10,7 @@ describe('userAvailableProductsMapper', () => {
       backups: { enabled: true },
       antivirus: { enabled: false },
       cleaner: { enabled: true },
+      mail: { enabled: true },
     });
 
     const result = userAvailableProductsMapper(props);
@@ -18,6 +19,7 @@ describe('userAvailableProductsMapper', () => {
       backups: true,
       antivirus: false,
       cleaner: true,
+      mail: true,
     });
   });
 
@@ -33,6 +35,7 @@ describe('userAvailableProductsMapper', () => {
       backups: true,
       antivirus: false,
       cleaner: false,
+      mail: false,
     });
   });
 });
