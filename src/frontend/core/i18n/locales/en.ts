@@ -388,7 +388,7 @@ export const en = {
       EMPTY_FILES_NOT_ALLOWED: 'Empty files are not allowed. Upgrade your plan to get more features',
       FILE_SIZE_TOO_BIG: 'File size too big',
       FOLDER_ACCESS_DENIED: 'The app does not have permission to access this folder',
-      INVALID_WINDOWS_NAME: String.raw`Windows does not allow names that include \ / : * ? " < > | or start/end with spaces`,
+      INVALID_WINDOWS_NAME: String.raw`Windows does not allow names that include \ / : * ? " < > | or end with a space or a dot`,
       NETWORK_CONNECTIVITY_ERROR: 'Network connectivity error.',
       NOT_ENOUGH_SPACE: 'You have not enough space to complete the operation',
       SERVER_INTERNAL_ERROR: 'Server internal error.',

@@ -390,7 +390,7 @@ export const de: Translation = {
       EMPTY_FILES_NOT_ALLOWED: 'Leere Dateien sind nicht erlaubt. Aktualisieren Sie Ihren Plan, um mehr Funktionen zu erhalten',
       FILE_SIZE_TOO_BIG: 'Datei zu groß',
       FOLDER_ACCESS_DENIED: 'Die App hat keine Berechtigung, auf diesen Ordner zuzugreifen',
-      INVALID_WINDOWS_NAME: String.raw`Windows erlaubt keine Namen, die \ / : * ? " < > | enthalten oder mit Leerzeichen beginnen/enden`,
+      INVALID_WINDOWS_NAME: String.raw`Windows erlaubt keine Namen, die \ / : * ? " < > | enthalten oder mit einem Leerzeichen oder Punkt enden`,
       NETWORK_CONNECTIVITY_ERROR: 'Netzwerkverbindungsfehler.',
       NOT_ENOUGH_SPACE: 'Sie haben nicht genügend Platz, um den Vorgang abzuschließen',
       SERVER_INTERNAL_ERROR: 'Interner Serverfehler.',
