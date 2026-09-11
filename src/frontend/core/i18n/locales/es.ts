@@ -419,6 +419,22 @@ export const es: Translation = {
       signedInAs: 'Has iniciado sesión como {{email}}',
       signedInAsWithPlan: 'Has iniciado sesión como {{email}} · plan {{planName}}',
     },
+    turnedOffView: {
+      title: 'Mail Bridge esta desactivado',
+      description:
+        'Activalo e Internxt abrira un puente IMAP/SMTP local para {{email}}, la cuenta con la que ya has iniciado sesion. No hay nada mas que configurar ni otro inicio de sesion.',
+      activate: {
+        title: 'Activar Mail Bridge',
+        description: 'Inicia el puente local y comienza a descifrar tu buzon.',
+        action: 'Activar',
+      },
+      startOnLogin: {
+        title: 'Activar Mail Bridge al iniciar Internxt',
+        description:
+          'Desactivado por defecto: Bridge permanece inactivo hasta que lo actives, por lo que no se ejecuta ningun proceso en segundo plano si no lo deseas.',
+      },
+      securityNotice: 'Bridge solo escucha en 127.0.0.1: tus claves nunca salen de este dispositivo.',
+    },
   },
   maxFileSizeRejectionModal: {
     single: {

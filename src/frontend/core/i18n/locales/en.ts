@@ -415,6 +415,21 @@ export const en = {
       signedInAs: 'Signed in as {{email}}',
       signedInAsWithPlan: 'Signed in as {{email}} · {{planName}} plan',
     },
+    turnedOffView: {
+      title: 'Mail Bridge is off',
+      description:
+        'Turn it on and Internxt opens a local IMAP/SMTP bridge for {{email}}, the account you’re already signed in with. Nothing else to configure and no extra login.',
+      activate: {
+        title: 'Activate Mail Bridge',
+        description: 'Starts the local bridge and begins decrypting your mailbox.',
+        action: 'Activate',
+      },
+      startOnLogin: {
+        title: 'Activate Mail Bridge when Internxt starts',
+        description: 'Off by default. Bridge stays idle until you turn it on, so no background process runs unless you want one.',
+      },
+      securityNotice: 'Bridge only ever listens on 127.0.0.1. Your keys never leave this device.',
+    },
   },
   maxFileSizeRejectionModal: {
     single: {
