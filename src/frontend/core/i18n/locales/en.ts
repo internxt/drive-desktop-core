@@ -431,6 +431,10 @@ export const en = {
       },
       securityNotice: 'Bridge only ever listens on 127.0.0.1. Your keys never leave this device.',
     },
+    startingView: {
+      title: 'Starting Mail Bridge',
+      description: 'Preparing your local encrypted mailbox connection.',
+    },
     runningView: {
       title: 'Mail Bridge is running',
       resync: 'Resync',
@@ -441,7 +445,6 @@ export const en = {
         title: 'Connect a mail client',
         description: 'Pick your app and Internxt writes the account for you.',
         setupAutomatically: 'Set up {{client}} automatically',
-        hideManualSettings: 'Hide manual settings',
         manualSettings: 'Manual settings',
         localOnly: 'LOCAL ONLY',
         showPassword: 'Show password',

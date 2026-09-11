@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { Translation } from '../i18n.types';
 
 export const es: Translation = {
@@ -435,6 +436,10 @@ export const es: Translation = {
       },
       securityNotice: 'Bridge solo escucha en 127.0.0.1: tus claves nunca salen de este dispositivo.',
     },
+    startingView: {
+      title: 'Iniciando Mail Bridge',
+      description: 'Preparando la conexion local cifrada de tu buzon.',
+    },
     runningView: {
       title: 'Mail Bridge esta en funcionamiento',
       resync: 'Resincronizar',
@@ -445,15 +450,14 @@ export const es: Translation = {
         title: 'Conecta un cliente de correo',
         description: 'Elige tu aplicacion e Internxt configura la cuenta por ti.',
         setupAutomatically: 'Configurar {{client}} automaticamente',
-        hideManualSettings: 'Ocultar configuracion manual',
         manualSettings: 'Configuracion manual',
         localOnly: 'SOLO LOCAL',
-        showPassword: 'Mostrar contrasena',
+        showPassword: 'Mostrar contraseña',
         copyAll: 'Copiar todo',
         hostname: 'Nombre de host',
         port: 'Puerto',
         username: 'Usuario',
-        password: 'Contrasena',
+        password: 'Contraseña',
         security: 'Seguridad',
         notice: 'Mail Bridge no se iniciara solo. Activa el inicio automatico en ajustes si lo prefieres.',
       },

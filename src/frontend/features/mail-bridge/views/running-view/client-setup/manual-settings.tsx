@@ -17,6 +17,26 @@ export function ManualSettings({ connection, useTranslation }: Readonly<Props>) 
     [useTranslation('mailBridge.runningView.clientSetup.security'), security],
   ];
 
+  async function copyAllSettings() {
+    const settings = [
+      'IMAP',
+      `Hostname: ${connection.hostname}`,
+      `Port: ${connection.imapPort}`,
+      `Username: ${connection.username}`,
+      `Password: ${connection.password}`,
+      `Security: ${connection.imapSecurity}`,
+      '',
+      'SMTP',
+      `Hostname: ${connection.hostname}`,
+      `Port: ${connection.smtpPort}`,
+      `Username: ${connection.username}`,
+      `Password: ${connection.password}`,
+      `Security: ${connection.smtpSecurity}`,
+    ].join('\n');
+
+    await navigator.clipboard.writeText(settings);
+  }
+
   return (
     <div className="border-gray-20 bg-gray-5 mt-5 overflow-hidden rounded-2xl border">
       <div className="border-gray-20 flex items-center justify-between border-b px-5 py-4">
@@ -26,11 +46,18 @@ export function ManualSettings({ connection, useTranslation }: Readonly<Props>) 
             {useTranslation('mailBridge.runningView.clientSetup.localOnly')}
           </span>
         </div>
-        <button
-          onClick={() => setShowPassword((visible) => !visible)}
-          className="border-gray-20 rounded-lg border px-3 py-2 text-sm font-semibold text-gray-100">
-          {useTranslation('mailBridge.runningView.clientSetup.showPassword')}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowPassword((visible) => !visible)}
+            className="border-gray-20 rounded-lg border px-3 py-2 text-sm font-semibold text-gray-100">
+            {useTranslation('mailBridge.runningView.clientSetup.showPassword')}
+          </button>
+          <button
+            onClick={() => void copyAllSettings()}
+            className="border-primary/50 text-primary rounded-lg border px-3 py-2 text-sm font-semibold">
+            {useTranslation('mailBridge.runningView.clientSetup.copyAll')}
+          </button>
+        </div>
       </div>
       <div className="divide-gray-20 grid grid-cols-2 divide-x">
         <SettingsColumn title="↓ IMAP" fields={fields(connection.imapPort, connection.imapSecurity)} />

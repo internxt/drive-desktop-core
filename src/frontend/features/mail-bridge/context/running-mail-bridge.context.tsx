@@ -10,6 +10,7 @@ type RunningMailBridgeContextValue = {
   syncProgress: MailBridgeSyncProgress;
   translate: TranslationFn;
   supportedClients: MailClient[];
+  onSetupClient?: (client: MailClient) => Promise<void>;
   onResync?: () => void;
   onTurnOff?: () => void;
 };

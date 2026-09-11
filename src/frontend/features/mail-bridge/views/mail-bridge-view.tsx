@@ -4,6 +4,7 @@ import type { LocalContextProps } from '@/frontend/frontend.types';
 import type { MailBridgeViewModel, MailClient } from '../mail-bridge.types';
 import { LockedView } from './locked-view';
 import { RunningView } from './running-view';
+import { StartingView } from './starting-view';
 import { TurnedOffView } from './turned-off-view';
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
   onStartOnLoginChange?: (enabled: boolean) => void;
   onResync?: () => void;
   onTurnOff?: () => void;
+  onSetupClient?: (client: MailClient) => Promise<void>;
   supportedClients: MailClient[];
 };
 
@@ -38,6 +40,7 @@ export function MailBridgeView({
   onStartOnLoginChange,
   onResync,
   onTurnOff,
+  onSetupClient,
   supportedClients,
 }: Readonly<Props>) {
   if (!availableProducts?.mail) {
@@ -65,9 +68,14 @@ export function MailBridgeView({
         useTranslationContext={useTranslationContext}
         onResync={onResync}
         onTurnOff={onTurnOff}
+        onSetupClient={onSetupClient}
         supportedClients={supportedClients}
       />
     );
+  }
+
+  if (viewModel.status === 'starting') {
+    return <StartingView useTranslationContext={useTranslationContext} />;
   }
 
   return null;

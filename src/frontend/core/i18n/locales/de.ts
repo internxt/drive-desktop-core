@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { Translation } from '../i18n.types';
 
 export const de: Translation = {
@@ -433,6 +434,10 @@ export const de: Translation = {
       },
       securityNotice: 'Bridge lauscht nur auf 127.0.0.1. Ihre Schluessel verlassen dieses Geraet nie.',
     },
+    startingView: {
+      title: 'Mail Bridge wird gestartet',
+      description: 'Ihre lokale verschluesselte Postfachverbindung wird vorbereitet.',
+    },
     runningView: {
       title: 'Mail Bridge laeuft',
       resync: 'Neu synchronisieren',
@@ -443,7 +448,6 @@ export const de: Translation = {
         title: 'Einen Mail-Client verbinden',
         description: 'Waehlen Sie Ihre App und Internxt richtet das Konto fuer Sie ein.',
         setupAutomatically: '{{client}} automatisch einrichten',
-        hideManualSettings: 'Manuelle Einstellungen ausblenden',
         manualSettings: 'Manuelle Einstellungen',
         localOnly: 'NUR LOKAL',
         showPassword: 'Passwort anzeigen',

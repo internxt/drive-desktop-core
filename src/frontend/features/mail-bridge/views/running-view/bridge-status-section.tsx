@@ -34,11 +34,11 @@ function BridgeIdentity({
   title,
 }: Readonly<{ accountEmail: string; connection: MailBridgeConnection; title: string }>) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex min-w-0 items-center gap-3">
       <span className="text-green">
         <RunningStatusIcon size={14} />
       </span>
-      <div>
+      <div className="min-w-0">
         <h1 className="font-semibold text-gray-100">{title}</h1>
         <p className="text-gray-60 text-sm">
           {accountEmail} · {connection.hostname} · IMAP {connection.imapPort} · SMTP {connection.smtpPort}
@@ -56,10 +56,10 @@ function BridgeActions({
   onTurnOff,
 }: Readonly<{ resyncLabel: string; turnOffLabel: string; onResync?: () => void; onOpenSettings: () => void; onTurnOff?: () => void }>) {
   return (
-    <div className="flex gap-3">
+    <div className="flex shrink-0 gap-3">
       <button
         onClick={onResync}
-        className="border-gray-20 bg-gray-5 flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-semibold text-gray-100">
+        className="border-gray-20 bg-gray-5 flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border px-4 text-sm font-semibold text-gray-100">
         <ResyncIcon size={18} />
         {resyncLabel}
       </button>
@@ -70,7 +70,7 @@ function BridgeActions({
       </button>
       <button
         onClick={onTurnOff}
-        className="border-gray-20 bg-gray-5 flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-semibold text-gray-100">
+        className="border-gray-20 bg-gray-5 flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border px-4 text-sm font-semibold text-gray-100">
         <TurnOffIcon size={18} />
         {turnOffLabel}
       </button>

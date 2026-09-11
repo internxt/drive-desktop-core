@@ -15,6 +15,7 @@ type Props = {
   useTranslationContext: () => LocalContextProps;
   onResync?: () => void;
   onTurnOff?: () => void;
+  onSetupClient?: (client: MailClient) => Promise<void>;
   supportedClients: MailClient[];
 };
 
@@ -25,11 +26,13 @@ export function RunningView({
   useTranslationContext,
   onResync,
   onTurnOff,
+  onSetupClient,
   supportedClients,
 }: Readonly<Props>) {
   const { translate } = useTranslationContext();
   return (
-    <RunningMailBridgeProvider value={{ accountEmail, connection, syncProgress, translate, supportedClients, onResync, onTurnOff }}>
+    <RunningMailBridgeProvider
+      value={{ accountEmail, connection, syncProgress, translate, supportedClients, onResync, onTurnOff, onSetupClient }}>
       <RunningViewContent />
     </RunningMailBridgeProvider>
   );
@@ -38,7 +41,7 @@ export function RunningView({
 function RunningViewContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   return (
-    <section className="relative h-full w-full overflow-auto px-5 py-6">
+    <section className="relative h-full min-h-0 w-full overflow-y-auto overscroll-contain px-5 py-6">
       <BridgeStatusSection onOpenSettings={() => setIsSettingsOpen(true)} />
       <ClientSetup />
       {isSettingsOpen && <BridgeSettingsModal onClose={() => setIsSettingsOpen(false)} />}
