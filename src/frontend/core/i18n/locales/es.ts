@@ -137,6 +137,7 @@ export const es: Translation = {
         BACKUPS: 'Backups',
         ANTIVIRUS: 'Antivirus',
         CLEANER: 'Cleaner',
+        MAIL_BRIDGE: 'Mail Bridge',
       },
     },
     general: {
@@ -402,6 +403,22 @@ export const es: Translation = {
   common: {
     cancel: 'Cancelar',
     close: 'Cerrar',
+  },
+  mailBridge: {
+    lockedView: {
+      title: 'Mail Bridge forma parte de Premium',
+      description:
+        'Bridge descifra tu buzón de Internxt localmente para que puedas leer y enviar correos desde Apple Mail, Outlook o Thunderbird. Tu plan actual aún no lo incluye.',
+      features: {
+        anyClient: { title: 'Lee en cualquier cliente', description: 'Apple Mail, Outlook, Thunderbird.' },
+        localDecryption: { title: 'Descifrado local', description: 'Las claves nunca salen de este dispositivo.' },
+        sameAccount: { title: 'La misma cuenta', description: 'Usa el buzón que ya tienes.' },
+      },
+      upgradePlan: 'Mejorar plan',
+      comparePlans: 'Comparar planes',
+      signedInAs: 'Has iniciado sesión como {{email}}',
+      signedInAsWithPlan: 'Has iniciado sesión como {{email}} · plan {{planName}}',
+    },
   },
   maxFileSizeRejectionModal: {
     single: {

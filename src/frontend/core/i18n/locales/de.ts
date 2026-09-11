@@ -137,6 +137,7 @@ export const de: Translation = {
         BACKUPS: 'Backups',
         ANTIVIRUS: 'Antivirus',
         CLEANER: 'Cleaner',
+        MAIL_BRIDGE: 'Mail Bridge',
       },
     },
     general: {
@@ -400,6 +401,22 @@ export const de: Translation = {
   common: {
     cancel: 'Abbrechen',
     close: 'Schließen',
+  },
+  mailBridge: {
+    lockedView: {
+      title: 'Mail Bridge ist Teil von Premium',
+      description:
+        'Bridge entschlüsselt Ihr Internxt-Postfach lokal, damit Sie E-Mails mit Apple Mail, Outlook oder Thunderbird lesen und senden können. Ihr aktueller Tarif enthält diese Funktion noch nicht.',
+      features: {
+        anyClient: { title: 'In jedem Client lesen', description: 'Apple Mail, Outlook, Thunderbird.' },
+        localDecryption: { title: 'Lokale Entschlüsselung', description: 'Schlüssel verlassen dieses Gerät nie.' },
+        sameAccount: { title: 'Dasselbe Konto', description: 'Verwendet das Postfach, das Sie bereits haben.' },
+      },
+      upgradePlan: 'Tarif upgraden',
+      comparePlans: 'Tarife vergleichen',
+      signedInAs: 'Angemeldet als {{email}}',
+      signedInAsWithPlan: 'Angemeldet als {{email}} · {{planName}}-Tarif',
+    },
   },
   maxFileSizeRejectionModal: {
     single: {
