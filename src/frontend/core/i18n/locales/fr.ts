@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { Translation } from '../i18n.types';
 
 export const fr: Translation = {
@@ -435,6 +436,49 @@ export const fr: Translation = {
           'Desactive par defaut : Bridge reste inactif jusqu’a ce que vous l’activiez, aucun processus en arriere-plan ne s’execute donc sans votre accord.',
       },
       securityNotice: 'Bridge ecoute uniquement sur 127.0.0.1 : vos cles ne quittent jamais cet appareil.',
+    },
+    startingView: {
+      title: 'Demarrage de Mail Bridge',
+      description: 'Preparation de la connexion locale chiffree a votre boite mail.',
+    },
+    setupRequiredView: {
+      description: 'Creez votre compte Internxt Mail avant d’activer Mail Bridge.',
+    },
+    errorView: {
+      description: 'Mail Bridge n’a pas pu demarrer. Consultez les journaux de l’application pour plus de details.',
+    },
+    runningView: {
+      title: 'Mail Bridge est actif',
+      resync: 'Resynchroniser',
+      turnOff: 'Desactiver',
+      decrypting: 'Dechiffrement de votre boite mail · {{percentage}}% · {{completed}} sur {{total}} messages',
+      timeLeft: '~{{minutes}} min restantes',
+      clientSetup: {
+        title: 'Connecter un client mail',
+        description: 'Choisissez votre application et Internxt configure le compte pour vous.',
+        setupAutomatically: 'Configurer {{client}} automatiquement',
+        manualSettings: 'Reglages manuels',
+        localOnly: 'LOCAL UNIQUEMENT',
+        showPassword: 'Afficher le mot de passe',
+        copyAll: 'Tout copier',
+        hostname: 'Nom d’hote',
+        port: 'Port',
+        username: 'Nom d’utilisateur',
+        password: 'Mot de passe',
+        security: 'Securite',
+        notice: 'Mail Bridge ne demarrera pas seul. Activez le demarrage automatique dans les reglages si vous le preferez.',
+      },
+      settings: {
+        title: 'Reglages de Mail Bridge',
+        description: 'Ils s’appliquent a {{email}} sur cet appareil.',
+        localPorts: 'Ports locaux',
+        localPortsDescription: 'Modifiez-les seulement si une autre application les utilise deja.',
+        imap: 'IMAP',
+        smtp: 'SMTP',
+        restartNotice: 'Bridge redemarre et les clients connectes se reconnectent seuls.',
+        cancel: 'Annuler',
+        save: 'Enregistrer les modifications',
+      },
     },
   },
   maxFileSizeRejectionModal: {

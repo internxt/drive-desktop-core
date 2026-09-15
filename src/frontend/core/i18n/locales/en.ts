@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 export const en = {
   login: {
     signInBrowser: 'Log in with browser',
@@ -429,6 +430,49 @@ export const en = {
         description: 'Off by default. Bridge stays idle until you turn it on, so no background process runs unless you want one.',
       },
       securityNotice: 'Bridge only ever listens on 127.0.0.1. Your keys never leave this device.',
+    },
+    startingView: {
+      title: 'Starting Mail Bridge',
+      description: 'Preparing your local encrypted mailbox connection.',
+    },
+    setupRequiredView: {
+      description: 'Create your Internxt Mail account before activating Mail Bridge.',
+    },
+    errorView: {
+      description: 'Mail Bridge could not start. See the application logs for details.',
+    },
+    runningView: {
+      title: 'Mail Bridge is running',
+      resync: 'Resync',
+      turnOff: 'Turn off',
+      decrypting: 'Decrypting your mailbox · {{percentage}}% · {{completed}} of {{total}} messages',
+      timeLeft: '~{{minutes}} min left',
+      clientSetup: {
+        title: 'Connect a mail client',
+        description: 'Pick your app and Internxt writes the account for you.',
+        setupAutomatically: 'Set up {{client}} automatically',
+        manualSettings: 'Manual settings',
+        localOnly: 'LOCAL ONLY',
+        showPassword: 'Show password',
+        copyAll: 'Copy all',
+        hostname: 'Hostname',
+        port: 'Port',
+        username: 'Username',
+        password: 'Password',
+        security: 'Security',
+        notice: 'Mail Bridge will not start on its own. Turn on autostart in settings if you would rather it did.',
+      },
+      settings: {
+        title: 'Mail Bridge settings',
+        description: 'These apply to {{email}} on this device.',
+        localPorts: 'Local ports',
+        localPortsDescription: 'Change these only if another app already uses them.',
+        imap: 'IMAP',
+        smtp: 'SMTP',
+        restartNotice: 'Bridge restarts and connected clients reconnect on their own.',
+        cancel: 'Cancel',
+        save: 'Save changes',
+      },
     },
   },
   maxFileSizeRejectionModal: {

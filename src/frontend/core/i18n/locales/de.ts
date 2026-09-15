@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { Translation } from '../i18n.types';
 
 export const de: Translation = {
@@ -432,6 +433,49 @@ export const de: Translation = {
           'Standardmaessig ausgeschaltet: Bridge bleibt inaktiv, bis Sie sie einschalten. Daher laeuft kein Hintergrundprozess, sofern Sie das nicht moechten.',
       },
       securityNotice: 'Bridge lauscht nur auf 127.0.0.1. Ihre Schluessel verlassen dieses Geraet nie.',
+    },
+    startingView: {
+      title: 'Mail Bridge wird gestartet',
+      description: 'Ihre lokale verschluesselte Postfachverbindung wird vorbereitet.',
+    },
+    setupRequiredView: {
+      description: 'Erstellen Sie Ihr Internxt-Mail-Konto, bevor Sie Mail Bridge aktivieren.',
+    },
+    errorView: {
+      description: 'Mail Bridge konnte nicht gestartet werden. Einzelheiten finden Sie in den Anwendungsprotokollen.',
+    },
+    runningView: {
+      title: 'Mail Bridge laeuft',
+      resync: 'Neu synchronisieren',
+      turnOff: 'Ausschalten',
+      decrypting: 'Ihr Postfach wird entschluesselt · {{percentage}}% · {{completed}} von {{total}} Nachrichten',
+      timeLeft: '~{{minutes}} Min. verbleibend',
+      clientSetup: {
+        title: 'Einen Mail-Client verbinden',
+        description: 'Waehlen Sie Ihre App und Internxt richtet das Konto fuer Sie ein.',
+        setupAutomatically: '{{client}} automatisch einrichten',
+        manualSettings: 'Manuelle Einstellungen',
+        localOnly: 'NUR LOKAL',
+        showPassword: 'Passwort anzeigen',
+        copyAll: 'Alles kopieren',
+        hostname: 'Hostname',
+        port: 'Port',
+        username: 'Benutzername',
+        password: 'Passwort',
+        security: 'Sicherheit',
+        notice: 'Mail Bridge startet nicht selbst. Aktivieren Sie Autostart in den Einstellungen, wenn Sie das bevorzugen.',
+      },
+      settings: {
+        title: 'Mail Bridge Einstellungen',
+        description: 'Diese gelten fuer {{email}} auf diesem Geraet.',
+        localPorts: 'Lokale Ports',
+        localPortsDescription: 'Aendern Sie diese nur, wenn eine andere App sie bereits verwendet.',
+        imap: 'IMAP',
+        smtp: 'SMTP',
+        restartNotice: 'Bridge startet neu und verbundene Clients verbinden sich selbst erneut.',
+        cancel: 'Abbrechen',
+        save: 'Aenderungen speichern',
+      },
     },
   },
   maxFileSizeRejectionModal: {

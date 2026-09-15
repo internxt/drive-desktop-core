@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { Translation } from '../i18n.types';
 
 export const es: Translation = {
@@ -434,6 +435,49 @@ export const es: Translation = {
           'Desactivado por defecto: Bridge permanece inactivo hasta que lo actives, por lo que no se ejecuta ningun proceso en segundo plano si no lo deseas.',
       },
       securityNotice: 'Bridge solo escucha en 127.0.0.1: tus claves nunca salen de este dispositivo.',
+    },
+    startingView: {
+      title: 'Iniciando Mail Bridge',
+      description: 'Preparando la conexion local cifrada de tu buzon.',
+    },
+    setupRequiredView: {
+      description: 'Crea tu cuenta de Internxt Mail antes de activar Mail Bridge.',
+    },
+    errorView: {
+      description: 'No se pudo iniciar Mail Bridge. Consulta los registros de la aplicacion para obtener mas detalles.',
+    },
+    runningView: {
+      title: 'Mail Bridge esta en funcionamiento',
+      resync: 'Resincronizar',
+      turnOff: 'Desactivar',
+      decrypting: 'Descifrando tu buzon · {{percentage}}% · {{completed}} de {{total}} mensajes',
+      timeLeft: '~{{minutes}} min restantes',
+      clientSetup: {
+        title: 'Conecta un cliente de correo',
+        description: 'Elige tu aplicacion e Internxt configura la cuenta por ti.',
+        setupAutomatically: 'Configurar {{client}} automaticamente',
+        manualSettings: 'Configuracion manual',
+        localOnly: 'SOLO LOCAL',
+        showPassword: 'Mostrar contraseña',
+        copyAll: 'Copiar todo',
+        hostname: 'Nombre de host',
+        port: 'Puerto',
+        username: 'Usuario',
+        password: 'Contraseña',
+        security: 'Seguridad',
+        notice: 'Mail Bridge no se iniciara solo. Activa el inicio automatico en ajustes si lo prefieres.',
+      },
+      settings: {
+        title: 'Ajustes de Mail Bridge',
+        description: 'Se aplican a {{email}} en este dispositivo.',
+        localPorts: 'Puertos locales',
+        localPortsDescription: 'Cambialos solo si otra aplicacion ya los utiliza.',
+        imap: 'IMAP',
+        smtp: 'SMTP',
+        restartNotice: 'Bridge se reinicia y los clientes conectados se reconectan solos.',
+        cancel: 'Cancelar',
+        save: 'Guardar cambios',
+      },
     },
   },
   maxFileSizeRejectionModal: {
