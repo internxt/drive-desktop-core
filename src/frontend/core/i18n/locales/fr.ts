@@ -441,6 +441,12 @@ export const fr: Translation = {
       title: 'Demarrage de Mail Bridge',
       description: 'Preparation de la connexion locale chiffree a votre boite mail.',
     },
+    setupRequiredView: {
+      description: 'Creez votre compte Internxt Mail avant d’activer Mail Bridge.',
+    },
+    errorView: {
+      description: 'Mail Bridge n’a pas pu demarrer. Consultez les journaux de l’application pour plus de details.',
+    },
     runningView: {
       title: 'Mail Bridge est actif',
       resync: 'Resynchroniser',

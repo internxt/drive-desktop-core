@@ -438,6 +438,12 @@ export const de: Translation = {
       title: 'Mail Bridge wird gestartet',
       description: 'Ihre lokale verschluesselte Postfachverbindung wird vorbereitet.',
     },
+    setupRequiredView: {
+      description: 'Erstellen Sie Ihr Internxt-Mail-Konto, bevor Sie Mail Bridge aktivieren.',
+    },
+    errorView: {
+      description: 'Mail Bridge konnte nicht gestartet werden. Einzelheiten finden Sie in den Anwendungsprotokollen.',
+    },
     runningView: {
       title: 'Mail Bridge laeuft',
       resync: 'Neu synchronisieren',

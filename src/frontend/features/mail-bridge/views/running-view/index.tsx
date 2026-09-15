@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
-import type { MailBridgeConnection, MailBridgeSyncProgress, MailClient } from '../../mail-bridge.types';
+import type { MailBridgeConnection, MailBridgeSyncProgress } from '../../mail-bridge.types';
 import { BridgeSettingsModal } from './bridge-settings-modal';
 import { BridgeStatusSection } from './bridge-status-section';
 import { ClientSetup } from './client-setup';
@@ -15,8 +15,6 @@ type Props = {
   useTranslationContext: () => LocalContextProps;
   onResync?: () => void;
   onTurnOff?: () => void;
-  onSetupClient?: (client: MailClient) => Promise<void>;
-  supportedClients: MailClient[];
 };
 
 export function RunningView({
@@ -26,13 +24,11 @@ export function RunningView({
   useTranslationContext,
   onResync,
   onTurnOff,
-  onSetupClient,
-  supportedClients,
 }: Readonly<Props>) {
   const { translate } = useTranslationContext();
   return (
     <RunningMailBridgeProvider
-      value={{ accountEmail, connection, syncProgress, translate, supportedClients, onResync, onTurnOff, onSetupClient }}>
+      value={{ accountEmail, connection, syncProgress, translate, onResync, onTurnOff }}>
       <RunningViewContent />
     </RunningMailBridgeProvider>
   );

@@ -435,6 +435,12 @@ export const en = {
       title: 'Starting Mail Bridge',
       description: 'Preparing your local encrypted mailbox connection.',
     },
+    setupRequiredView: {
+      description: 'Create your Internxt Mail account before activating Mail Bridge.',
+    },
+    errorView: {
+      description: 'Mail Bridge could not start. See the application logs for details.',
+    },
     runningView: {
       title: 'Mail Bridge is running',
       resync: 'Resync',

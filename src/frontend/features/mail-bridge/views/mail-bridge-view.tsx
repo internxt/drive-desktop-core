@@ -1,11 +1,13 @@
 import type { UserAvailableProducts } from '@/backend/features/payments/payments.types';
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
-import type { MailBridgeViewModel, MailClient } from '../mail-bridge.types';
+import type { MailBridgeViewModel } from '../mail-bridge.types';
 import { LockedView } from './locked-view';
 import { RunningView } from './running-view';
 import { StartingView } from './starting-view';
+import { SetupRequiredView } from './setup-required-view';
 import { TurnedOffView } from './turned-off-view';
+import { ErrorView } from './error-view';
 
 type Props = {
   availableProducts?: UserAvailableProducts;
@@ -19,8 +21,6 @@ type Props = {
   onStartOnLoginChange?: (enabled: boolean) => void;
   onResync?: () => void;
   onTurnOff?: () => void;
-  onSetupClient?: (client: MailClient) => Promise<void>;
-  supportedClients: MailClient[];
 };
 
 const initialViewModel: MailBridgeViewModel = {
@@ -40,8 +40,6 @@ export function MailBridgeView({
   onStartOnLoginChange,
   onResync,
   onTurnOff,
-  onSetupClient,
-  supportedClients,
 }: Readonly<Props>) {
   if (!availableProducts?.mail) {
     return <LockedView useTranslationContext={useTranslationContext} onUpgradePlan={onUpgradePlan} onComparePlans={onComparePlans} />;
@@ -59,6 +57,8 @@ export function MailBridgeView({
     );
   }
 
+  if (viewModel.status === 'setup-required') return <SetupRequiredView useTranslationContext={useTranslationContext} />;
+
   if (viewModel.status === 'running') {
     return (
       <RunningView
@@ -68,8 +68,6 @@ export function MailBridgeView({
         useTranslationContext={useTranslationContext}
         onResync={onResync}
         onTurnOff={onTurnOff}
-        onSetupClient={onSetupClient}
-        supportedClients={supportedClients}
       />
     );
   }
@@ -78,5 +76,5 @@ export function MailBridgeView({
     return <StartingView useTranslationContext={useTranslationContext} />;
   }
 
-  return null;
+  return <ErrorView useTranslationContext={useTranslationContext} />;
 }

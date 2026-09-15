@@ -2,15 +2,13 @@ import { createContext, useContext } from 'react';
 
 import type { TranslationFn } from '@/frontend/core/i18n/i18n.types';
 
-import type { MailBridgeConnection, MailBridgeSyncProgress, MailClient } from '../mail-bridge.types';
+import type { MailBridgeConnection, MailBridgeSyncProgress } from '../mail-bridge.types';
 
 type RunningMailBridgeContextValue = {
   accountEmail: string;
   connection: MailBridgeConnection;
   syncProgress: MailBridgeSyncProgress;
   translate: TranslationFn;
-  supportedClients: MailClient[];
-  onSetupClient?: (client: MailClient) => Promise<void>;
   onResync?: () => void;
   onTurnOff?: () => void;
 };
