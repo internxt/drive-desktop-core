@@ -1,6 +1,4 @@
 export type MailBridgeStatus = 'stopped' | 'starting' | 'running' | 'error';
-export type MailClient = 'outlook' | 'thunderbird' | 'other';
-
 export type MailBridgeConnection = {
   hostname: string;
   imapPort: number;
@@ -20,6 +18,7 @@ export type MailBridgeSyncProgress = {
 
 export type MailBridgeViewModel =
   | { status: 'stopped'; error: null }
+  | { status: 'setup-required'; error: null }
   | { status: 'starting'; error: null }
   | {
       status: 'running';
