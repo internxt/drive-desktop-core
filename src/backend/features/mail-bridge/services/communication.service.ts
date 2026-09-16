@@ -1,9 +1,25 @@
 import { createServer, type Server, type Socket } from 'node:net';
-import { maxControlFrameSize, type MailBridgeConnectionSettings, type MailBridgeReadyMessage, type MailBridgeSession } from '../constants';
+import {
+  maxControlFrameSize,
+  type ControlMessage,
+  type MailBridgeConnectionSettings,
+  type MailBridgeControlCommand,
+  type MailBridgeReadyMessage,
+  type MailBridgeSession,
+} from '../constants';
 import { mapControlMessage } from '../mappers/map-control-message';
 import { extractPortFromMailBridgeMessage } from '../utils/extract-port-from-mail-bridge-message';
 import { extractHostnameFromMailBridgeMessage } from '../utils/extract-hostname-from-mail-bridge-message';
 import { hasValidListenerSettings } from '../utils/has-valid-listener-settings';
+
+type ControlMessageListener = {
+  pending: Buffer<ArrayBufferLike>;
+  onMessage: (message: ControlMessage) => void;
+  onError: (error: Error) => void;
+  onClose: () => void;
+};
+
+const controlMessageListeners = new WeakMap<Socket, ControlMessageListener>();
 
 /**
  * Converts the Bridge ready response into non-secret settings for a local mail client.
@@ -79,7 +95,7 @@ export async function createControlServer({ endpoint }: { endpoint: string }): P
 /**
  * Frames and writes one control message to the connected Bridge socket.
  */
-export async function sendControlMessage({ socket, message }: { socket: Socket; message: object }) {
+export async function sendControlMessage({ socket, message }: { socket: Socket; message: MailBridgeControlCommand }) {
   const frame = createControlFrame(message);
   if (frame.error) return frame;
   return await new Promise<{ data: undefined; error: undefined } | { data: undefined; error: Error }>((resolveWrite) => {
@@ -103,6 +119,75 @@ export async function sendControlMessage({ socket, message }: { socket: Socket; 
       finish(error instanceof Error ? error : new Error('Could not send Mail Bridge control data'));
     }
   });
+}
+
+/**
+ * Continuously decodes Bridge control frames from one socket, retaining partial frames between data events.
+ */
+export function listenToControlMessages({
+  socket,
+  onMessage,
+  onError,
+  onClose,
+}: {
+  socket: Socket;
+  onMessage: (message: ControlMessage) => void;
+  onError: (error: Error) => void;
+  onClose: () => void;
+}): () => void {
+  controlMessageListeners.set(socket, { pending: Buffer.alloc(0), onMessage, onError, onClose });
+  socket.on('data', onControlData);
+  socket.once('error', onControlError);
+  socket.once('close', onControlClose);
+  return stopListening.bind(undefined, socket);
+}
+
+function onControlData(this: Socket, chunk: Buffer): void {
+  const listener = controlMessageListeners.get(this);
+  if (!listener) return;
+  listener.pending = Buffer.concat([listener.pending, chunk]);
+
+  while (controlMessageListeners.has(this)) {
+    const {data, error} = readControlMessage(listener.pending);
+    if (!data) {
+      if (error) {
+        reportControlError(this, error);
+      }
+      return;
+    }
+    listener.pending = data.remaining;
+    try {
+      listener.onMessage(data.message);
+    } catch (error) {
+      reportControlError(this, error instanceof Error ? error : new Error('Could not process Mail Bridge control data'));
+    }
+  }
+}
+
+function onControlError(this: Socket, error: Error): void {
+  reportControlError(this, error);
+}
+
+function onControlClose(this: Socket): void {
+  const listener = controlMessageListeners.get(this);
+  if (!listener) return;
+  stopListening(this);
+  listener.onClose();
+}
+
+function reportControlError(socket: Socket, error: Error): void {
+  const listener = controlMessageListeners.get(socket);
+  if (!listener) return;
+  stopListening(socket);
+  listener.onError(error);
+}
+
+function stopListening(socket: Socket): void {
+  if (!controlMessageListeners.has(socket)) return;
+  controlMessageListeners.delete(socket);
+  socket.removeListener('data', onControlData);
+  socket.removeListener('error', onControlError);
+  socket.removeListener('close', onControlClose);
 }
 
 /**
@@ -184,11 +269,17 @@ export function waitForReadyMessage(
         return;
       }
       pending = decoded.data.remaining;
-      finish(
-        decoded.data.message.type === 'ready'
-          ? { data: decoded.data.message.ready, error: undefined }
-          : { data: undefined, error: new Error(`Mail Bridge could not start: ${decoded.data.message.error.code}`) },
-      );
+      if (decoded.data.message.type === 'ready') {
+        finish({ data: decoded.data.message.ready, error: undefined });
+        return;
+      }
+      finish({
+        data: undefined,
+        error:
+          decoded.data.message.type === 'error'
+            ? new Error(`Mail Bridge could not start: ${decoded.data.message.error.code}`)
+            : new Error('Mail Bridge sent an unexpected startup message'),
+      });
     }
     socket.on('data', onData);
     socket.once('error', onError);

@@ -3,6 +3,7 @@ export {
   createConnectionSettings,
   createControlFrame,
   createControlServer,
+  listenToControlMessages,
   readControlMessage,
   sendControlMessage,
   waitForControlConnection,
@@ -19,7 +20,9 @@ export type {
   MailAccountKeys,
   MailBridgeClientCredentials,
   MailBridgeConnectionSettings,
+  MailBridgeControlCommand,
   MailBridgeReadyMessage,
   MailBridgeSession,
+  MailBridgeSyncProgress,
   MailBridgeSessionPreparationErrorCode,
 } from './constants';
