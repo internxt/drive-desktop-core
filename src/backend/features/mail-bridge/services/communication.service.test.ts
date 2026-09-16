@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { createConnectionSettings, createControlFrame, readControlMessage } from './communication.service';
 
 describe('communication.service', () => {
@@ -35,5 +36,33 @@ describe('communication.service', () => {
       },
       error: undefined,
     });
+  });
+
+  it('uses the daemon listener hostname when both services bind to the same loopback address', () => {
+    expect(
+      createConnectionSettings({
+        ready: { imap_address: '127.0.0.2:1143', smtp_address: '127.0.0.2:2025', starttls: false },
+        session: {
+          account_id: 'account',
+          addresses: ['user@example.com'],
+          backend_session: { token: 'token', encryption_private_key: 'key' },
+          mail_client: { username: 'user@example.com', password: 'password' },
+        },
+      }),
+    ).toMatchObject({ data: { hostname: '127.0.0.2' }, error: undefined });
+  });
+
+  it('rejects listener addresses with different hostnames', () => {
+    expect(
+      createConnectionSettings({
+        ready: { imap_address: '127.0.0.1:1143', smtp_address: '127.0.0.2:2025', starttls: true },
+        session: {
+          account_id: 'account',
+          addresses: ['user@example.com'],
+          backend_session: { token: 'token', encryption_private_key: 'key' },
+          mail_client: { username: 'user@example.com', password: 'password' },
+        },
+      }),
+    ).toEqual({ data: undefined, error: expect.any(Error) });
   });
 });

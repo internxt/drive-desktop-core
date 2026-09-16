@@ -2,6 +2,8 @@ import { createServer, type Server, type Socket } from 'node:net';
 import { maxControlFrameSize, type MailBridgeConnectionSettings, type MailBridgeReadyMessage, type MailBridgeSession } from '../constants';
 import { mapControlMessage } from '../mappers/map-control-message';
 import { extractPortFromMailBridgeMessage } from '../utils/extract-port-from-mail-bridge-message';
+import {extractHostnameFromMailBridgeMessage } from '../utils/extract-hostname-from-mail-bridge-message'
+import { hasValidListenerSettings } from '../utils/has-valid-listener-settings';
 
 /**
  * Converts the Bridge ready response into non-secret settings for a local mail client.
@@ -13,12 +15,16 @@ export function createConnectionSettings({
   ready: MailBridgeReadyMessage;
   session: MailBridgeSession;
 }): { data: MailBridgeConnectionSettings; error: undefined } | { data: undefined; error: Error } {
+  const imapHostname = extractHostnameFromMailBridgeMessage({ address: ready.imap_address });
+  const smtpHostname = extractHostnameFromMailBridgeMessage({ address: ready.smtp_address });
   const imapPort = extractPortFromMailBridgeMessage({ address: ready.imap_address });
   const smtpPort = extractPortFromMailBridgeMessage({ address: ready.smtp_address });
-  if (!imapPort || !smtpPort) return { data: undefined, error: new Error('Mail Bridge returned invalid listener addresses') };
+  if (!hasValidListenerSettings({ imapHostname, smtpHostname, imapPort, smtpPort })) {
+    return { data: undefined, error: new Error('Mail Bridge returned invalid listener addresses') };
+  }
   return {
     data: {
-      hostname: '127.0.0.1',
+      hostname: imapHostname,
       imapPort,
       smtpPort,
       username: session.mail_client.username,
@@ -29,6 +35,8 @@ export function createConnectionSettings({
     error: undefined,
   };
 }
+
+
 
 /**
  * Encodes a control message using the Bridge length-prefixed JSON protocol.
