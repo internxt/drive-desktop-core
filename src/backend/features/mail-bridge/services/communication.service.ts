@@ -2,7 +2,7 @@ import { createServer, type Server, type Socket } from 'node:net';
 import { maxControlFrameSize, type MailBridgeConnectionSettings, type MailBridgeReadyMessage, type MailBridgeSession } from '../constants';
 import { mapControlMessage } from '../mappers/map-control-message';
 import { extractPortFromMailBridgeMessage } from '../utils/extract-port-from-mail-bridge-message';
-import {extractHostnameFromMailBridgeMessage } from '../utils/extract-hostname-from-mail-bridge-message'
+import { extractHostnameFromMailBridgeMessage } from '../utils/extract-hostname-from-mail-bridge-message';
 import { hasValidListenerSettings } from '../utils/has-valid-listener-settings';
 
 /**
@@ -15,18 +15,20 @@ export function createConnectionSettings({
   ready: MailBridgeReadyMessage;
   session: MailBridgeSession;
 }): { data: MailBridgeConnectionSettings; error: undefined } | { data: undefined; error: Error } {
-  const imapHostname = extractHostnameFromMailBridgeMessage({ address: ready.imap_address });
-  const smtpHostname = extractHostnameFromMailBridgeMessage({ address: ready.smtp_address });
-  const imapPort = extractPortFromMailBridgeMessage({ address: ready.imap_address });
-  const smtpPort = extractPortFromMailBridgeMessage({ address: ready.smtp_address });
-  if (!hasValidListenerSettings({ imapHostname, smtpHostname, imapPort, smtpPort })) {
+  const listenerSettings = {
+    imapHostname: extractHostnameFromMailBridgeMessage({ address: ready.imap_address }),
+    smtpHostname: extractHostnameFromMailBridgeMessage({ address: ready.smtp_address }),
+    imapPort: extractPortFromMailBridgeMessage({ address: ready.imap_address }),
+    smtpPort: extractPortFromMailBridgeMessage({ address: ready.smtp_address }),
+  };
+  if (!hasValidListenerSettings(listenerSettings)) {
     return { data: undefined, error: new Error('Mail Bridge returned invalid listener addresses') };
   }
   return {
     data: {
-      hostname: imapHostname,
-      imapPort,
-      smtpPort,
+      hostname: listenerSettings.imapHostname,
+      imapPort: listenerSettings.imapPort,
+      smtpPort: listenerSettings.smtpPort,
       username: session.mail_client.username,
       password: session.mail_client.password,
       imapSecurity: ready.starttls ? 'STARTTLS' : 'None',
@@ -82,13 +84,17 @@ export async function sendControlMessage({ socket, message }: { socket: Socket; 
   if (frame.error) return frame;
   return await new Promise<{ data: undefined; error: undefined } | { data: undefined; error: Error }>((resolveWrite) => {
     let finished = false;
-    const finish = (error: Error | undefined) => {
+    
+    function finish(error: Error | undefined): void {
       if (finished) return;
       finished = true;
       socket.removeListener('error', onError);
       resolveWrite(error ? { data: undefined, error } : { data: undefined, error: undefined });
-    };
-    const onError = (error: Error) => finish(error);
+    }
+
+    function onError(error: Error): void {
+      finish(error);
+    }
 
     socket.once('error', onError);
     try {
@@ -154,15 +160,23 @@ export function waitForReadyMessage(
 
   return new Promise((resolveReady) => {
     let pending: Buffer<ArrayBufferLike> = Buffer.alloc(0);
-    const finish = (result: { data: MailBridgeReadyMessage; error: undefined } | { data: undefined; error: Error }) => {
+
+    function finish(result: { data: MailBridgeReadyMessage; error: undefined } | { data: undefined; error: Error }): void {
       socket.removeListener('data', onData);
       socket.removeListener('error', onError);
       socket.removeListener('close', onClose);
       resolveReady(result);
-    };
-    const onError = (error: Error) => finish({ data: undefined, error });
-    const onClose = () => finish({ data: undefined, error: new Error('Mail Bridge closed before becoming ready') });
-    const onData = (chunk: Buffer) => {
+    }
+
+    function onError(error: Error): void {
+      finish({ data: undefined, error });
+    }
+
+    function onClose(): void {
+      finish({ data: undefined, error: new Error('Mail Bridge closed before becoming ready') });
+    }
+
+    function onData(chunk: Buffer): void {
       pending = Buffer.concat([pending, chunk]);
       const decoded = readControlMessage(pending);
       if (!decoded.data) {
@@ -175,7 +189,7 @@ export function waitForReadyMessage(
           ? { data: decoded.data.message.ready, error: undefined }
           : { data: undefined, error: new Error(`Mail Bridge could not start: ${decoded.data.message.error.code}`) },
       );
-    };
+    }
     socket.on('data', onData);
     socket.once('error', onError);
     socket.once('close', onClose);
