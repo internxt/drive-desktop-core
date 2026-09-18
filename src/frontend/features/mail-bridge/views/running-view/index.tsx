@@ -11,7 +11,7 @@ import { RunningMailBridgeProvider } from '../../context/running-mail-bridge.con
 type Props = {
   accountEmail: string;
   connection: MailBridgeConnection;
-  syncProgress: MailBridgeSyncProgress;
+  syncProgress?: MailBridgeSyncProgress;
   useTranslationContext: () => LocalContextProps;
   onResync?: () => void;
   onTurnOff?: () => void;

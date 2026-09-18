@@ -40,8 +40,23 @@ export type MailBridgeReadyMessage = {
   starttls: boolean;
 };
 
+export type MailBridgeSyncProgress = {
+  percentage: number;
+  completedMessages: number;
+  totalMessages: number;
+};
+
 export type ControlMessage =
   | { type: 'ready'; ready: MailBridgeReadyMessage }
-  | { type: 'error'; error: { code: string } };
+  | { type: 'error'; error: { code: string } }
+  | { type: 'sync_started'; started: { total: number } }
+  | { type: 'sync_progress'; progress: { downloaded: number; total: number; percent: number } }
+  | { type: 'sync_finished'; finished: { downloaded: number; total: number; code?: string } };
+
+export type MailBridgeControlCommand = { type: 'start_session'; session: MailBridgeSession } | { type: 'resync' };
 export const mailNotSetupCode = 'MAIL_NOT_SETUP';
 export const bridgeEncryptionKeyLength = 32;
+
+export type MailBridgeReadyResult =
+  | { data: { ready: MailBridgeReadyMessage; remaining: Buffer }; error: undefined }
+  | { data: undefined; error: Error };

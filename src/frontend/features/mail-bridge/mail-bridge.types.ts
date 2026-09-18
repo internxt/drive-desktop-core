@@ -13,7 +13,6 @@ export type MailBridgeSyncProgress = {
   percentage: number;
   completedMessages: number;
   totalMessages: number;
-  estimatedMinutesRemaining: number;
 };
 
 export type MailBridgeViewModel =
@@ -24,6 +23,6 @@ export type MailBridgeViewModel =
       status: 'running';
       error: null;
       connection: MailBridgeConnection;
-      syncProgress: MailBridgeSyncProgress;
+      syncProgress?: MailBridgeSyncProgress;
     }
   | { status: 'error'; error: string };

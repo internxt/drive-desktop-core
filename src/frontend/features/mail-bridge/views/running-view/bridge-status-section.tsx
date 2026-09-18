@@ -23,7 +23,7 @@ export function BridgeStatusSection({ onOpenSettings }: Readonly<Props>) {
           onTurnOff={onTurnOff}
         />
       </div>
-      <SyncProgress progress={syncProgress} translate={translate} />
+      {syncProgress && <SyncProgress progress={syncProgress} translate={translate} />}
     </div>
   );
 }
@@ -87,11 +87,8 @@ function SyncProgress({ progress, translate }: Readonly<{ progress: MailBridgeSy
 
   return (
     <div className="border-primary/30 mt-4 border-t pt-4">
-      <div className="flex justify-between gap-4 text-sm">
+      <div className="text-sm">
         <span className="text-gray-80">{label}</span>
-        <span className="text-gray-60">
-          {translate('mailBridge.runningView.timeLeft', { minutes: progress.estimatedMinutesRemaining })}
-        </span>
       </div>
       <div className="bg-gray-20 mt-2 h-1.5 overflow-hidden rounded-full">
         <div className="bg-primary h-full rounded-full" style={{ width: `${progress.percentage}%` }} />

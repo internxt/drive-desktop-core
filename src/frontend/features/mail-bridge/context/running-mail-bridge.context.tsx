@@ -7,7 +7,7 @@ import type { MailBridgeConnection, MailBridgeSyncProgress } from '../mail-bridg
 type RunningMailBridgeContextValue = {
   accountEmail: string;
   connection: MailBridgeConnection;
-  syncProgress: MailBridgeSyncProgress;
+  syncProgress?: MailBridgeSyncProgress;
   translate: TranslationFn;
   onResync?: () => void;
   onTurnOff?: () => void;
