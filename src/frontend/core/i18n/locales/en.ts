@@ -436,7 +436,20 @@ export const en = {
       description: 'Preparing your local encrypted mailbox connection.',
     },
     setupRequiredView: {
-      description: 'Create your Internxt Mail account before activating Mail Bridge.',
+      title: 'Create your Internxt Mail address first',
+      description: 'Mail Bridge is included in your plan, but this account does not have a mailbox yet. Pick your address at mail.internxt.com and Bridge will connect to it automatically. No extra login is needed.',
+      card: {
+        title: 'Set up your mailbox',
+        description: 'Opens mail.internxt.com in your browser, signed in as {{email}}.',
+        action: 'Create address',
+      },
+      steps: {
+        chooseAddress: 'Choose your address and domain on the web.',
+        returnToBridge: 'Come back here. Bridge picks it up on its own.',
+        activate: 'Activate Mail Bridge and connect your mail client.',
+      },
+      checkMailbox: "I've created it",
+      notice: 'Still no mailbox found on this account.',
     },
     errorView: {
       title: 'Mail Bridge stopped unexpectedly',

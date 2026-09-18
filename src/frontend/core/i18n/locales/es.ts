@@ -441,7 +441,20 @@ export const es: Translation = {
       description: 'Preparando la conexion local cifrada de tu buzon.',
     },
     setupRequiredView: {
-      description: 'Crea tu cuenta de Internxt Mail antes de activar Mail Bridge.',
+      title: 'Crea primero tu direccion de Internxt Mail',
+      description: 'Mail Bridge esta incluido en tu plan, pero esta cuenta aun no tiene un buzon. Elige tu direccion en mail.internxt.com y Bridge se conectara automaticamente. No necesitas iniciar sesion de nuevo.',
+      card: {
+        title: 'Configura tu buzon',
+        description: 'Abre mail.internxt.com en tu navegador con la sesion iniciada como {{email}}.',
+        action: 'Crear direccion',
+      },
+      steps: {
+        chooseAddress: 'Elige tu direccion y dominio en la web.',
+        returnToBridge: 'Vuelve aqui. Bridge lo detectara automaticamente.',
+        activate: 'Activa Mail Bridge y conecta tu cliente de correo.',
+      },
+      checkMailbox: 'Ya lo he creado',
+      notice: 'Todavia no se ha encontrado ningun buzon en esta cuenta.',
     },
     errorView: {
       title: 'Mail Bridge se detuvo inesperadamente',

@@ -442,7 +442,20 @@ export const fr: Translation = {
       description: 'Preparation de la connexion locale chiffree a votre boite mail.',
     },
     setupRequiredView: {
-      description: 'Creez votre compte Internxt Mail avant d’activer Mail Bridge.',
+      title: 'Creez d’abord votre adresse Internxt Mail',
+      description: 'Mail Bridge est inclus dans votre forfait, mais ce compte n’a pas encore de boite mail. Choisissez votre adresse sur mail.internxt.com et Bridge s’y connectera automatiquement. Aucune connexion supplementaire n’est necessaire.',
+      card: {
+        title: 'Configurez votre boite mail',
+        description: 'Ouvre mail.internxt.com dans votre navigateur avec la session {{email}}.',
+        action: 'Creer une adresse',
+      },
+      steps: {
+        chooseAddress: 'Choisissez votre adresse et votre domaine sur le web.',
+        returnToBridge: 'Revenez ici. Bridge le detectera automatiquement.',
+        activate: 'Activez Mail Bridge et connectez votre client de messagerie.',
+      },
+      checkMailbox: 'Je l’ai cree',
+      notice: 'Aucune boite mail trouvee pour ce compte.',
     },
     errorView: {
       title: 'Mail Bridge s’est arrete de maniere inattendue',

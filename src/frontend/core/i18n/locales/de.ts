@@ -439,7 +439,20 @@ export const de: Translation = {
       description: 'Ihre lokale verschluesselte Postfachverbindung wird vorbereitet.',
     },
     setupRequiredView: {
-      description: 'Erstellen Sie Ihr Internxt-Mail-Konto, bevor Sie Mail Bridge aktivieren.',
+      title: 'Erstellen Sie zuerst Ihre Internxt-Mail-Adresse',
+      description: 'Mail Bridge ist in Ihrem Tarif enthalten, aber dieses Konto hat noch kein Postfach. Waehlen Sie Ihre Adresse auf mail.internxt.com und Bridge verbindet sich automatisch damit. Eine weitere Anmeldung ist nicht erforderlich.',
+      card: {
+        title: 'Richten Sie Ihr Postfach ein',
+        description: 'Oeffnet mail.internxt.com in Ihrem Browser mit der Anmeldung als {{email}}.',
+        action: 'Adresse erstellen',
+      },
+      steps: {
+        chooseAddress: 'Waehlen Sie Ihre Adresse und Domain im Web.',
+        returnToBridge: 'Kehren Sie hierher zurueck. Bridge erkennt sie automatisch.',
+        activate: 'Aktivieren Sie Mail Bridge und verbinden Sie Ihr E-Mail-Programm.',
+      },
+      checkMailbox: 'Ich habe sie erstellt',
+      notice: 'Fuer dieses Konto wurde noch kein Postfach gefunden.',
     },
     errorView: {
       title: 'Mail Bridge wurde unerwartet beendet',

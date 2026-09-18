@@ -24,6 +24,8 @@ type Props = {
   onRetry: () => void;
   onViewLogs: () => void;
   onContactSupport: () => void;
+  onCreateMailbox: () => void;
+  onCheckMailbox: () => Promise<void>;
 };
 
 const initialViewModel: MailBridgeViewModel = {
@@ -46,6 +48,8 @@ export function MailBridgeView({
   onRetry,
   onViewLogs,
   onContactSupport,
+  onCreateMailbox,
+  onCheckMailbox,
 }: Readonly<Props>) {
   if (!availableProducts?.mail) {
     return <LockedView useTranslationContext={useTranslationContext} onUpgradePlan={onUpgradePlan} onComparePlans={onComparePlans} />;
@@ -63,7 +67,16 @@ export function MailBridgeView({
     );
   }
 
-  if (viewModel.status === 'setup-required') return <SetupRequiredView useTranslationContext={useTranslationContext} />;
+  if (viewModel.status === 'setup-required') {
+    return (
+      <SetupRequiredView
+        accountEmail={accountEmail}
+        useTranslationContext={useTranslationContext}
+        onCreateMailbox={onCreateMailbox}
+        onCheckMailbox={onCheckMailbox}
+      />
+    );
+  }
 
   if (viewModel.status === 'running') {
     return (
