@@ -15,6 +15,7 @@ export { MailBridgeSessionPreparationError } from './errors/mail-bridge-session-
 export { createMailClient } from './services/mail-client.service';
 export { prepareMailBridgeSession } from './services/session.service';
 export { extractPortFromMailBridgeMessage } from './utils/extract-port-from-mail-bridge-message';
+export { mailBridgeReleaseTag } from './constants';
 export type {
   ControlMessage,
   MailAccountKeys,
