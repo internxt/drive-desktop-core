@@ -112,6 +112,7 @@ function getMailKeyRequestErrorDetails(error: unknown): { status: number | undef
   const data = isRecord(error.data) ? error.data : undefined;
   const statusFromData = typeof data?.statusCode === 'number' ? data.statusCode : undefined;
   const status = typeof error.status === 'number' ? error.status : statusFromData;
-  const remoteCode = typeof error.code === 'string' ? error.code : typeof data?.code === 'string' ? data.code : undefined;
+  const remoteCodeFromData = typeof data?.code === 'string' ? data.code : undefined;
+  const remoteCode = typeof error.code === 'string' ? error.code : remoteCodeFromData;
   return { status, remoteCode };
 }

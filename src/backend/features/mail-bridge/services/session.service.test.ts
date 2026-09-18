@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { openEncryptionKeystore } from 'internxt-crypto';
 
 import { prepareMailBridgeSession } from './session.service';
@@ -27,7 +28,7 @@ describe('session.service', () => {
         token: 'token',
         mnemonic: 'mnemonic',
         mailClient: { username: 'user@internxt.com', password: 'password' },
-        getMailAccountKeys: async () => mailAccountKeys,
+        getMailAccountKeys: () => Promise.resolve(mailAccountKeys),
       }),
     ).resolves.toEqual({
       data: {
@@ -56,9 +57,8 @@ describe('session.service', () => {
       token: 'token',
       mnemonic: 'mnemonic',
       mailClient: { username: 'user@internxt.com', password: 'password' },
-      getMailAccountKeys: async () => {
-        throw { data: { code: 'MAIL_NOT_SETUP' } };
-      },
+      getMailAccountKeys: () =>
+        Promise.reject(Object.assign(new Error('Mail account is not set up'), { data: { code: 'MAIL_NOT_SETUP' } })),
     });
 
     expect(result.data).toBeUndefined();
@@ -71,9 +71,13 @@ describe('session.service', () => {
       token: 'token',
       mnemonic: 'mnemonic',
       mailClient: { username: 'user@internxt.com', password: 'password' },
-      getMailAccountKeys: async () => {
-        throw { status: 401, data: { code: 'UNAUTHORIZED', message: 'Token <REDACTED>' } };
-      },
+      getMailAccountKeys: () =>
+        Promise.reject(
+          Object.assign(new Error('Mail account key request is unauthorized'), {
+            status: 401,
+            data: { code: 'UNAUTHORIZED', message: 'Token <REDACTED>' },
+          }),
+        ),
     });
 
     expect(result.data).toBeUndefined();
@@ -88,7 +92,7 @@ describe('session.service', () => {
       token: 'token',
       mnemonic: 'mnemonic',
       mailClient: { username: 'user@internxt.com', password: 'password' },
-      getMailAccountKeys: async () => mailAccountKeys,
+      getMailAccountKeys: () => Promise.resolve(mailAccountKeys),
     });
 
     expect(result.data).toBeUndefined();

@@ -61,7 +61,7 @@ export function ErrorView({ error, useTranslationContext, onRetry, onViewLogs, o
 }
 
 function getMailBridgeErrorDetails({ error, translate }: { error: string; translate: LocalContextProps['translate'] }) {
-  const port = error.match(/(?:127\.0\.0\.1|localhost|\[::1\]):(\d+)/)?.[1];
+  const port = /(?:127\.0\.0\.1|localhost|\[::1\]):(\d+)/.exec(error)?.[1];
   if (port && /EADDRINUSE|address already in use|only one usage/i.test(error)) {
     return {
       title: translate('mailBridge.errorView.portInUse.title', { port }),
