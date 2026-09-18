@@ -56,3 +56,7 @@ export type ControlMessage =
 export type MailBridgeControlCommand = { type: 'start_session'; session: MailBridgeSession } | { type: 'resync' };
 export const mailNotSetupCode = 'MAIL_NOT_SETUP';
 export const bridgeEncryptionKeyLength = 32;
+
+export type MailBridgeReadyResult =
+  | { data: { ready: MailBridgeReadyMessage; remaining: Buffer }; error: undefined }
+  | { data: undefined; error: Error };

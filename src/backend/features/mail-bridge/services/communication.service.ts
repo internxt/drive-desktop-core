@@ -1,5 +1,6 @@
 import { createServer, type Server, type Socket } from 'node:net';
 import {
+  MailBridgeReadyResult,
   maxControlFrameSize,
   type ControlMessage,
   type MailBridgeConnectionSettings,
@@ -126,19 +127,22 @@ export async function sendControlMessage({ socket, message }: { socket: Socket; 
  */
 export function listenToControlMessages({
   socket,
+  initialBuffer = Buffer.alloc(0),
   onMessage,
   onError,
   onClose,
 }: {
   socket: Socket;
+  initialBuffer?: Buffer;
   onMessage: (message: ControlMessage) => void;
   onError: (error: Error) => void;
   onClose: () => void;
 }): () => void {
-  controlMessageListeners.set(socket, { pending: Buffer.alloc(0), onMessage, onError, onClose });
+  controlMessageListeners.set(socket, { pending: initialBuffer, onMessage, onError, onClose });
   socket.on('data', onControlData);
   socket.once('error', onControlError);
   socket.once('close', onControlClose);
+  processControlMessages(socket);
   return stopListening.bind(undefined, socket);
 }
 
@@ -147,11 +151,17 @@ function onControlData(this: Socket, chunk: Buffer): void {
   if (!listener) return;
   listener.pending = Buffer.concat([listener.pending, chunk]);
 
-  while (controlMessageListeners.has(this)) {
+  processControlMessages(this);
+}
+
+function processControlMessages(socket: Socket): void {
+  while (controlMessageListeners.has(socket)) {
+    const listener = controlMessageListeners.get(socket);
+    if (!listener) return;
     const {data, error} = readControlMessage(listener.pending);
     if (!data) {
       if (error) {
-        reportControlError(this, error);
+        reportControlError(socket, error);
       }
       return;
     }
@@ -159,7 +169,7 @@ function onControlData(this: Socket, chunk: Buffer): void {
     try {
       listener.onMessage(data.message);
     } catch (error) {
-      reportControlError(this, error instanceof Error ? error : new Error('Could not process Mail Bridge control data'));
+      reportControlError(socket, error instanceof Error ? error : new Error('Could not process Mail Bridge control data'));
     }
   }
 }
@@ -240,13 +250,13 @@ export function readControlMessage(buffer: Buffer) {
  */
 export function waitForReadyMessage(
   { socket }: { socket: Socket }
-): Promise<{ data: MailBridgeReadyMessage; error: undefined } | { data: undefined; error: Error }> {
+): Promise<MailBridgeReadyResult> {
   if (socket.destroyed) return Promise.resolve({ data: undefined, error: new Error('Mail Bridge closed before becoming ready') });
 
   return new Promise((resolveReady) => {
     let pending: Buffer<ArrayBufferLike> = Buffer.alloc(0);
 
-    function finish(result: { data: MailBridgeReadyMessage; error: undefined } | { data: undefined; error: Error }): void {
+    function finish(result: MailBridgeReadyResult): void {
       socket.removeListener('data', onData);
       socket.removeListener('error', onError);
       socket.removeListener('close', onClose);
@@ -270,7 +280,7 @@ export function waitForReadyMessage(
       }
       pending = decoded.data.remaining;
       if (decoded.data.message.type === 'ready') {
-        finish({ data: decoded.data.message.ready, error: undefined });
+        finish({ data: { ready: decoded.data.message.ready, remaining: pending }, error: undefined });
         return;
       }
       finish({
