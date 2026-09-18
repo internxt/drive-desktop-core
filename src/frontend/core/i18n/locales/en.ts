@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 export const en = {
   login: {
     signInBrowser: 'Log in with browser',
@@ -135,6 +136,7 @@ export const en = {
         BACKUPS: 'backups',
         ANTIVIRUS: 'Antivirus',
         CLEANER: 'Cleaner',
+        MAIL_BRIDGE: 'Mail Bridge',
       },
     },
     general: {
@@ -398,6 +400,108 @@ export const en = {
   common: {
     cancel: 'Cancel',
     close: 'Close',
+  },
+  mailBridge: {
+    lockedView: {
+      title: 'Mail Bridge is part of Premium',
+      description:
+        'Bridge decrypts your Internxt mailbox locally so you can read and send mail from Apple Mail, Outlook or Thunderbird. Your current plan does not include it yet.',
+      features: {
+        anyClient: { title: 'Read in any client', description: 'Apple Mail, Outlook, Thunderbird.' },
+        localDecryption: { title: 'Local decryption', description: 'Keys never leave this device.' },
+        sameAccount: { title: 'Same account', description: 'Uses the mailbox you already have.' },
+      },
+      upgradePlan: 'Upgrade plan',
+      comparePlans: 'Compare plans',
+      signedInAs: 'Signed in as {{email}}',
+      signedInAsWithPlan: 'Signed in as {{email}} · {{planName}} plan',
+    },
+    turnedOffView: {
+      title: 'Mail Bridge is off',
+      description:
+        'Turn it on and Internxt opens a local IMAP/SMTP bridge for {{email}}, the account you’re already signed in with. Nothing else to configure and no extra login.',
+      activate: {
+        title: 'Activate Mail Bridge',
+        description: 'Starts the local bridge and begins decrypting your mailbox.',
+        action: 'Activate',
+      },
+      startOnLogin: {
+        title: 'Activate Mail Bridge when Internxt starts',
+        description: 'Off by default. Bridge stays idle until you turn it on, so no background process runs unless you want one.',
+      },
+      securityNotice: 'Bridge only ever listens on 127.0.0.1. Your keys never leave this device.',
+    },
+    startingView: {
+      title: 'Starting Mail Bridge',
+      description: 'Preparing your local encrypted mailbox connection.',
+    },
+    setupRequiredView: {
+      title: 'Create your Internxt Mail address first',
+      description:
+        'Mail Bridge is included in your plan, but this account does not have a mailbox yet. Pick your address at mail.internxt.com and Bridge will connect to it automatically. No extra login is needed.',
+      card: {
+        title: 'Set up your mailbox',
+        description: 'Opens mail.internxt.com in your browser, signed in as {{email}}.',
+        action: 'Create address',
+      },
+      steps: {
+        chooseAddress: 'Choose your address and domain on the web.',
+        returnToBridge: 'Come back here. Bridge picks it up on its own.',
+        activate: 'Activate Mail Bridge and connect your mail client.',
+      },
+      checkMailbox: "I've created it",
+      notice: 'Still no mailbox found on this account.',
+    },
+    errorView: {
+      title: 'Mail Bridge stopped unexpectedly',
+      description:
+        'Your mail is safe. Nothing was lost and no message left this device. Bridge shut down and your mail client cannot reach it until it is running again.',
+      tryAgain: 'Try again',
+      viewLogs: 'View logs',
+      contactSupport: 'Contact support',
+      leaveOff: 'Leave it off for now',
+      portInUse: {
+        title: 'Port {{port}} is already in use by another app',
+        description: 'Close the app using port {{port}}, then try again.',
+      },
+      generic: {
+        title: 'Mail Bridge could not start',
+        description: 'Try again or view the logs for more details.',
+      },
+    },
+    runningView: {
+      title: 'Mail Bridge is running',
+      resync: 'Resync',
+      turnOff: 'Turn off',
+      decrypting: 'Decrypting your mailbox · {{percentage}}% · {{completed}} of {{total}} messages',
+      timeLeft: '~{{minutes}} min left',
+      clientSetup: {
+        title: 'Connect a mail client',
+        description: 'Pick your app and Internxt writes the account for you.',
+        setupAutomatically: 'Set up {{client}} automatically',
+        manualSettings: 'Manual settings',
+        localOnly: 'LOCAL ONLY',
+        showPassword: 'Show password',
+        copyAll: 'Copy all',
+        hostname: 'Hostname',
+        port: 'Port',
+        username: 'Username',
+        password: 'Password',
+        security: 'Security',
+        notice: 'Mail Bridge will not start on its own. Turn on autostart in settings if you would rather it did.',
+      },
+      settings: {
+        title: 'Mail Bridge settings',
+        description: 'These apply to {{email}} on this device.',
+        localPorts: 'Local ports',
+        localPortsDescription: 'Change these only if another app already uses them.',
+        imap: 'IMAP',
+        smtp: 'SMTP',
+        restartNotice: 'Bridge restarts and connected clients reconnect on their own.',
+        cancel: 'Cancel',
+        save: 'Save changes',
+      },
+    },
   },
   maxFileSizeRejectionModal: {
     single: {

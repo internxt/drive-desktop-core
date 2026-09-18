@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { Translation } from '../i18n.types';
 
 export const es: Translation = {
@@ -137,6 +138,7 @@ export const es: Translation = {
         BACKUPS: 'Backups',
         ANTIVIRUS: 'Antivirus',
         CLEANER: 'Cleaner',
+        MAIL_BRIDGE: 'Mail Bridge',
       },
     },
     general: {
@@ -402,6 +404,109 @@ export const es: Translation = {
   common: {
     cancel: 'Cancelar',
     close: 'Cerrar',
+  },
+  mailBridge: {
+    lockedView: {
+      title: 'Mail Bridge forma parte de Premium',
+      description:
+        'Bridge descifra tu buzón de Internxt localmente para que puedas leer y enviar correos desde Apple Mail, Outlook o Thunderbird. Tu plan actual aún no lo incluye.',
+      features: {
+        anyClient: { title: 'Lee en cualquier cliente', description: 'Apple Mail, Outlook, Thunderbird.' },
+        localDecryption: { title: 'Descifrado local', description: 'Las claves nunca salen de este dispositivo.' },
+        sameAccount: { title: 'La misma cuenta', description: 'Usa el buzón que ya tienes.' },
+      },
+      upgradePlan: 'Mejorar plan',
+      comparePlans: 'Comparar planes',
+      signedInAs: 'Has iniciado sesión como {{email}}',
+      signedInAsWithPlan: 'Has iniciado sesión como {{email}} · plan {{planName}}',
+    },
+    turnedOffView: {
+      title: 'Mail Bridge esta desactivado',
+      description:
+        'Activalo e Internxt abrira un puente IMAP/SMTP local para {{email}}, la cuenta con la que ya has iniciado sesion. No hay nada mas que configurar ni otro inicio de sesion.',
+      activate: {
+        title: 'Activar Mail Bridge',
+        description: 'Inicia el puente local y comienza a descifrar tu buzon.',
+        action: 'Activar',
+      },
+      startOnLogin: {
+        title: 'Activar Mail Bridge al iniciar Internxt',
+        description:
+          'Desactivado por defecto: Bridge permanece inactivo hasta que lo actives, por lo que no se ejecuta ningun proceso en segundo plano si no lo deseas.',
+      },
+      securityNotice: 'Bridge solo escucha en 127.0.0.1: tus claves nunca salen de este dispositivo.',
+    },
+    startingView: {
+      title: 'Iniciando Mail Bridge',
+      description: 'Preparando la conexion local cifrada de tu buzon.',
+    },
+    setupRequiredView: {
+      title: 'Crea primero tu direccion de Internxt Mail',
+      description:
+        'Mail Bridge esta incluido en tu plan, pero esta cuenta aun no tiene un buzon. Elige tu direccion en mail.internxt.com y Bridge se conectara automaticamente. No necesitas iniciar sesion de nuevo.',
+      card: {
+        title: 'Configura tu buzon',
+        description: 'Abre mail.internxt.com en tu navegador con la sesion iniciada como {{email}}.',
+        action: 'Crear direccion',
+      },
+      steps: {
+        chooseAddress: 'Elige tu direccion y dominio en la web.',
+        returnToBridge: 'Vuelve aqui. Bridge lo detectara automaticamente.',
+        activate: 'Activa Mail Bridge y conecta tu cliente de correo.',
+      },
+      checkMailbox: 'Ya lo he creado',
+      notice: 'Todavia no se ha encontrado ningun buzon en esta cuenta.',
+    },
+    errorView: {
+      title: 'Mail Bridge se detuvo inesperadamente',
+      description:
+        'Tu correo esta seguro. No se perdio nada ni salio ningun mensaje de este dispositivo. Bridge se cerro y tu cliente de correo no puede conectarse hasta que vuelva a estar en funcionamiento.',
+      tryAgain: 'Intentar de nuevo',
+      viewLogs: 'Ver registros',
+      contactSupport: 'Contactar con soporte',
+      leaveOff: 'Dejarlo apagado por ahora',
+      portInUse: {
+        title: 'El puerto {{port}} ya esta en uso por otra aplicacion',
+        description: 'Cierra la aplicacion que usa el puerto {{port}} y vuelve a intentarlo.',
+      },
+      generic: {
+        title: 'No se pudo iniciar Mail Bridge',
+        description: 'Vuelve a intentarlo o consulta los registros para obtener mas detalles.',
+      },
+    },
+    runningView: {
+      title: 'Mail Bridge esta en funcionamiento',
+      resync: 'Resincronizar',
+      turnOff: 'Desactivar',
+      decrypting: 'Descifrando tu buzon · {{percentage}}% · {{completed}} de {{total}} mensajes',
+      timeLeft: '~{{minutes}} min restantes',
+      clientSetup: {
+        title: 'Conecta un cliente de correo',
+        description: 'Elige tu aplicacion e Internxt configura la cuenta por ti.',
+        setupAutomatically: 'Configurar {{client}} automaticamente',
+        manualSettings: 'Configuracion manual',
+        localOnly: 'SOLO LOCAL',
+        showPassword: 'Mostrar contraseña',
+        copyAll: 'Copiar todo',
+        hostname: 'Nombre de host',
+        port: 'Puerto',
+        username: 'Usuario',
+        password: 'Contraseña',
+        security: 'Seguridad',
+        notice: 'Mail Bridge no se iniciara solo. Activa el inicio automatico en ajustes si lo prefieres.',
+      },
+      settings: {
+        title: 'Ajustes de Mail Bridge',
+        description: 'Se aplican a {{email}} en este dispositivo.',
+        localPorts: 'Puertos locales',
+        localPortsDescription: 'Cambialos solo si otra aplicacion ya los utiliza.',
+        imap: 'IMAP',
+        smtp: 'SMTP',
+        restartNotice: 'Bridge se reinicia y los clientes conectados se reconectan solos.',
+        cancel: 'Cancelar',
+        save: 'Guardar cambios',
+      },
+    },
   },
   maxFileSizeRejectionModal: {
     single: {
