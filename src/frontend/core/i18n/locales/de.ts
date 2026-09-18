@@ -442,7 +442,21 @@ export const de: Translation = {
       description: 'Erstellen Sie Ihr Internxt-Mail-Konto, bevor Sie Mail Bridge aktivieren.',
     },
     errorView: {
-      description: 'Mail Bridge konnte nicht gestartet werden. Einzelheiten finden Sie in den Anwendungsprotokollen.',
+      title: 'Mail Bridge wurde unerwartet beendet',
+      description:
+        'Ihre E-Mails sind sicher. Es ist nichts verloren gegangen und keine Nachricht hat dieses Geraet verlassen. Bridge wurde beendet und Ihr E-Mail-Programm kann es erst wieder erreichen, wenn es erneut ausgefuehrt wird.',
+      tryAgain: 'Erneut versuchen',
+      viewLogs: 'Protokolle anzeigen',
+      contactSupport: 'Support kontaktieren',
+      leaveOff: 'Vorerst ausgeschaltet lassen',
+      portInUse: {
+        title: 'Port {{port}} wird bereits von einer anderen App verwendet',
+        description: 'Schliessen Sie die App, die Port {{port}} verwendet, und versuchen Sie es erneut.',
+      },
+      generic: {
+        title: 'Mail Bridge konnte nicht gestartet werden',
+        description: 'Versuchen Sie es erneut oder sehen Sie in den Protokollen nach.',
+      },
     },
     runningView: {
       title: 'Mail Bridge laeuft',

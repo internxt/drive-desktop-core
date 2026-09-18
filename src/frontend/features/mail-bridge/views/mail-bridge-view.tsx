@@ -21,6 +21,9 @@ type Props = {
   onStartOnLoginChange?: (enabled: boolean) => void;
   onResync?: () => void;
   onTurnOff?: () => void;
+  onRetry: () => void;
+  onViewLogs: () => void;
+  onContactSupport: () => void;
 };
 
 const initialViewModel: MailBridgeViewModel = {
@@ -40,6 +43,9 @@ export function MailBridgeView({
   onStartOnLoginChange,
   onResync,
   onTurnOff,
+  onRetry,
+  onViewLogs,
+  onContactSupport,
 }: Readonly<Props>) {
   if (!availableProducts?.mail) {
     return <LockedView useTranslationContext={useTranslationContext} onUpgradePlan={onUpgradePlan} onComparePlans={onComparePlans} />;
@@ -76,5 +82,14 @@ export function MailBridgeView({
     return <StartingView useTranslationContext={useTranslationContext} />;
   }
 
-  return <ErrorView useTranslationContext={useTranslationContext} />;
+  return (
+    <ErrorView
+      error={viewModel.error}
+      useTranslationContext={useTranslationContext}
+      onRetry={onRetry}
+      onViewLogs={onViewLogs}
+      onContactSupport={onContactSupport}
+      onTurnOff={onTurnOff}
+    />
+  );
 }

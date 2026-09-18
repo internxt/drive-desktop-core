@@ -444,7 +444,21 @@ export const es: Translation = {
       description: 'Crea tu cuenta de Internxt Mail antes de activar Mail Bridge.',
     },
     errorView: {
-      description: 'No se pudo iniciar Mail Bridge. Consulta los registros de la aplicacion para obtener mas detalles.',
+      title: 'Mail Bridge se detuvo inesperadamente',
+      description:
+        'Tu correo esta seguro. No se perdio nada ni salio ningun mensaje de este dispositivo. Bridge se cerro y tu cliente de correo no puede conectarse hasta que vuelva a estar en funcionamiento.',
+      tryAgain: 'Intentar de nuevo',
+      viewLogs: 'Ver registros',
+      contactSupport: 'Contactar con soporte',
+      leaveOff: 'Dejarlo apagado por ahora',
+      portInUse: {
+        title: 'El puerto {{port}} ya esta en uso por otra aplicacion',
+        description: 'Cierra la aplicacion que usa el puerto {{port}} y vuelve a intentarlo.',
+      },
+      generic: {
+        title: 'No se pudo iniciar Mail Bridge',
+        description: 'Vuelve a intentarlo o consulta los registros para obtener mas detalles.',
+      },
     },
     runningView: {
       title: 'Mail Bridge esta en funcionamiento',
