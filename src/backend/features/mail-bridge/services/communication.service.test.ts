@@ -2,7 +2,13 @@
 import { Socket } from 'node:net';
 
 import type { ControlMessage } from '../constants';
-import { createConnectionSettings, createControlFrame, listenToControlMessages, readControlMessage, waitForReadyMessage } from './communication.service';
+import {
+  createConnectionSettings,
+  createControlFrame,
+  listenToControlMessages,
+  readControlMessage,
+  waitForReadyMessage,
+} from './communication.service';
 
 describe('communication.service', () => {
   it('frames and reads a ready message without changing the remaining data', () => {

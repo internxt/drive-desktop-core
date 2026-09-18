@@ -442,7 +442,8 @@ export const es: Translation = {
     },
     setupRequiredView: {
       title: 'Crea primero tu direccion de Internxt Mail',
-      description: 'Mail Bridge esta incluido en tu plan, pero esta cuenta aun no tiene un buzon. Elige tu direccion en mail.internxt.com y Bridge se conectara automaticamente. No necesitas iniciar sesion de nuevo.',
+      description:
+        'Mail Bridge esta incluido en tu plan, pero esta cuenta aun no tiene un buzon. Elige tu direccion en mail.internxt.com y Bridge se conectara automaticamente. No necesitas iniciar sesion de nuevo.',
       card: {
         title: 'Configura tu buzon',
         description: 'Abre mail.internxt.com en tu navegador con la sesion iniciada como {{email}}.',

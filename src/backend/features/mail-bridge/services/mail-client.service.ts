@@ -16,10 +16,6 @@ export function createMailClient({
   desktopHeader: string;
   token: string;
 }): { getMailAccountKeys: () => Promise<unknown> } {
-  const client = MailApi.client(
-    new URL('/mail/', gatewayUrl).toString(),
-    { clientName, clientVersion, desktopHeader },
-    { token },
-  );
+  const client = MailApi.client(new URL('/mail/', gatewayUrl).toString(), { clientName, clientVersion, desktopHeader }, { token });
   return { getMailAccountKeys: async () => await client.getMailAccountKeys() };
 }

@@ -1,11 +1,11 @@
 import type { TranslationFn } from '@/frontend/core/i18n/i18n.types';
 
+import { useRunningMailBridge } from '../../context/running-mail-bridge.context';
 import { ResyncIcon } from '../../icons/resync-icon';
 import { RunningStatusIcon } from '../../icons/running-status-icon';
 import { SettingsIcon } from '../../icons/settings-icon';
 import { TurnOffIcon } from '../../icons/turn-off-icon';
 import type { MailBridgeConnection, MailBridgeSyncProgress } from '../../mail-bridge.types';
-import { useRunningMailBridge } from '../../context/running-mail-bridge.context';
 
 type Props = { onOpenSettings: () => void };
 

@@ -1,5 +1,6 @@
 import { ArrowsClockwise, At, ArrowSquareOut } from '@phosphor-icons/react';
 import { useState } from 'react';
+
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
 type Props = {
@@ -35,7 +36,9 @@ export function SetupRequiredView({ accountEmail, useTranslationContext, onCreat
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="font-semibold text-gray-100">{translate('mailBridge.setupRequiredView.card.title')}</h2>
-            <p className="text-gray-60 mt-1 text-sm">{translate('mailBridge.setupRequiredView.card.description', { email: accountEmail })}</p>
+            <p className="text-gray-60 mt-1 text-sm">
+              {translate('mailBridge.setupRequiredView.card.description', { email: accountEmail })}
+            </p>
           </div>
           <button
             type="button"
@@ -46,7 +49,7 @@ export function SetupRequiredView({ accountEmail, useTranslationContext, onCreat
           </button>
         </div>
 
-        <ol className="border-gray-20 mt-5 space-y-3 border-t pt-5 text-sm text-gray-80">
+        <ol className="border-gray-20 text-gray-80 mt-5 space-y-3 border-t pt-5 text-sm">
           <SetupStep number={1} text={translate('mailBridge.setupRequiredView.steps.chooseAddress')} />
           <SetupStep number={2} text={translate('mailBridge.setupRequiredView.steps.returnToBridge')} />
           <SetupStep number={3} text={translate('mailBridge.setupRequiredView.steps.activate')} />

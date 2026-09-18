@@ -1,10 +1,11 @@
 import type { ControlMessage } from '../constants';
 import { isRecord } from './is-record';
 
-type MessageResult = { data: ControlMessage; error: undefined } | { data: undefined; error: Error }
+type MessageResult = { data: ControlMessage; error: undefined } | { data: undefined; error: Error };
 
 export function mapControlMessage(value: unknown): MessageResult {
-  if (!isRecord(value) || typeof value.type !== 'string') return { data: undefined, error: new Error('Mail Bridge sent an invalid control message') };
+  if (!isRecord(value) || typeof value.type !== 'string')
+    return { data: undefined, error: new Error('Mail Bridge sent an invalid control message') };
   if (value.type === 'ready') return mapReadyMessage(value);
   if (value.type === 'error') return mapErrorMessage(value);
   if (value.type === 'sync_started') return mapSyncStartedMessage(value);
@@ -23,7 +24,8 @@ function mapReadyMessage(value: Record<string, unknown>): MessageResult {
 }
 
 function mapErrorMessage(value: Record<string, unknown>): MessageResult {
-  if (!isRecord(value.error) || typeof value.error.code !== 'string') return { data: undefined, error: new Error('Mail Bridge sent an invalid control message') };
+  if (!isRecord(value.error) || typeof value.error.code !== 'string')
+    return { data: undefined, error: new Error('Mail Bridge sent an invalid control message') };
   return { data: { type: 'error', error: { code: value.error.code } }, error: undefined };
 }
 
@@ -56,7 +58,12 @@ function mapSyncFinishedMessage(value: Record<string, unknown>): MessageResult {
 function validateSyncFinished(value: unknown) {
   if (!isRecord(value)) return invalidControlMessage();
   const { downloaded, total, code } = value;
-  if (!isNonNegativeInteger(downloaded) || !isNonNegativeInteger(total) || downloaded > total || (code !== undefined && typeof code !== 'string')) {
+  if (
+    !isNonNegativeInteger(downloaded) ||
+    !isNonNegativeInteger(total) ||
+    downloaded > total ||
+    (code !== undefined && typeof code !== 'string')
+  ) {
     return invalidControlMessage();
   }
   return { data: code === undefined ? { downloaded, total } : { downloaded, total, code }, error: undefined };

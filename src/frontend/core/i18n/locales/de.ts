@@ -440,7 +440,8 @@ export const de: Translation = {
     },
     setupRequiredView: {
       title: 'Erstellen Sie zuerst Ihre Internxt-Mail-Adresse',
-      description: 'Mail Bridge ist in Ihrem Tarif enthalten, aber dieses Konto hat noch kein Postfach. Waehlen Sie Ihre Adresse auf mail.internxt.com und Bridge verbindet sich automatisch damit. Eine weitere Anmeldung ist nicht erforderlich.',
+      description:
+        'Mail Bridge ist in Ihrem Tarif enthalten, aber dieses Konto hat noch kein Postfach. Waehlen Sie Ihre Adresse auf mail.internxt.com und Bridge verbindet sich automatisch damit. Eine weitere Anmeldung ist nicht erforderlich.',
       card: {
         title: 'Richten Sie Ihr Postfach ein',
         description: 'Oeffnet mail.internxt.com in Ihrem Browser mit der Anmeldung als {{email}}.',

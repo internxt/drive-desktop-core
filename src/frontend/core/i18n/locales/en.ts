@@ -437,7 +437,8 @@ export const en = {
     },
     setupRequiredView: {
       title: 'Create your Internxt Mail address first',
-      description: 'Mail Bridge is included in your plan, but this account does not have a mailbox yet. Pick your address at mail.internxt.com and Bridge will connect to it automatically. No extra login is needed.',
+      description:
+        'Mail Bridge is included in your plan, but this account does not have a mailbox yet. Pick your address at mail.internxt.com and Bridge will connect to it automatically. No extra login is needed.',
       card: {
         title: 'Set up your mailbox',
         description: 'Opens mail.internxt.com in your browser, signed in as {{email}}.',
@@ -453,7 +454,8 @@ export const en = {
     },
     errorView: {
       title: 'Mail Bridge stopped unexpectedly',
-      description: 'Your mail is safe. Nothing was lost and no message left this device. Bridge shut down and your mail client cannot reach it until it is running again.',
+      description:
+        'Your mail is safe. Nothing was lost and no message left this device. Bridge shut down and your mail client cannot reach it until it is running again.',
       tryAgain: 'Try again',
       viewLogs: 'View logs',
       contactSupport: 'Contact support',

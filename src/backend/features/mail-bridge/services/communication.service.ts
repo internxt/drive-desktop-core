@@ -1,4 +1,5 @@
 import { createServer, type Server, type Socket } from 'node:net';
+
 import {
   MailBridgeReadyResult,
   maxControlFrameSize,
@@ -9,8 +10,8 @@ import {
   type MailBridgeSession,
 } from '../constants';
 import { mapControlMessage } from '../mappers/map-control-message';
-import { extractPortFromMailBridgeMessage } from '../utils/extract-port-from-mail-bridge-message';
 import { extractHostnameFromMailBridgeMessage } from '../utils/extract-hostname-from-mail-bridge-message';
+import { extractPortFromMailBridgeMessage } from '../utils/extract-port-from-mail-bridge-message';
 import { hasValidListenerSettings } from '../utils/has-valid-listener-settings';
 
 type ControlMessageListener = {
@@ -55,15 +56,14 @@ export function createConnectionSettings({
   };
 }
 
-
-
 /**
  * Encodes a control message using the Bridge length-prefixed JSON protocol.
  */
 export function createControlFrame(message: object) {
   try {
     const payload = Buffer.from(JSON.stringify(message));
-    if (!payload.length || payload.length > maxControlFrameSize) return { data: undefined, error: new Error('Mail Bridge control message is invalid') };
+    if (!payload.length || payload.length > maxControlFrameSize)
+      return { data: undefined, error: new Error('Mail Bridge control message is invalid') };
     const frame = Buffer.allocUnsafe(4 + payload.length);
     frame.writeUInt32BE(payload.length, 0);
     payload.copy(frame, 4);
@@ -76,9 +76,11 @@ export function createControlFrame(message: object) {
 /**
  * Creates and starts the private server used for the parent-to-Bridge control channel.
  */
-export async function createControlServer({ endpoint }: { endpoint: string }): Promise<
-  { data: Server; error: undefined } | { data: undefined; error: Error }
-> {
+export async function createControlServer({
+  endpoint,
+}: {
+  endpoint: string;
+}): Promise<{ data: Server; error: undefined } | { data: undefined; error: Error }> {
   const server = createServer();
   return await new Promise((resolveServer) => {
     server.once('error', (error) => resolveServer({ data: undefined, error }));
@@ -88,7 +90,10 @@ export async function createControlServer({ endpoint }: { endpoint: string }): P
         resolveServer({ data: server, error: undefined });
       });
     } catch (error) {
-      resolveServer({ data: undefined, error: error instanceof Error ? error : new Error('Could not create the Mail Bridge control server') });
+      resolveServer({
+        data: undefined,
+        error: error instanceof Error ? error : new Error('Could not create the Mail Bridge control server'),
+      });
     }
   });
 }
@@ -101,7 +106,7 @@ export async function sendControlMessage({ socket, message }: { socket: Socket; 
   if (frame.error) return frame;
   return await new Promise<{ data: undefined; error: undefined } | { data: undefined; error: Error }>((resolveWrite) => {
     let finished = false;
-    
+
     function finish(error: Error | undefined): void {
       if (finished) return;
       finished = true;
@@ -158,7 +163,7 @@ function processControlMessages(socket: Socket): void {
   while (controlMessageListeners.has(socket)) {
     const listener = controlMessageListeners.get(socket);
     if (!listener) return;
-    const {data, error} = readControlMessage(listener.pending);
+    const { data, error } = readControlMessage(listener.pending);
     if (!data) {
       if (error) {
         reportControlError(socket, error);
@@ -203,9 +208,11 @@ function stopListening(socket: Socket): void {
 /**
  * Resolves with the first Bridge socket that connects to the private control server.
  */
-export function waitForControlConnection(
-  { server }: { server: Server }
-): Promise<{ data: Socket; error: undefined } | { data: undefined; error: Error }> {
+export function waitForControlConnection({
+  server,
+}: {
+  server: Server;
+}): Promise<{ data: Socket; error: undefined } | { data: undefined; error: Error }> {
   return new Promise((resolveConnection) => {
     const onError = (error: Error) => resolveConnection({ data: undefined, error });
     server.once('error', onError);
@@ -248,9 +255,7 @@ export function readControlMessage(buffer: Buffer) {
 /**
  * Waits for the Bridge startup response while buffering partial control frames.
  */
-export function waitForReadyMessage(
-  { socket }: { socket: Socket }
-): Promise<MailBridgeReadyResult> {
+export function waitForReadyMessage({ socket }: { socket: Socket }): Promise<MailBridgeReadyResult> {
   if (socket.destroyed) return Promise.resolve({ data: undefined, error: new Error('Mail Bridge closed before becoming ready') });
 
   return new Promise((resolveReady) => {

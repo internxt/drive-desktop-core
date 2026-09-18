@@ -1,4 +1,5 @@
 import { openEncryptionKeystore } from 'internxt-crypto';
+
 import { prepareMailBridgeSession } from './session.service';
 
 vi.mock('internxt-crypto', async (importOriginal) => {

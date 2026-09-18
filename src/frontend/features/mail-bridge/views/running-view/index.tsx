@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
+import { RunningMailBridgeProvider } from '../../context/running-mail-bridge.context';
 import type { MailBridgeConnection, MailBridgeSyncProgress } from '../../mail-bridge.types';
 import { BridgeSettingsModal } from './bridge-settings-modal';
 import { BridgeStatusSection } from './bridge-status-section';
 import { ClientSetup } from './client-setup';
-import { RunningMailBridgeProvider } from '../../context/running-mail-bridge.context';
 
 type Props = {
   accountEmail: string;
@@ -17,18 +17,10 @@ type Props = {
   onTurnOff?: () => void;
 };
 
-export function RunningView({
-  accountEmail,
-  connection,
-  syncProgress,
-  useTranslationContext,
-  onResync,
-  onTurnOff,
-}: Readonly<Props>) {
+export function RunningView({ accountEmail, connection, syncProgress, useTranslationContext, onResync, onTurnOff }: Readonly<Props>) {
   const { translate } = useTranslationContext();
   return (
-    <RunningMailBridgeProvider
-      value={{ accountEmail, connection, syncProgress, translate, onResync, onTurnOff }}>
+    <RunningMailBridgeProvider value={{ accountEmail, connection, syncProgress, translate, onResync, onTurnOff }}>
       <RunningViewContent />
     </RunningMailBridgeProvider>
   );

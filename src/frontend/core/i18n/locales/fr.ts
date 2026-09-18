@@ -443,7 +443,8 @@ export const fr: Translation = {
     },
     setupRequiredView: {
       title: 'Creez d’abord votre adresse Internxt Mail',
-      description: 'Mail Bridge est inclus dans votre forfait, mais ce compte n’a pas encore de boite mail. Choisissez votre adresse sur mail.internxt.com et Bridge s’y connectera automatiquement. Aucune connexion supplementaire n’est necessaire.',
+      description:
+        'Mail Bridge est inclus dans votre forfait, mais ce compte n’a pas encore de boite mail. Choisissez votre adresse sur mail.internxt.com et Bridge s’y connectera automatiquement. Aucune connexion supplementaire n’est necessaire.',
       card: {
         title: 'Configurez votre boite mail',
         description: 'Ouvre mail.internxt.com dans votre navigateur avec la session {{email}}.',

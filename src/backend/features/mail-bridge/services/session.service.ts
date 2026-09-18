@@ -1,9 +1,15 @@
 import { KeystoreType, openEncryptionKeystore, uint8ArrayToBase64 } from 'internxt-crypto';
-import { bridgeEncryptionKeyLength, mailNotSetupCode, type MailAccountKeys, type MailBridgeClientCredentials, type MailBridgeSession } from '../constants';
+
+import {
+  bridgeEncryptionKeyLength,
+  mailNotSetupCode,
+  type MailAccountKeys,
+  type MailBridgeClientCredentials,
+  type MailBridgeSession,
+} from '../constants';
 import { MailBridgeSessionPreparationError } from '../errors/mail-bridge-session-preparation.error';
 import { isRecord } from '../mappers/is-record';
 import { mapMailAccountKeys } from '../mappers/map-mail-account-keys';
-
 
 /**
  * Retrieves Mail account keys, unlocks the encryption keystore, and creates the secret Bridge session payload.
@@ -21,8 +27,8 @@ export async function prepareMailBridgeSession({
   mailClient: MailBridgeClientCredentials;
   getMailAccountKeys: () => Promise<unknown>;
 }): Promise<{ data: MailBridgeSession; error: undefined } | { data: undefined; error: MailBridgeSessionPreparationError }> {
-  const {data, error} = await retrieveMailAccountKeys(getMailAccountKeys);
-  if (error) return {error, data: undefined};
+  const { data, error } = await retrieveMailAccountKeys(getMailAccountKeys);
+  if (error) return { error, data: undefined };
 
   const encryptionPrivateKey = await openMailEncryptionKeystore({ keys: data, mnemonic });
   if (encryptionPrivateKey.error) return encryptionPrivateKey;
@@ -41,18 +47,19 @@ export async function prepareMailBridgeSession({
 /**
  * Fetches and validates the Mail account keys, preserving actionable remote failure details.
  */
-async function retrieveMailAccountKeys(
-  getMailAccountKeys: () => Promise<unknown>
-) {
+async function retrieveMailAccountKeys(getMailAccountKeys: () => Promise<unknown>) {
   try {
     const result = await getMailAccountKeys();
-    const {data, error} = mapMailAccountKeys(result);
+    const { data, error } = mapMailAccountKeys(result);
     if (error) return { data: undefined, error: new MailBridgeSessionPreparationError('mail-key-fetch-failed', error.message) };
-    return {data , error: undefined};
+    return { data, error: undefined };
   } catch (error) {
     const details = getMailKeyRequestErrorDetails(error);
     if (isMailNotSetupError(error)) {
-      return { data: undefined, error: new MailBridgeSessionPreparationError('mail-not-setup', 'Mail account has not been set up', details) };
+      return {
+        data: undefined,
+        error: new MailBridgeSessionPreparationError('mail-not-setup', 'Mail account has not been set up', details),
+      };
     }
     return {
       data: undefined,
@@ -64,13 +71,7 @@ async function retrieveMailAccountKeys(
 /**
  * Unlocks the encrypted Mail private key and encodes the Bridge-compatible session credential.
  */
-async function openMailEncryptionKeystore({
-  keys,
-  mnemonic,
-}: {
-  keys: MailAccountKeys;
-  mnemonic: string;
-}) {
+async function openMailEncryptionKeystore({ keys, mnemonic }: { keys: MailAccountKeys; mnemonic: string }) {
   try {
     const opened = await openEncryptionKeystore(
       {
@@ -89,7 +90,10 @@ async function openMailEncryptionKeystore({
     }
     return { data: uint8ArrayToBase64(opened.secretKey), error: undefined };
   } catch {
-    return { data: undefined, error: new MailBridgeSessionPreparationError('mail-key-unlock-failed', 'Could not unlock Mail encryption key') };
+    return {
+      data: undefined,
+      error: new MailBridgeSessionPreparationError('mail-key-unlock-failed', 'Could not unlock Mail encryption key'),
+    };
   }
 }
 

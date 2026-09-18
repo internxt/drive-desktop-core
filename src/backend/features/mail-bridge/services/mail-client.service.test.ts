@@ -1,4 +1,5 @@
 import { MailApi } from '@internxt/sdk/dist/mail';
+
 import { createMailClient } from './mail-client.service';
 
 vi.mock('@internxt/sdk/dist/mail', () => ({ MailApi: { client: vi.fn() } }));

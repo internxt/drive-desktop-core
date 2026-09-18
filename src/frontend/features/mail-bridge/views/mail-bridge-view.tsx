@@ -2,12 +2,12 @@ import type { UserAvailableProducts } from '@/backend/features/payments/payments
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
 import type { MailBridgeViewModel } from '../mail-bridge.types';
+import { ErrorView } from './error-view';
 import { LockedView } from './locked-view';
 import { RunningView } from './running-view';
-import { StartingView } from './starting-view';
 import { SetupRequiredView } from './setup-required-view';
+import { StartingView } from './starting-view';
 import { TurnedOffView } from './turned-off-view';
-import { ErrorView } from './error-view';
 
 type Props = {
   availableProducts?: UserAvailableProducts;
