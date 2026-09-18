@@ -439,7 +439,20 @@ export const en = {
       description: 'Create your Internxt Mail account before activating Mail Bridge.',
     },
     errorView: {
-      description: 'Mail Bridge could not start. See the application logs for details.',
+      title: 'Mail Bridge stopped unexpectedly',
+      description: 'Your mail is safe. Nothing was lost and no message left this device. Bridge shut down and your mail client cannot reach it until it is running again.',
+      tryAgain: 'Try again',
+      viewLogs: 'View logs',
+      contactSupport: 'Contact support',
+      leaveOff: 'Leave it off for now',
+      portInUse: {
+        title: 'Port {{port}} is already in use by another app',
+        description: 'Close the app using port {{port}}, then try again.',
+      },
+      generic: {
+        title: 'Mail Bridge could not start',
+        description: 'Try again or view the logs for more details.',
+      },
     },
     runningView: {
       title: 'Mail Bridge is running',
