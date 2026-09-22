@@ -7,3 +7,4 @@ export { PaymentsModule, UserAvailableProducts } from './features/payments/payme
 export { CleanerModule } from './features/cleaner/cleaner.module';
 export { SyncModule } from './features/sync';
 export * from './features/mail-bridge';
+export * from './infra/schema'
