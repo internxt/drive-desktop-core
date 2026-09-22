@@ -57,10 +57,7 @@ export const Result = {
    *
    * The resulting error type includes errors from both operations.
    */
-  flatMap<T, E extends Error, R, F extends Error>(
-    result: Result<T, E>,
-    transform: (data: T) => Result<R, F>,
-  ): Result<R, E | F> {
+  flatMap<T, E extends Error, R, F extends Error>(result: Result<T, E>, transform: (data: T) => Result<R, F>): Result<R, E | F> {
     return Result.isError(result) ? result : transform(result.data);
   },
 
@@ -70,10 +67,7 @@ export const Result = {
   },
 
   /** Recovers from an error with another Result-producing operation. */
-  orElse<T, E extends Error, F extends Error>(
-    result: Result<T, E>,
-    recover: (error: E) => Result<T, F>,
-  ): Result<T, F> {
+  orElse<T, E extends Error, F extends Error>(result: Result<T, E>, recover: (error: E) => Result<T, F>): Result<T, F> {
     return Result.isError(result) ? recover(result.error) : result;
   },
 };
