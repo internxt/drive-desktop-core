@@ -9,8 +9,31 @@ import {
   readControlMessage,
   waitForReadyMessage,
 } from './communication.service';
+import * as communication from './communication.service';
+import { sendMailBridgeSessionUpdate } from './send-mail-bridge-session-update';
 
 describe('communication.service', () => {
+  describe('sendMailBridgeSessionUpdate', () => {
+    it('rejects an empty token', async () => {
+      const result = await sendMailBridgeSessionUpdate({ socket: new Socket(), token: '' });
+
+      expect(result).toEqual({ data: undefined, error: new Error('Mail Bridge access token is required') });
+    });
+
+    it('sends a session update control message', async () => {
+      const socket = new Socket();
+      const sendControlMessageMock = vi.spyOn(communication, 'sendControlMessage').mockResolvedValue({ data: undefined, error: undefined });
+
+      const sent = await sendMailBridgeSessionUpdate({ socket, token: 'refreshed-token' });
+
+      expect(sent).toEqual({ data: undefined, error: undefined });
+      expect(sendControlMessageMock).toHaveBeenCalledWith({
+        socket,
+        message: { type: 'session_updated', update: { backend_session: { token: 'refreshed-token' } } },
+      });
+    });
+  });
+
   it('frames and reads a ready message without changing the remaining data', () => {
     const message = { type: 'ready', ready: { imap_address: '127.0.0.1:1143', smtp_address: '127.0.0.1:2025', starttls: true } };
     const frame = createControlFrame(message);

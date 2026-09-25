@@ -78,6 +78,7 @@ export const fr: Translation = {
           cancel: 'Annuler',
         },
         cleaner: 'Cleaner',
+        mailBridge: 'Mail Bridge',
       },
     },
     body: {

@@ -9,6 +9,7 @@ export {
   waitForControlConnection,
   waitForReadyMessage,
 } from './services/communication.service';
+export { sendMailBridgeSessionUpdate } from './services/send-mail-bridge-session-update';
 export { mapControlMessage } from './mappers/map-control-message';
 export { mapMailAccountKeys } from './mappers/map-mail-account-keys';
 export { MailBridgeSessionPreparationError } from './errors/mail-bridge-session-preparation.error';
