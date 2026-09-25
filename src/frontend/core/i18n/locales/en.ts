@@ -76,6 +76,7 @@ export const en = {
           cancel: 'Cancel',
         },
         cleaner: 'Cleaner',
+        mailBridge: 'Mail Bridge',
       },
     },
     body: {
