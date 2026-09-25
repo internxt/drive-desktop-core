@@ -12,7 +12,7 @@ import { TurnedOffView } from './turned-off-view';
 type Props = {
   availableProducts?: UserAvailableProducts;
   viewModel?: MailBridgeViewModel;
-  accountEmail: string;
+  accountEmail?: string;
   useTranslationContext: () => LocalContextProps;
   onUpgradePlan: () => void;
   onComparePlans: () => void;
@@ -55,18 +55,6 @@ export function MailBridgeView({
     return <LockedView useTranslationContext={useTranslationContext} onUpgradePlan={onUpgradePlan} onComparePlans={onComparePlans} />;
   }
 
-  if (viewModel.status === 'stopped') {
-    return (
-      <TurnedOffView
-        accountEmail={accountEmail}
-        useTranslationContext={useTranslationContext}
-        onActivate={onActivate}
-        isStartOnLoginEnabled={isStartOnLoginEnabled}
-        onStartOnLoginChange={onStartOnLoginChange}
-      />
-    );
-  }
-
   if (viewModel.status === 'setup-required') {
     return (
       <SetupRequiredView
@@ -78,7 +66,42 @@ export function MailBridgeView({
     );
   }
 
+  if (viewModel.status === 'stopped') {
+    if (!accountEmail) {
+      return (
+        <SetupRequiredView
+          useTranslationContext={useTranslationContext}
+          onCreateMailbox={onCreateMailbox}
+          onCheckMailbox={onCheckMailbox}
+        />
+      );
+    }
+
+    return (
+      <TurnedOffView
+        accountEmail={accountEmail}
+        useTranslationContext={useTranslationContext}
+        onActivate={onActivate}
+        isStartOnLoginEnabled={isStartOnLoginEnabled}
+        onStartOnLoginChange={onStartOnLoginChange}
+      />
+    );
+  }
+
   if (viewModel.status === 'running') {
+    if (!accountEmail) {
+      return (
+        <ErrorView
+          error="Mail account email is unavailable"
+          useTranslationContext={useTranslationContext}
+          onRetry={onRetry}
+          onViewLogs={onViewLogs}
+          onContactSupport={onContactSupport}
+          onTurnOff={onTurnOff}
+        />
+      );
+    }
+
     return (
       <RunningView
         accountEmail={accountEmail}
