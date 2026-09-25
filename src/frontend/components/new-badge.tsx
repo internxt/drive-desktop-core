@@ -3,5 +3,5 @@ type Props = {
 };
 
 export function NewBadge({ label }: Readonly<Props>) {
-  return <div className="flex rounded-full border border-primary bg-primary/5 px-2 py-1 text-primary">{label}</div>;
+  return <div className="border-primary bg-primary/5 text-primary flex rounded-full border px-2 py-1">{label}</div>;
 }

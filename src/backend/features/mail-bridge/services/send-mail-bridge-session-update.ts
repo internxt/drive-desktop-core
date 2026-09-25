@@ -1,4 +1,5 @@
 import type { Socket } from 'node:net';
+
 import { sendControlMessage } from './communication.service';
 
 export async function sendMailBridgeSessionUpdate({ socket, token }: { socket: Socket; token: string }) {
