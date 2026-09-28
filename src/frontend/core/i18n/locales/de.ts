@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-hardcoded-passwords */
 import { Translation } from '../i18n.types';
 
 export const de: Translation = {
@@ -77,6 +78,7 @@ export const de: Translation = {
           cancel: 'Abbrechen',
         },
         cleaner: 'Cleaner',
+        mailBridge: 'Mail Bridge',
       },
     },
     body: {
@@ -110,6 +112,8 @@ export const de: Translation = {
         updated: 'Vollständig synchronisiert',
         failed: 'Synchronisierung fehlgeschlagen',
         'sync-pending': 'Synchronisierung ausstehend',
+        'upload-pending_one': '{{count}} Datei nicht hochgeladen',
+        'upload-pending_other': '{{count}} Dateien nicht hochgeladen',
       },
       errors: {
         lock: 'Synchronisierung durch ein anderes Gerät gesperrt',
@@ -137,6 +141,7 @@ export const de: Translation = {
         BACKUPS: 'Backups',
         ANTIVIRUS: 'Antivirus',
         CLEANER: 'Cleaner',
+        MAIL_BRIDGE: 'Mail Bridge',
       },
     },
     general: {
@@ -388,18 +393,123 @@ export const de: Translation = {
       CANNOT_REGISTER_VIRTUAL_DRIVE: 'Virtuelles Laufwerk kann nicht registriert werden',
       EMPTY_FILES_EXCEEDED: 'Limit für leere Dateien überschritten',
       EMPTY_FILES_NOT_ALLOWED: 'Leere Dateien sind nicht erlaubt. Aktualisieren Sie Ihren Plan, um mehr Funktionen zu erhalten',
+      FILE_NOT_READY: 'Die Datei wird von einem anderen Programm verwendet',
       FILE_SIZE_TOO_BIG: 'Datei zu groß',
       FOLDER_ACCESS_DENIED: 'Die App hat keine Berechtigung, auf diesen Ordner zuzugreifen',
-      INVALID_WINDOWS_NAME: String.raw`Windows erlaubt keine Namen, die \ / : * ? " < > | enthalten oder mit Leerzeichen beginnen/enden`,
+      INVALID_WINDOWS_NAME: String.raw`Windows erlaubt keine Namen, die \ / : * ? " < > | enthalten oder mit einem Leerzeichen oder Punkt enden`,
       NETWORK_CONNECTIVITY_ERROR: 'Netzwerkverbindungsfehler.',
       NOT_ENOUGH_SPACE: 'Sie haben nicht genügend Platz, um den Vorgang abzuschließen',
       SERVER_INTERNAL_ERROR: 'Interner Serverfehler.',
+      UPLOAD_FAILED: 'Die Datei konnte nicht hochgeladen werden',
       WEBSOCKET_CONNECTION_ERROR: 'WebSocket-Verbindungsfehler',
     },
   },
   common: {
     cancel: 'Abbrechen',
     close: 'Schließen',
+  },
+  mailBridge: {
+    lockedView: {
+      title: 'Mail Bridge ist Teil von Premium',
+      description:
+        'Bridge entschlüsselt Ihr Internxt-Postfach lokal, damit Sie E-Mails mit Apple Mail, Outlook oder Thunderbird lesen und senden können. Ihr aktueller Tarif enthält diese Funktion noch nicht.',
+      features: {
+        anyClient: { title: 'In jedem Client lesen', description: 'Apple Mail, Outlook, Thunderbird.' },
+        localDecryption: { title: 'Lokale Entschlüsselung', description: 'Schlüssel verlassen dieses Gerät nie.' },
+        sameAccount: { title: 'Dasselbe Konto', description: 'Verwendet das Postfach, das Sie bereits haben.' },
+      },
+      upgradePlan: 'Tarif upgraden',
+      comparePlans: 'Tarife vergleichen',
+      signedInAs: 'Angemeldet als {{email}}',
+      signedInAsWithPlan: 'Angemeldet als {{email}} · {{planName}}-Tarif',
+    },
+    turnedOffView: {
+      title: 'Mail Bridge ist ausgeschaltet',
+      description:
+        'Schalten Sie es ein und Internxt oeffnet eine lokale IMAP/SMTP-Bridge fuer {{email}}, das Konto, bei dem Sie bereits angemeldet sind. Keine weitere Konfiguration und keine zusaetzliche Anmeldung noetig.',
+      activate: {
+        title: 'Mail Bridge aktivieren',
+        description: 'Startet die lokale Bridge und beginnt mit der Entschluesselung Ihres Postfachs.',
+        action: 'Aktivieren',
+      },
+      startOnLogin: {
+        title: 'Mail Bridge beim Start von Internxt aktivieren',
+        description:
+          'Standardmaessig ausgeschaltet: Bridge bleibt inaktiv, bis Sie sie einschalten. Daher laeuft kein Hintergrundprozess, sofern Sie das nicht moechten.',
+      },
+      securityNotice: 'Bridge lauscht nur auf 127.0.0.1. Ihre Schluessel verlassen dieses Geraet nie.',
+    },
+    startingView: {
+      title: 'Mail Bridge wird gestartet',
+      description: 'Ihre lokale verschluesselte Postfachverbindung wird vorbereitet.',
+    },
+    setupRequiredView: {
+      title: 'Erstellen Sie zuerst Ihre Internxt-Mail-Adresse',
+      description:
+        'Mail Bridge ist in Ihrem Tarif enthalten, aber dieses Konto hat noch kein Postfach. Waehlen Sie Ihre Adresse auf mail.internxt.com und Bridge verbindet sich automatisch damit. Eine weitere Anmeldung ist nicht erforderlich.',
+      card: {
+        title: 'Richten Sie Ihr Postfach ein',
+        description: 'Oeffnet mail.internxt.com in Ihrem Browser mit der Anmeldung als {{email}}.',
+        action: 'Adresse erstellen',
+      },
+      steps: {
+        chooseAddress: 'Waehlen Sie Ihre Adresse und Domain im Web.',
+        returnToBridge: 'Kehren Sie hierher zurueck. Bridge erkennt sie automatisch.',
+        activate: 'Aktivieren Sie Mail Bridge und verbinden Sie Ihr E-Mail-Programm.',
+      },
+      checkMailbox: 'Ich habe sie erstellt',
+      notice: 'Fuer dieses Konto wurde noch kein Postfach gefunden.',
+    },
+    errorView: {
+      title: 'Mail Bridge wurde unerwartet beendet',
+      description:
+        'Ihre E-Mails sind sicher. Es ist nichts verloren gegangen und keine Nachricht hat dieses Geraet verlassen. Bridge wurde beendet und Ihr E-Mail-Programm kann es erst wieder erreichen, wenn es erneut ausgefuehrt wird.',
+      tryAgain: 'Erneut versuchen',
+      viewLogs: 'Protokolle anzeigen',
+      contactSupport: 'Support kontaktieren',
+      leaveOff: 'Vorerst ausgeschaltet lassen',
+      portInUse: {
+        title: 'Port {{port}} wird bereits von einer anderen App verwendet',
+        description: 'Schliessen Sie die App, die Port {{port}} verwendet, und versuchen Sie es erneut.',
+      },
+      generic: {
+        title: 'Mail Bridge konnte nicht gestartet werden',
+        description: 'Versuchen Sie es erneut oder sehen Sie in den Protokollen nach.',
+      },
+    },
+    runningView: {
+      title: 'Mail Bridge laeuft',
+      resync: 'Neu synchronisieren',
+      turnOff: 'Ausschalten',
+      decrypting: 'Ihr Postfach wird entschluesselt · {{percentage}}% · {{completed}} von {{total}} Nachrichten',
+      timeLeft: '~{{minutes}} Min. verbleibend',
+      clientSetup: {
+        title: 'Einen Mail-Client verbinden',
+        description: 'Waehlen Sie Ihre App und Internxt richtet das Konto fuer Sie ein.',
+        setupAutomatically: '{{client}} automatisch einrichten',
+        manualSettings: 'Manuelle Einstellungen',
+        localOnly: 'NUR LOKAL',
+        showPassword: 'Passwort anzeigen',
+        copyAll: 'Alles kopieren',
+        hostname: 'Hostname',
+        port: 'Port',
+        username: 'Benutzername',
+        password: 'Passwort',
+        security: 'Sicherheit',
+        notice: 'Mail Bridge startet nicht selbst. Aktivieren Sie Autostart in den Einstellungen, wenn Sie das bevorzugen.',
+      },
+      settings: {
+        title: 'Mail Bridge Einstellungen',
+        description: 'Diese gelten fuer {{email}} auf diesem Geraet.',
+        localPorts: 'Lokale Ports',
+        localPortsDescription: 'Aendern Sie diese nur, wenn eine andere App sie bereits verwendet.',
+        imap: 'IMAP',
+        smtp: 'SMTP',
+        restartNotice: 'Bridge startet neu und verbundene Clients verbinden sich selbst erneut.',
+        cancel: 'Abbrechen',
+        save: 'Aenderungen speichern',
+      },
+    },
   },
   maxFileSizeRejectionModal: {
     single: {

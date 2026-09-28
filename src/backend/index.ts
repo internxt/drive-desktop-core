@@ -6,3 +6,4 @@ export { FileSystemModule, AbsolutePath, RelativePath } from './infra/file-syste
 export { PaymentsModule, UserAvailableProducts } from './features/payments/payments.module';
 export { CleanerModule } from './features/cleaner/cleaner.module';
 export { SyncModule } from './features/sync';
+export * from './features/mail-bridge';

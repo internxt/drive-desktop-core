@@ -1,9 +1,11 @@
-type Result<T> = { data: NonNullable<T>; error: undefined } | { data: undefined; error: Error };
+import { Result } from '@/common/result';
 
-export function throwWrapper<Args extends unknown[], T>(fn: (...args: Args) => Promise<Result<T>>) {
+export function throwWrapper<Args extends unknown[], T>(fn: (...args: Args) => Promise<Result<NonNullable<T>>>) {
   return async (...args: Args) => {
-    const { data, error } = await fn(...args);
-    if (error) throw error;
-    return data;
+    const result = await fn(...args);
+
+    if (Result.isError(result)) throw result.error;
+
+    return result.data;
   };
 }

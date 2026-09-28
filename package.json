@@ -1,6 +1,6 @@
 {
   "name": "@internxt/drive-desktop-core",
-  "version": "1.0.0",
+  "version": "1.2.3",
   "author": "Internxt <hello@internxt.com>",
   "license": "MIT",
   "files": [
@@ -26,7 +26,11 @@
     "test:one": "npm run test -- related x",
     "test:cov": "npm run test:once -- --coverage",
     "========== Other ==========": "",
-    "depcheck": "depcheck"
+    "depcheck": "depcheck",
+    "========== Versioning ==========": "",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.81.2",
@@ -64,6 +68,7 @@
     "@tanstack/react-virtual": "^3.13.12",
     "check-disk-space": "^3.4.0",
     "electron-log": "^5.4.1",
+    "internxt-crypto": "^1.6.1",
     "react": "^17.0.2"
   },
   "engines": {

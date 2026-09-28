@@ -5,5 +5,6 @@ export function userAvailableProductsMapper(featuresPerService: Tier['featuresPe
     backups: !!featuresPerService['backups']?.enabled,
     antivirus: !!featuresPerService['antivirus']?.enabled,
     cleaner: !!featuresPerService['cleaner']?.enabled,
+    mail: !!featuresPerService['mail']?.enabled,
   };
 }

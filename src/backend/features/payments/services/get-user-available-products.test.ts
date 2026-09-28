@@ -37,6 +37,7 @@ describe('getUserAvailableProducts', () => {
       backups: true,
       antivirus: false,
       cleaner: true,
+      mail: true,
     };
 
     userAvailableProductsMapperMock.mockReturnValue(mappedResult);
