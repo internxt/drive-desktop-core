@@ -8420,7 +8420,10 @@ export interface operations {
                 status?: "EXISTS" | "TRASHED" | "DELETED";
             };
             header?: never;
-            path?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -8505,7 +8508,10 @@ export interface operations {
                 status?: "EXISTS" | "TRASHED" | "DELETED";
             };
             header?: never;
-            path?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
