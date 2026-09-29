@@ -7,4 +7,4 @@ export { CleanerModule } from './features/cleaner/cleaner.module';
 export { SyncModule, synchronizeRemoteItems } from './features/sync';
 export type { SynchronizationPage, SynchronizationPageRequest } from './features/sync';
 export * from './features/mail-bridge';
-export * from './infra/schema'
+export * from './infra/schema';

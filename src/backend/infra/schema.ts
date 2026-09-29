@@ -697,7 +697,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @deprecated */
         get: operations["FolderController_getFolderContentFolders"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/folders/v2/content/{uuid}/folders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get folders in a folder with cursor based pagination */
+        get: operations["FolderController_getFolderContentFoldersV2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1803,6 +1821,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/workspaces/{workspaceId}/files/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
+            cookie?: never;
+        };
+        /** Get delta of workspace files created by the user since a date */
+        get: operations["WorkspacesController_getFilesSync"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/workspaces/{workspaceId}/files": {
         parameters: {
             query?: never;
@@ -1810,10 +1848,35 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * Get workspace files updated after a date
+         * @deprecated
+         * @description Use GET /workspaces/:workspaceId/files/sync instead
+         */
         get: operations["WorkspacesController_getFiles"];
         put?: never;
         /** Create File */
         post: operations["WorkspacesController_createFile"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workspaces/{workspaceId}/folders/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
+            cookie?: never;
+        };
+        /** Get delta of workspace folders created by the user since a date */
+        get: operations["WorkspacesController_getFoldersSync"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1827,6 +1890,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * Get workspace folders updated after a date
+         * @deprecated
+         * @description Use GET /workspaces/:workspaceId/folders/sync instead
+         */
         get: operations["WorkspacesController_getFolders"];
         put?: never;
         /** Create folder */
@@ -4004,6 +4072,10 @@ export interface components {
         };
         FoldersDto: {
             folders: components["schemas"]["FolderDto"][];
+        };
+        GetFolderContentFoldersV2ResponseDto: {
+            folders: components["schemas"]["FolderDto"][];
+            nextCursor: string | null;
         };
         CheckFoldersExistenceDto: {
             /**
@@ -6572,6 +6644,38 @@ export interface operations {
             };
         };
     };
+    FolderController_getFolderContentFoldersV2: {
+        parameters: {
+            query?: {
+                /** @description Sort direction */
+                order?: "ASC" | "DESC";
+                /** @description Cursor from a previous response to fetch the next page */
+                cursor?: string;
+                /** @description Page size */
+                limit?: number;
+                /** @description Whether to include each folder favorite status */
+                withFavorites?: boolean;
+                /** @description Whether to include each folder sharing info */
+                withSharings?: boolean;
+            };
+            header?: never;
+            path: {
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetFolderContentFoldersV2ResponseDto"];
+                };
+            };
+        };
+    };
     FolderController_checkFoldersExistenceInFolderOld: {
         parameters: {
             query: {
@@ -8303,6 +8407,34 @@ export interface operations {
             };
         };
     };
+    WorkspacesController_getFilesSync: {
+        parameters: {
+            query?: {
+                /** @description Filter items updated after this date. Required if cursor is not provided */
+                updatedAt?: string;
+                /** @description Cursor token to fetch the next page of results */
+                cursor?: string;
+                /** @description Page size, max 1000 */
+                limit?: number;
+                /** @description File status filter */
+                status?: "EXISTS" | "TRASHED" | "DELETED";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetFilesSyncResponseDto"];
+                };
+            };
+        };
+    };
     WorkspacesController_getFiles: {
         parameters: {
             query?: {
@@ -8356,6 +8488,34 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["FileDto"];
+                };
+            };
+        };
+    };
+    WorkspacesController_getFoldersSync: {
+        parameters: {
+            query?: {
+                /** @description Filter items updated after this date. Required if cursor is not provided */
+                updatedAt?: string;
+                /** @description Cursor token to fetch the next page of results */
+                cursor?: string;
+                /** @description Page size, max 1000 */
+                limit?: number;
+                /** @description Folder status filter */
+                status?: "EXISTS" | "TRASHED" | "DELETED";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetFoldersSyncResponseDto"];
                 };
             };
         };
