@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { LocalContextProps } from '@/frontend/frontend.types';
 
 type Props = {
-  accountEmail: string;
+  accountEmail?: string;
   useTranslationContext: () => LocalContextProps;
   onCreateMailbox: () => void;
   onCheckMailbox: () => Promise<void>;
@@ -36,9 +36,11 @@ export function SetupRequiredView({ accountEmail, useTranslationContext, onCreat
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="font-semibold text-gray-100">{translate('mailBridge.setupRequiredView.card.title')}</h2>
-            <p className="text-gray-60 mt-1 text-sm">
-              {translate('mailBridge.setupRequiredView.card.description', { email: accountEmail })}
-            </p>
+            {accountEmail && (
+              <p className="text-gray-60 mt-1 text-sm">
+                {translate('mailBridge.setupRequiredView.card.description', { email: accountEmail })}
+              </p>
+            )}
           </div>
           <button
             type="button"

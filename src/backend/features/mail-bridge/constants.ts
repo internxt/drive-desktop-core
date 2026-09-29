@@ -1,6 +1,6 @@
 export const MAX_ALLOWED_PORT = 65_535;
 export const maxControlFrameSize = 1 << 20;
-export const mailBridgeReleaseTag = 'v0.0.1';
+export const mailBridgeReleaseTag = 'v0.0.4';
 
 export type MailBridgeClientCredentials = {
   username: string;
@@ -54,7 +54,10 @@ export type ControlMessage =
   | { type: 'sync_progress'; progress: { downloaded: number; total: number; percent: number } }
   | { type: 'sync_finished'; finished: { downloaded: number; total: number; code?: string } };
 
-export type MailBridgeControlCommand = { type: 'start_session'; session: MailBridgeSession } | { type: 'resync' };
+export type MailBridgeControlCommand =
+  | { type: 'start_session'; session: MailBridgeSession }
+  | { type: 'resync' }
+  | { type: 'session_updated'; update: { backend_session: { token: string } } };
 export const mailNotSetupCode = 'MAIL_NOT_SETUP';
 export const bridgeEncryptionKeyLength = 32;
 

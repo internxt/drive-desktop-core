@@ -47,7 +47,7 @@ export async function prepareMailBridgeSession({
 /**
  * Fetches and validates the Mail account keys, preserving actionable remote failure details.
  */
-async function retrieveMailAccountKeys(getMailAccountKeys: () => Promise<unknown>) {
+export async function retrieveMailAccountKeys(getMailAccountKeys: () => Promise<unknown>) {
   try {
     const result = await getMailAccountKeys();
     const { data, error } = mapMailAccountKeys(result);
