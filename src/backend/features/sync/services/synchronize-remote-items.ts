@@ -1,14 +1,8 @@
 import { Result } from '@/common/result';
-import {
-  createSynchronizationTraversalState,
-} from '../utils/create-synchronization-traversal-state';
-import { generateSyncRequest } from '../utils/generate-sync-request';
-import type {
-  SynchronizationPage,
-  SynchronizationPageRequest,
-  SynchronizationTraversalState,
-} from '../constants';
 
+import type { SynchronizationPage, SynchronizationPageRequest, SynchronizationTraversalState } from '../constants';
+import { createSynchronizationTraversalState } from '../utils/create-synchronization-traversal-state';
+import { generateSyncRequest } from '../utils/generate-sync-request';
 
 export type SynchronizeRemoteItemsProps<Item> = {
   updatedAt: string;
@@ -17,9 +11,7 @@ export type SynchronizeRemoteItemsProps<Item> = {
   persistItems: ({ items }: { items: Item[] }) => Promise<Result<void>>;
 };
 
-export async function synchronizeRemoteItems<Item>(
-  props: SynchronizeRemoteItemsProps<Item>
-): Promise<Result<void, Error>> {
+export async function synchronizeRemoteItems<Item>(props: SynchronizeRemoteItemsProps<Item>): Promise<Result<void, Error>> {
   try {
     let state = createSynchronizationTraversalState();
 
@@ -46,7 +38,6 @@ async function synchronizePage<Item>({
   props: SynchronizeRemoteItemsProps<Item>;
   state: SynchronizationTraversalState;
 }): Promise<Result<SynchronizationTraversalState, Error>> {
-
   const requestResult = generateSyncRequest({
     isInitial: state.isInitial,
     cursor: state.cursor,
@@ -70,8 +61,10 @@ async function synchronizePage<Item>({
     return Result.err(persistResult.error);
   }
 
-  return Result.ok(createSynchronizationTraversalState({
-    cursor: pageResult.data.nextCursor,
-    isInitial: false,
-  }));
+  return Result.ok(
+    createSynchronizationTraversalState({
+      cursor: pageResult.data.nextCursor,
+      isInitial: false,
+    }),
+  );
 }

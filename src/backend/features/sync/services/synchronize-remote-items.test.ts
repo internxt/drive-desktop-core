@@ -115,5 +115,4 @@ describe('synchronize-remote-items', () => {
 
     expect(result).toStrictEqual({ error });
   });
-
 });
