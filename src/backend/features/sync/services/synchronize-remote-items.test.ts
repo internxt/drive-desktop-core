@@ -52,17 +52,18 @@ describe('synchronize-remote-items', () => {
     const props = createProps();
     const events: string[] = [];
     props.fetchPage
-      .mockImplementationOnce(async () => {
+      .mockImplementationOnce(() => {
         events.push('fetch-first');
-        return Result.ok({ items: [{ uuid: 'file-1' }], nextCursor: 'cursor-1' });
+        return Promise.resolve(Result.ok({ items: [{ uuid: 'file-1' }], nextCursor: 'cursor-1' }));
       })
-      .mockImplementationOnce(async () => {
+      .mockImplementationOnce(() => {
         events.push('fetch-second');
-        return Result.ok({ items: [], nextCursor: null });
+        return Promise.resolve(Result.ok({ items: [], nextCursor: null }));
       });
-    props.persistItems.mockImplementation(async () => {
+
+    props.persistItems.mockImplementation(() => {
       events.push('persist-first');
-      return Result.ok(undefined);
+      return Promise.resolve(Result.ok(undefined));
     });
 
     await synchronizeRemoteItems(props);
