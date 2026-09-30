@@ -482,7 +482,7 @@ export const en = {
       timeLeft: '~{{minutes}} min left',
       clientSetup: {
         title: 'Connect a mail client',
-        description: 'Pick your app and Internxt writes the account for you.',
+        description: 'Use these settings to connect your mail client.',
         setupAutomatically: 'Set up {{client}} automatically',
         manualSettings: 'Manual settings',
         localOnly: 'LOCAL ONLY',

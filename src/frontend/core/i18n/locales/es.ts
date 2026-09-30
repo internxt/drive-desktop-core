@@ -487,7 +487,7 @@ export const es: Translation = {
       timeLeft: '~{{minutes}} min restantes',
       clientSetup: {
         title: 'Conecta un cliente de correo',
-        description: 'Elige tu aplicacion e Internxt configura la cuenta por ti.',
+        description: 'Usa estos ajustes para conectar tu cliente de correo.',
         setupAutomatically: 'Configurar {{client}} automaticamente',
         manualSettings: 'Configuracion manual',
         localOnly: 'SOLO LOCAL',

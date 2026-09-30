@@ -485,7 +485,7 @@ export const de: Translation = {
       timeLeft: '~{{minutes}} Min. verbleibend',
       clientSetup: {
         title: 'Einen Mail-Client verbinden',
-        description: 'Waehlen Sie Ihre App und Internxt richtet das Konto fuer Sie ein.',
+        description: 'Verwenden Sie diese Einstellungen, um Ihren E-Mail-Client zu verbinden.',
         setupAutomatically: '{{client}} automatisch einrichten',
         manualSettings: 'Manuelle Einstellungen',
         localOnly: 'NUR LOKAL',
