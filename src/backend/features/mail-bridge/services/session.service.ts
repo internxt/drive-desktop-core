@@ -38,7 +38,7 @@ export async function prepareMailBridgeSession({
       account_id: accountId,
       addresses: [data.address],
       backend_session: { token, encryption_private_key: encryptionPrivateKey.data },
-      mail_client: mailClient,
+      mail_client: { ...mailClient, username: data.address },
     },
     error: undefined,
   };
