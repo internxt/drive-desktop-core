@@ -399,7 +399,6 @@ export const en = {
       NOT_ENOUGH_SPACE: 'You have not enough space to complete the operation',
       SERVER_INTERNAL_ERROR: 'Server internal error.',
       UPLOAD_FAILED: 'File could not be uploaded',
-      WEBSOCKET_CONNECTION_ERROR: 'WebSocket connection error',
     },
   },
   common: {
