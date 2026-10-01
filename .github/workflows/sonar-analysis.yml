@@ -9,7 +9,10 @@ on:
 
 jobs:
   sonar_analysis:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     timeout-minutes: 10
 
     steps:
