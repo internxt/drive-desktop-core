@@ -13,7 +13,7 @@ type Props = {
   connection: MailBridgeConnection;
   syncProgress?: MailBridgeSyncProgress;
   useTranslationContext: () => LocalContextProps;
-  onResync?: () => void;
+  onResync?: () => Promise<{ data: undefined; error: Error | undefined }>;
   onTurnOff?: () => void;
 };
 
