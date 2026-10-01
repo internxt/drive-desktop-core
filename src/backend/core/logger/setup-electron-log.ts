@@ -8,13 +8,21 @@ type Props = {
   logsPath: string;
 };
 
+function isMailBridgeLog(message: { data?: unknown[] } | undefined): boolean {
+  return message?.data?.some((data) => typeof data === 'string' && data.includes(" - mail'")) ?? false;
+}
+
 export function setupElectronLog({ logsPath }: Props) {
   ElectronLog.initialize();
 
   const defaultLogs = join(logsPath, 'drive.log');
   const importantLogs = join(logsPath, 'drive-important.log');
+  const mailBridgeLogs = join(logsPath, 'mail-bridge.log');
 
   ElectronLog.transports.file.resolvePathFn = (_, message) => {
+    if (isMailBridgeLog(message)) {
+      return mailBridgeLogs;
+    }
     if (message?.level === 'info') {
       return importantLogs;
     } else {
