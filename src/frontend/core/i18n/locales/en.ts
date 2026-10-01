@@ -477,6 +477,9 @@ export const en = {
     runningView: {
       title: 'Mail Bridge is running',
       resync: 'Resync',
+      resyncing: 'Requesting...',
+      resyncRequested: 'Requested',
+      resyncFailed: 'Could not request',
       turnOff: 'Turn off',
       decrypting: 'Decrypting your mailbox · {{percentage}}% · {{completed}} of {{total}} messages',
       timeLeft: '~{{minutes}} min left',
@@ -488,6 +491,8 @@ export const en = {
         localOnly: 'LOCAL ONLY',
         showPassword: 'Show password',
         copyAll: 'Copy all',
+        copyToClipboard: 'Copy to clipboard',
+        copied: 'Copied!',
         hostname: 'Hostname',
         port: 'Port',
         username: 'Username',

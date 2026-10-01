@@ -480,6 +480,9 @@ export const de: Translation = {
     runningView: {
       title: 'Mail Bridge laeuft',
       resync: 'Neu synchronisieren',
+      resyncing: 'Wird angefordert...',
+      resyncRequested: 'Angefordert',
+      resyncFailed: 'Anforderung fehlgeschlagen',
       turnOff: 'Ausschalten',
       decrypting: 'Ihr Postfach wird entschluesselt · {{percentage}}% · {{completed}} von {{total}} Nachrichten',
       timeLeft: '~{{minutes}} Min. verbleibend',
@@ -491,6 +494,8 @@ export const de: Translation = {
         localOnly: 'NUR LOKAL',
         showPassword: 'Passwort anzeigen',
         copyAll: 'Alles kopieren',
+        copyToClipboard: 'In die Zwischenablage kopieren',
+        copied: 'Kopiert!',
         hostname: 'Hostname',
         port: 'Port',
         username: 'Benutzername',

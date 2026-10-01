@@ -483,6 +483,9 @@ export const fr: Translation = {
     runningView: {
       title: 'Mail Bridge est actif',
       resync: 'Resynchroniser',
+      resyncing: 'Demande...',
+      resyncRequested: 'Demande envoyee',
+      resyncFailed: 'Demande impossible',
       turnOff: 'Desactiver',
       decrypting: 'Dechiffrement de votre boite mail · {{percentage}}% · {{completed}} sur {{total}} messages',
       timeLeft: '~{{minutes}} min restantes',
@@ -494,6 +497,8 @@ export const fr: Translation = {
         localOnly: 'LOCAL UNIQUEMENT',
         showPassword: 'Afficher le mot de passe',
         copyAll: 'Tout copier',
+        copyToClipboard: 'Copier dans le presse-papiers',
+        copied: 'Copié !',
         hostname: 'Nom d’hote',
         port: 'Port',
         username: 'Nom d’utilisateur',

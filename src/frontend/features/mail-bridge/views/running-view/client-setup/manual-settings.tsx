@@ -1,6 +1,6 @@
-import { CopyToClipboardButton } from '@/frontend/components';
 import { useState } from 'react';
 
+import { CopyToClipboardButton } from '@/frontend/components';
 import type { TranslationFn } from '@/frontend/core/i18n/i18n.types';
 
 import type { MailBridgeConnection } from '../../../mail-bridge.types';
@@ -23,20 +23,20 @@ export function ManualSettings({ connection, useTranslation }: Readonly<Props>) 
   ];
 
   const allSettings = [
-      'IMAP',
-      `Hostname: ${connection.hostname}`,
-      `Port: ${connection.imapPort}`,
-      `Username: ${connection.username}`,
-      `Password: ${connection.password}`,
-      `Security: ${connection.imapSecurity}`,
-      '',
-      'SMTP',
-      `Hostname: ${connection.hostname}`,
-      `Port: ${connection.smtpPort}`,
-      `Username: ${connection.username}`,
-      `Password: ${connection.password}`,
-      `Security: ${connection.smtpSecurity}`,
-    ].join('\n');
+    'IMAP',
+    `Hostname: ${connection.hostname}`,
+    `Port: ${connection.imapPort}`,
+    `Username: ${connection.username}`,
+    `Password: ${connection.password}`,
+    `Security: ${connection.imapSecurity}`,
+    '',
+    'SMTP',
+    `Hostname: ${connection.hostname}`,
+    `Port: ${connection.smtpPort}`,
+    `Username: ${connection.username}`,
+    `Password: ${connection.password}`,
+    `Security: ${connection.smtpSecurity}`,
+  ].join('\n');
 
   return (
     <div className="border-gray-20 bg-gray-5 mt-5 overflow-hidden rounded-2xl border">
@@ -48,34 +48,52 @@ export function ManualSettings({ connection, useTranslation }: Readonly<Props>) 
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button onClick={() => setShowPassword((visible) => !visible)} className="border-gray-20 rounded-lg border px-3 py-2 text-sm font-semibold text-gray-100">
+          <button
+            onClick={() => setShowPassword((visible) => !visible)}
+            className="border-gray-20 rounded-lg border px-3 py-2 text-sm font-semibold text-gray-100">
             {useTranslation('mailBridge.runningView.clientSetup.showPassword')}
           </button>
           <CopyToClipboardButton
             value={allSettings}
-            label={useTranslation('mailBridge.runningView.clientSetup.copyAll')}
-            className="border-primary/50 text-primary rounded-lg border px-3 py-2 text-sm font-semibold">
+            copyLabel={useTranslation('mailBridge.runningView.clientSetup.copyAll')}
+            copiedLabel={useTranslation('mailBridge.runningView.clientSetup.copied')}
+            className="border-primary/50 text-primary rounded-lg border px-3 py-2 text-sm font-semibold"
+            copiedClassName="border-green text-green rounded-lg border px-3 py-2 text-sm font-semibold">
             {useTranslation('mailBridge.runningView.clientSetup.copyAll')}
           </CopyToClipboardButton>
         </div>
       </div>
       <div className="divide-gray-20 grid grid-cols-1 divide-y md:grid-cols-2 md:divide-x md:divide-y-0">
-        <SettingsColumn title="↓ IMAP" fields={fields(connection.imapPort, connection.imapSecurity)} />
-        <SettingsColumn title="↑ SMTP" fields={fields(connection.smtpPort, connection.smtpSecurity)} />
+        <SettingsColumn title="↓ IMAP" fields={fields(connection.imapPort, connection.imapSecurity)} useTranslation={useTranslation} />
+        <SettingsColumn title="↑ SMTP" fields={fields(connection.smtpPort, connection.smtpSecurity)} useTranslation={useTranslation} />
       </div>
     </div>
   );
 }
 
-function SettingsColumn({ title, fields }: Readonly<{ title: string; fields: SettingField[] }>) {
+function SettingsColumn({
+  title,
+  fields,
+  useTranslation,
+}: Readonly<{ title: string; fields: SettingField[]; useTranslation: TranslationFn }>) {
   return (
     <div className="min-w-0 p-5">
       <h3 className="font-semibold text-gray-100">{title}</h3>
       {fields.map(({ label, value, copyValue }) => (
-        <div key={label} className="border-gray-20 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-center gap-3 border-b py-3 text-sm">
+        <div
+          key={label}
+          className="border-gray-20 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-center gap-3 border-b py-3 text-sm">
           <span className="text-gray-60 truncate">{label}</span>
-          <span className="truncate text-right font-medium text-gray-100" title={value}>{value}</span>
-<CopyToClipboardButton value={copyValue} label={`Copy ${label}`} className="text-gray-50 shrink-0" />
+          <span className="truncate text-right font-medium text-gray-100" title={value}>
+            {value}
+          </span>
+          <CopyToClipboardButton
+            value={copyValue}
+            copyLabel={useTranslation('mailBridge.runningView.clientSetup.copyToClipboard')}
+            copiedLabel={useTranslation('mailBridge.runningView.clientSetup.copied')}
+            className="shrink-0 text-gray-50"
+            copiedClassName="text-green shrink-0"
+          />
         </div>
       ))}
     </div>
