@@ -403,7 +403,6 @@ export const es: Translation = {
       NOT_ENOUGH_SPACE: 'No tienes suficiente espacio para completar la operación',
       SERVER_INTERNAL_ERROR: 'Error interno del servidor',
       UPLOAD_FAILED: 'No se ha podido subir el archivo',
-      WEBSOCKET_CONNECTION_ERROR: 'Error de conexión WebSocket',
     },
   },
   common: {
