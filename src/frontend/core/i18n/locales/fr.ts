@@ -404,7 +404,6 @@ export const fr: Translation = {
       NOT_ENOUGH_SPACE: "Vous n'avez pas assez d'espace pour compléter l'opération",
       SERVER_INTERNAL_ERROR: 'Erreur de serveur interne',
       UPLOAD_FAILED: "Le fichier n'a pas pu être téléversé",
-      WEBSOCKET_CONNECTION_ERROR: 'Erreur de connexion WebSocket',
     },
   },
   common: {

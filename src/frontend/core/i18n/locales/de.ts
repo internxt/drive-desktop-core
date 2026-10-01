@@ -401,7 +401,6 @@ export const de: Translation = {
       NOT_ENOUGH_SPACE: 'Sie haben nicht genügend Platz, um den Vorgang abzuschließen',
       SERVER_INTERNAL_ERROR: 'Interner Serverfehler.',
       UPLOAD_FAILED: 'Die Datei konnte nicht hochgeladen werden',
-      WEBSOCKET_CONNECTION_ERROR: 'WebSocket-Verbindungsfehler',
     },
   },
   common: {
