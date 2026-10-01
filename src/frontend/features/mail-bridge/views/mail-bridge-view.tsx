@@ -19,7 +19,7 @@ type Props = {
   onActivate: () => void;
   isStartOnLoginEnabled?: boolean;
   onStartOnLoginChange?: (enabled: boolean) => void;
-  onResync?: () => void;
+  onResync?: () => Promise<{ data: undefined; error: Error | undefined }>;
   onTurnOff?: () => void;
   onRetry: () => void;
   onViewLogs: () => void;

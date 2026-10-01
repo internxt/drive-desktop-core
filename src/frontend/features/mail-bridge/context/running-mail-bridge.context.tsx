@@ -4,12 +4,14 @@ import type { TranslationFn } from '@/frontend/core/i18n/i18n.types';
 
 import type { MailBridgeConnection, MailBridgeSyncProgress } from '../mail-bridge.types';
 
+type MailBridgeActionResult = { data: undefined; error: Error | undefined };
+
 type RunningMailBridgeContextValue = {
   accountEmail: string;
   connection: MailBridgeConnection;
   syncProgress?: MailBridgeSyncProgress;
   translate: TranslationFn;
-  onResync?: () => void;
+  onResync?: () => Promise<MailBridgeActionResult>;
   onTurnOff?: () => void;
 };
 

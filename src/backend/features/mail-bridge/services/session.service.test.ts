@@ -9,7 +9,7 @@ vi.mock('internxt-crypto', async (importOriginal) => {
 });
 
 const mailAccountKeys = {
-  address: 'user@internxt.com',
+  address: 'mail@internxt.com',
   publicKey: 'public-key',
   encryptionPrivateKey: 'encrypted-private-key',
 };
@@ -27,22 +27,22 @@ describe('session.service', () => {
         accountId: 'account-id',
         token: 'token',
         mnemonic: 'mnemonic',
-        mailClient: { username: 'user@internxt.com', password: 'password' },
+        mailClient: { username: 'drive@internxt.com', password: 'password' },
         getMailAccountKeys: () => Promise.resolve(mailAccountKeys),
       }),
     ).resolves.toEqual({
       data: {
         account_id: 'account-id',
-        addresses: ['user@internxt.com'],
+        addresses: ['mail@internxt.com'],
         backend_session: { token: 'token', encryption_private_key: Buffer.alloc(32, 1).toString('base64') },
-        mail_client: { username: 'user@internxt.com', password: 'password' },
+        mail_client: { username: 'mail@internxt.com', password: 'password' },
       },
       error: undefined,
     });
 
     expect(openEncryptionKeystore).toHaveBeenCalledWith(
       {
-        userEmail: 'user@internxt.com',
+        userEmail: 'mail@internxt.com',
         type: 'Encryption',
         publicKey: 'public-key',
         privateKeyEncrypted: 'encrypted-private-key',
