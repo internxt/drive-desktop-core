@@ -5,11 +5,11 @@ import { synchronizeRemoteItems } from './synchronize-remote-items';
 type Item = { uuid: string };
 
 describe('synchronize-remote-items', () => {
-  const updatedAt = '2026-09-22T10:00:00.000Z';
+  const from = new Date('2026-09-22T10:00:00.000Z');
 
-  function createProps() {
+  function createProps({ checkpoint }: { checkpoint?: Date } = { checkpoint: from }) {
     return {
-      updatedAt,
+      from: checkpoint,
       limit: 1000,
       fetchPage: vi.fn(),
       persistItems: vi.fn(),
@@ -20,7 +20,7 @@ describe('synchronize-remote-items', () => {
     vi.restoreAllMocks();
   });
 
-  it('requests the first page using updatedAt and persists it', async () => {
+  it('should not add status EXISTS when from is passed', async () => {
     const props = createProps();
     const items: Item[] = [{ uuid: 'file-1' }];
     props.fetchPage.mockResolvedValue(Result.ok({ items, nextCursor: null }));
@@ -28,9 +28,36 @@ describe('synchronize-remote-items', () => {
 
     const result = await synchronizeRemoteItems(props);
 
-    expect(props.fetchPage).toHaveBeenCalledWith({ updatedAt, limit: 1000 });
+    expect(props.fetchPage).toHaveBeenCalledWith({ updatedAt: from.toISOString(), limit: 1000, status: undefined });
     expect(props.persistItems).toHaveBeenCalledWith({ items });
     expect(result).toStrictEqual({ data: undefined });
+  });
+
+  it('should add status EXISTS when from is not passed', async () => {
+    const props = createProps({ checkpoint: undefined });
+    props.fetchPage.mockResolvedValue(Result.ok({ items: [], nextCursor: null }));
+    props.persistItems.mockResolvedValue(Result.ok(undefined));
+
+    await synchronizeRemoteItems(props);
+
+    expect(props.fetchPage).toHaveBeenCalledWith({ updatedAt: '1970-01-01T00:00:00.000Z', limit: 1000, status: 'EXISTS' });
+  });
+
+  it('should add status EXISTS to every page when from is not passed', async () => {
+    const props = createProps({ checkpoint: undefined });
+    props.fetchPage
+      .mockResolvedValueOnce(Result.ok({ items: [{ uuid: 'file-1' }], nextCursor: 'cursor-1' }))
+      .mockResolvedValueOnce(Result.ok({ items: [], nextCursor: null }));
+    props.persistItems.mockResolvedValue(Result.ok(undefined));
+
+    await synchronizeRemoteItems(props);
+
+    expect(props.fetchPage).toHaveBeenNthCalledWith(1, {
+      updatedAt: '1970-01-01T00:00:00.000Z',
+      limit: 1000,
+      status: 'EXISTS',
+    });
+    expect(props.fetchPage).toHaveBeenNthCalledWith(2, { cursor: 'cursor-1', limit: 1000, status: 'EXISTS' });
   });
 
   it('uses the next cursor without updatedAt for subsequent pages', async () => {
@@ -42,8 +69,8 @@ describe('synchronize-remote-items', () => {
 
     const result = await synchronizeRemoteItems(props);
 
-    expect(props.fetchPage).toHaveBeenNthCalledWith(1, { updatedAt, limit: 1000 });
-    expect(props.fetchPage).toHaveBeenNthCalledWith(2, { cursor: 'cursor-1', limit: 1000 });
+    expect(props.fetchPage).toHaveBeenNthCalledWith(1, { updatedAt: from.toISOString(), limit: 1000, status: undefined });
+    expect(props.fetchPage).toHaveBeenNthCalledWith(2, { cursor: 'cursor-1', limit: 1000, status: undefined });
     expect(props.persistItems).toHaveBeenCalledTimes(2);
     expect(result).toStrictEqual({ data: undefined });
   });

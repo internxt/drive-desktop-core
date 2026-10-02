@@ -3,9 +3,10 @@ import { Result } from '@/common/result';
 import type { SynchronizationPage, SynchronizationPageRequest, SynchronizationTraversalState } from '../constants';
 import { createSynchronizationTraversalState } from '../utils/create-synchronization-traversal-state';
 import { generateSyncRequest } from '../utils/generate-sync-request';
+import { getInitialSyncUpdatedAt } from '../utils/get-initial-sync-updated-at';
 
 export type SynchronizeRemoteItemsProps<Item> = {
-  updatedAt: string;
+  from?: Date;
   limit: number;
   fetchPage: (request: SynchronizationPageRequest) => Promise<Result<SynchronizationPage<Item>, Error>>;
   persistItems: ({ items }: { items: Item[] }) => Promise<Result<void>>;
@@ -38,10 +39,11 @@ async function synchronizePage<Item>({
   props: SynchronizeRemoteItemsProps<Item>;
   state: SynchronizationTraversalState;
 }): Promise<Result<SynchronizationTraversalState, Error>> {
+  const updatedAt = getInitialSyncUpdatedAt(props.from);
   const requestResult = generateSyncRequest({
     isInitial: state.isInitial,
     cursor: state.cursor,
-    updatedAt: props.updatedAt,
+    updatedAt,
     limit: props.limit,
   });
 
