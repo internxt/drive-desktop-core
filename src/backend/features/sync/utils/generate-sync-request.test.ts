@@ -25,7 +25,7 @@ describe('generate-sync-request', () => {
     expect(result).toStrictEqual(Result.ok({ updatedAt: '2026-09-22T10:00:00.000Z', limit: 1000, status: undefined }));
   });
 
-  it('generates a cursor request after the first page', () => {
+  it('adds status EXISTS to cursor requests when from is not passed', () => {
     const result = generateSyncRequest({
       isInitial: false,
       cursor: 'cursor-1',
@@ -33,6 +33,17 @@ describe('generate-sync-request', () => {
       limit: 1000,
     });
 
-    expect(result).toStrictEqual(Result.ok({ cursor: 'cursor-1', limit: 1000 }));
+    expect(result).toStrictEqual(Result.ok({ cursor: 'cursor-1', limit: 1000, status: 'EXISTS' }));
+  });
+
+  it('does not add status EXISTS to cursor requests when from is passed', () => {
+    const result = generateSyncRequest({
+      isInitial: false,
+      cursor: 'cursor-1',
+      updatedAt: '2026-09-22T10:00:00.000Z',
+      limit: 1000,
+    });
+
+    expect(result).toStrictEqual(Result.ok({ cursor: 'cursor-1', limit: 1000, status: undefined }));
   });
 });

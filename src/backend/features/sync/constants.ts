@@ -14,6 +14,7 @@ export type SynchronizationPageRequest =
   | {
       cursor: string;
       limit: number;
+      status?: NonNullable<operations['FileController_getFilesSync']['parameters']['query']>['status'];
     };
 export type SynchronizationTraversalState = {
   cursor: string | null;

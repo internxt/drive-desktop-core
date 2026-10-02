@@ -29,5 +29,11 @@ export function generateSyncRequest({
     return Result.err(new Error('Cannot synchronize a completed traversal'));
   }
 
-  return Result.ok({ cursor, limit });
+  const request: SynchronizationPageRequest = {
+    cursor,
+    limit,
+    status: isUpdatedAtEpoch(updatedAt) ? 'EXISTS' : undefined,
+  };
+
+  return Result.ok(request);
 }
