@@ -1,6 +1,6 @@
 import { Result } from '../../../../common/result';
 import type { SynchronizationPageRequest } from '../constants';
-
+import { isUpdatedAtEpoch } from './is-updated-at-epoch';
 export type GenerateSyncRequestProps = {
   isInitial: boolean;
   cursor: string | null;
@@ -15,7 +15,13 @@ export function generateSyncRequest({
   limit,
 }: GenerateSyncRequestProps): Result<SynchronizationPageRequest, Error> {
   if (isInitial) {
-    return Result.ok({ updatedAt, limit });
+    const request: SynchronizationPageRequest = {
+      updatedAt,
+      limit,
+      status: isUpdatedAtEpoch(updatedAt) ? 'EXISTS' : undefined,
+    };
+
+    return Result.ok(request);
   }
 
   if (cursor === null) {
