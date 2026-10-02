@@ -1,4 +1,5 @@
 import { Result } from '@/common/result';
+
 import { generateSyncRequest } from './generate-sync-request';
 
 describe('generate-sync-request', () => {

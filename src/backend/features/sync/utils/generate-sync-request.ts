@@ -1,6 +1,7 @@
 import { Result } from '../../../../common/result';
 import type { SynchronizationPageRequest } from '../constants';
 import { isUpdatedAtEpoch } from './is-updated-at-epoch';
+
 export type GenerateSyncRequestProps = {
   isInitial: boolean;
   cursor: string | null;
