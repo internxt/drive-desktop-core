@@ -476,12 +476,14 @@ export const en = {
     runningView: {
       title: 'Mail Bridge is running',
       resync: 'Resync',
-      resyncing: 'Requesting...',
+      resyncing: 'Syncing...',
       resyncRequested: 'Requested',
       resyncFailed: 'Could not request',
       turnOff: 'Turn off',
       decrypting: 'Decrypting your mailbox · {{percentage}}% · {{completed}} of {{total}} messages',
       timeLeft: '~{{minutes}} min left',
+      upToDate: 'Everything is up to date · checked at {{time}}',
+      waitingForSync: 'Waiting for the first successful sync',
       clientSetup: {
         title: 'Connect a mail client',
         description: 'Use these settings to connect your mail client.',
@@ -493,6 +495,8 @@ export const en = {
         copyToClipboard: 'Copy to clipboard',
         copied: 'Copied!',
         hostname: 'Hostname',
+        incoming: 'incoming',
+        outgoing: 'outgoing',
         port: 'Port',
         username: 'Username',
         password: 'Password',
@@ -502,6 +506,7 @@ export const en = {
       settings: {
         title: 'Mail Bridge settings',
         description: 'These apply to {{email}} on this device.',
+        startOnLoginDescription: 'Leave it off to keep Bridge idle until you turn it on yourself.',
         localPorts: 'Local ports',
         localPortsDescription: 'Change these only if another app already uses them.',
         imap: 'IMAP',

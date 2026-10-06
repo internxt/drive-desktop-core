@@ -481,11 +481,13 @@ export const es: Translation = {
     runningView: {
       title: 'Mail Bridge esta en funcionamiento',
       resync: 'Resincronizar',
-      resyncing: 'Solicitando...',
+      resyncing: 'Sincronizando...',
       resyncRequested: 'Solicitado',
       resyncFailed: 'No se pudo solicitar',
       turnOff: 'Desactivar',
       decrypting: 'Descifrando tu buzon · {{percentage}}% · {{completed}} de {{total}} mensajes',
+      upToDate: 'Todo está actualizado · comprobado a las {{time}}',
+      waitingForSync: 'Esperando la primera sincronización correcta',
       timeLeft: '~{{minutes}} min restantes',
       clientSetup: {
         title: 'Conecta un cliente de correo',
@@ -498,6 +500,8 @@ export const es: Translation = {
         copyToClipboard: 'Copiar al portapapeles',
         copied: 'Copiado!',
         hostname: 'Nombre de host',
+        incoming: 'entrante',
+        outgoing: 'saliente',
         port: 'Puerto',
         username: 'Usuario',
         password: 'Contraseña',
@@ -506,6 +510,7 @@ export const es: Translation = {
       },
       settings: {
         title: 'Ajustes de Mail Bridge',
+        startOnLoginDescription: 'Déjalo desactivado para que Bridge permanezca inactivo hasta que lo actives tú.',
         description: 'Se aplican a {{email}} en este dispositivo.',
         localPorts: 'Puertos locales',
         localPortsDescription: 'Cambialos solo si otra aplicacion ya los utiliza.',

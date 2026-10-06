@@ -482,11 +482,13 @@ export const fr: Translation = {
     runningView: {
       title: 'Mail Bridge est actif',
       resync: 'Resynchroniser',
-      resyncing: 'Demande...',
+      resyncing: 'Synchronisation...',
       resyncRequested: 'Demande envoyee',
       resyncFailed: 'Demande impossible',
       turnOff: 'Desactiver',
       decrypting: 'Dechiffrement de votre boite mail · {{percentage}}% · {{completed}} sur {{total}} messages',
+      upToDate: 'Tout est à jour · vérifié à {{time}}',
+      waitingForSync: 'En attente de la première synchronisation réussie',
       timeLeft: '~{{minutes}} min restantes',
       clientSetup: {
         title: 'Connecter un client mail',
@@ -499,6 +501,8 @@ export const fr: Translation = {
         copyToClipboard: 'Copier dans le presse-papiers',
         copied: 'Copié !',
         hostname: 'Nom d’hote',
+        incoming: 'entrant',
+        outgoing: 'sortant',
         port: 'Port',
         username: 'Nom d’utilisateur',
         password: 'Mot de passe',
@@ -507,6 +511,7 @@ export const fr: Translation = {
       },
       settings: {
         title: 'Reglages de Mail Bridge',
+        startOnLoginDescription: 'Laissez cette option désactivée pour garder Bridge inactif jusqu’à son activation manuelle.',
         description: 'Ils s’appliquent a {{email}} sur cet appareil.',
         localPorts: 'Ports locaux',
         localPortsDescription: 'Modifiez-les seulement si une autre application les utilise deja.',
