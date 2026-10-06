@@ -24,5 +24,6 @@ export type MailBridgeViewModel =
       error: null;
       connection: MailBridgeConnection;
       syncProgress?: MailBridgeSyncProgress;
+      lastChecked?: number;
     }
   | { status: 'error'; error: string };
