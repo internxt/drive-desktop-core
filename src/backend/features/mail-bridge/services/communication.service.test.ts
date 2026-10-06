@@ -112,7 +112,7 @@ describe('communication.service', () => {
         session: {
           account_id: 'account',
           addresses: ['user@example.com'],
-          backend_session: { token: 'token', encryption_private_key: 'key' },
+          backend_session: { token: 'token', encryption_private_key: 'key', encryption_public_key: 'public-key' },
           mail_client: { username: 'user@example.com', password: 'password' },
         },
       }),
@@ -137,7 +137,7 @@ describe('communication.service', () => {
         session: {
           account_id: 'account',
           addresses: ['user@example.com'],
-          backend_session: { token: 'token', encryption_private_key: 'key' },
+          backend_session: { token: 'token', encryption_private_key: 'key', encryption_public_key: 'public-key' },
           mail_client: { username: 'user@example.com', password: 'password' },
         },
       }),
@@ -151,7 +151,7 @@ describe('communication.service', () => {
         session: {
           account_id: 'account',
           addresses: ['user@example.com'],
-          backend_session: { token: 'token', encryption_private_key: 'key' },
+          backend_session: { token: 'token', encryption_private_key: 'key', encryption_public_key: 'public-key' },
           mail_client: { username: 'user@example.com', password: 'password' },
         },
       }),
