@@ -1,5 +1,7 @@
-import { Check, Warning } from '@phosphor-icons/react';
+import { Warning } from '@phosphor-icons/react';
 import { useEffect, useRef, useState } from 'react';
+
+import { Spinner } from '@/frontend/components/spinner';
 
 import { ResyncIcon } from '../../icons/resync-icon';
 import { SettingsIcon } from '../../icons/settings-icon';
@@ -14,12 +16,22 @@ type Props = {
   onResync?: () => Promise<ResyncResult>;
   onOpenSettings: () => void;
   onTurnOff?: () => void;
+  isSyncing?: boolean;
+  lastChecked?: number;
 };
 
-export function BridgeActions({ labels, turnOffLabel, onResync, onOpenSettings, onTurnOff }: Readonly<Props>) {
+export function BridgeActions({
+  labels,
+  turnOffLabel,
+  onResync,
+  onOpenSettings,
+  onTurnOff,
+  isSyncing = false,
+  lastChecked,
+}: Readonly<Props>) {
   return (
     <div className="flex shrink-0 gap-3">
-      <ResyncButton labels={labels} onResync={onResync} />
+      <ResyncButton labels={labels} onResync={onResync} isSyncing={isSyncing} lastChecked={lastChecked} />
       <button
         type="button"
         onClick={onOpenSettings}
@@ -37,22 +49,38 @@ export function BridgeActions({ labels, turnOffLabel, onResync, onOpenSettings, 
   );
 }
 
-function ResyncButton({ labels, onResync }: Readonly<{ labels: ResyncLabels; onResync?: () => Promise<ResyncResult> }>) {
+function ResyncButton({
+  labels,
+  onResync,
+  isSyncing,
+  lastChecked,
+}: Readonly<{ labels: ResyncLabels; onResync?: () => Promise<ResyncResult>; isSyncing: boolean; lastChecked?: number }>) {
   const [state, setState] = useState<ResyncState>('idle');
   const resetTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const presentation = getResyncButtonPresentation({ state, labels });
+  const requestedLastChecked = useRef(lastChecked);
+  const busy = isSyncing || state === 'requesting' || state === 'requested';
+  const presentation = getResyncButtonPresentation({ state, labels, busy });
 
   useEffect(() => () => clearTimeout(resetTimeout.current), []);
 
-  async function resync() {
-    if (!onResync) return;
+  useEffect(() => {
+    if (state === 'requested' && lastChecked !== requestedLastChecked.current) {
+      clearTimeout(resetTimeout.current);
+      setState('idle');
+    }
+  }, [lastChecked, state]);
 
+  async function resync() {
+    if (!onResync || busy) return;
+
+    clearTimeout(resetTimeout.current);
+    requestedLastChecked.current = lastChecked;
     setState('requesting');
-    const result = await onResync();
-    if (result.error) {
+    try {
+      const result = await onResync();
+      setState(result.error ? 'failed' : 'requested');
+    } catch {
       setState('failed');
-    } else {
-      setState('requested');
     }
     clearTimeout(resetTimeout.current);
     resetTimeout.current = setTimeout(() => setState('idle'), 3000);
@@ -62,7 +90,8 @@ function ResyncButton({ labels, onResync }: Readonly<{ labels: ResyncLabels; onR
     <button
       type="button"
       onClick={() => void resync()}
-      disabled={state === 'requesting'}
+      disabled={busy}
+      aria-busy={busy}
       className="border-gray-20 bg-gray-5 flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border px-4 text-sm font-semibold text-gray-100 disabled:cursor-wait disabled:opacity-70">
       {presentation.icon}
       {presentation.label}
@@ -70,15 +99,12 @@ function ResyncButton({ labels, onResync }: Readonly<{ labels: ResyncLabels; onR
   );
 }
 
-function getResyncButtonPresentation({ state, labels }: Readonly<{ state: ResyncState; labels: ResyncLabels }>) {
-  switch (state) {
-    case 'requesting':
-      return { label: labels.requesting, icon: <ResyncIcon size={18} /> };
-    case 'requested':
-      return { label: labels.requested, icon: <Check size={18} /> };
-    case 'failed':
-      return { label: labels.failed, icon: <Warning size={18} /> };
-    default:
-      return { label: labels.idle, icon: <ResyncIcon size={18} /> };
+function getResyncButtonPresentation({ state, labels, busy }: Readonly<{ state: ResyncState; labels: ResyncLabels; busy: boolean }>) {
+  if (busy) {
+    return { label: labels.requesting, icon: <Spinner className="h-[18px] w-[18px] animate-spin" /> };
   }
+  if (state === 'failed') {
+    return { label: labels.failed, icon: <Warning size={18} /> };
+  }
+  return { label: labels.idle, icon: <ResyncIcon size={18} /> };
 }

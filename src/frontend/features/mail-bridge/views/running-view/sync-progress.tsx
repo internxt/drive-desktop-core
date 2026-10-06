@@ -12,7 +12,7 @@ export function SyncProgress({ progress, translate }: Readonly<Props>) {
   });
 
   return (
-    <div className="border-primary/30 mt-4 border-t pt-4">
+    <div>
       <div className="text-sm">
         <span className="text-gray-80">{label}</span>
       </div>

@@ -18,7 +18,7 @@ type Props = {
   onComparePlans: () => void;
   onActivate: () => void;
   isStartOnLoginEnabled?: boolean;
-  onStartOnLoginChange?: (enabled: boolean) => void;
+  onStartOnLoginChange?: (enabled: boolean) => void | Promise<void>;
   onResync?: () => Promise<{ data: undefined; error: Error | undefined }>;
   onTurnOff?: () => void;
   onRetry: () => void;
@@ -107,6 +107,9 @@ export function MailBridgeView({
         accountEmail={accountEmail}
         connection={viewModel.connection}
         syncProgress={viewModel.syncProgress}
+        lastChecked={viewModel.lastChecked}
+        isStartOnLoginEnabled={isStartOnLoginEnabled}
+        onStartOnLoginChange={onStartOnLoginChange}
         useTranslationContext={useTranslationContext}
         onResync={onResync}
         onTurnOff={onTurnOff}
