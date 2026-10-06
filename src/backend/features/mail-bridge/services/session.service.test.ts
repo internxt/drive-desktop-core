@@ -19,7 +19,7 @@ describe('session.service', () => {
     vi.mocked(openEncryptionKeystore).mockReset();
   });
 
-  it('opens the Mail keystore and encodes the 32-byte key for the Bridge', async () => {
+  it('passes the sender public key and unlocked 32-byte private key to the Bridge', async () => {
     vi.mocked(openEncryptionKeystore).mockResolvedValue({ publicKey: new Uint8Array(), secretKey: new Uint8Array(32).fill(1) });
 
     await expect(
@@ -34,7 +34,11 @@ describe('session.service', () => {
       data: {
         account_id: 'account-id',
         addresses: ['mail@internxt.com'],
-        backend_session: { token: 'token', encryption_private_key: Buffer.alloc(32, 1).toString('base64') },
+        backend_session: {
+          token: 'token',
+          encryption_private_key: Buffer.alloc(32, 1).toString('base64'),
+          encryption_public_key: mailAccountKeys.publicKey,
+        },
         mail_client: { username: 'mail@internxt.com', password: 'password' },
       },
       error: undefined,

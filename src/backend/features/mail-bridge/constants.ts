@@ -21,6 +21,7 @@ export type MailBridgeSession = {
   backend_session: {
     token: string;
     encryption_private_key: string;
+    encryption_public_key: string;
   };
   mail_client: MailBridgeClientCredentials;
 };
