@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 
 import { CopyToClipboardButton } from '@/frontend/components';
 import type { TranslationFn } from '@/frontend/core/i18n/i18n.types';
 
 import type { MailBridgeConnection } from '../../../mail-bridge.types';
+import { TrayArrowIcon } from '../../../icons/tray-arrow-icon';
 
 type Props = { connection: MailBridgeConnection; useTranslation: TranslationFn };
 type SettingField = { label: string; value: string; copyValue: string };
@@ -57,15 +59,27 @@ export function ManualSettings({ connection, useTranslation }: Readonly<Props>) 
             value={allSettings}
             copyLabel={useTranslation('mailBridge.runningView.clientSetup.copyAll')}
             copiedLabel={useTranslation('mailBridge.runningView.clientSetup.copied')}
-            className="border-primary/50 text-primary rounded-lg border px-3 py-2 text-sm font-semibold"
+            className="border-gray-20 rounded-lg border px-3 py-2 text-sm font-semibold text-gray-100"
             copiedClassName="border-green text-green rounded-lg border px-3 py-2 text-sm font-semibold">
             {useTranslation('mailBridge.runningView.clientSetup.copyAll')}
           </CopyToClipboardButton>
         </div>
       </div>
       <div className="divide-gray-20 grid grid-cols-1 divide-y md:grid-cols-2 md:divide-x md:divide-y-0">
-        <SettingsColumn title="↓ IMAP" fields={fields(connection.imapPort, connection.imapSecurity)} useTranslation={useTranslation} />
-        <SettingsColumn title="↑ SMTP" fields={fields(connection.smtpPort, connection.smtpSecurity)} useTranslation={useTranslation} />
+        <SettingsColumn
+          title="IMAP"
+          description={useTranslation('mailBridge.runningView.clientSetup.incoming')}
+          icon={<TrayArrowIcon direction="down" size={19} className="text-primary shrink-0" />}
+          fields={fields(connection.imapPort, connection.imapSecurity)}
+          useTranslation={useTranslation}
+        />
+        <SettingsColumn
+          title="SMTP"
+          description={useTranslation('mailBridge.runningView.clientSetup.outgoing')}
+          icon={<TrayArrowIcon direction="up" size={19} className="text-primary shrink-0" />}
+          fields={fields(connection.smtpPort, connection.smtpSecurity)}
+          useTranslation={useTranslation}
+        />
       </div>
     </div>
   );
@@ -73,12 +87,18 @@ export function ManualSettings({ connection, useTranslation }: Readonly<Props>) 
 
 function SettingsColumn({
   title,
+  description,
+  icon,
   fields,
   useTranslation,
-}: Readonly<{ title: string; fields: SettingField[]; useTranslation: TranslationFn }>) {
+}: Readonly<{ title: string; description: string; icon: ReactNode; fields: SettingField[]; useTranslation: TranslationFn }>) {
   return (
     <div className="min-w-0 p-5">
-      <h3 className="font-semibold text-gray-100">{title}</h3>
+      <h3 className="flex items-baseline gap-3 text-base">
+        {icon}
+        <span className="font-semibold text-gray-100">{title}</span>
+        <span className="text-gray-60 font-normal">{description}</span>
+      </h3>
       {fields.map(({ label, value, copyValue }) => (
         <div
           key={label}

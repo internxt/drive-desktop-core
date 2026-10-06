@@ -12,27 +12,49 @@ type Props = {
   accountEmail: string;
   connection: MailBridgeConnection;
   syncProgress?: MailBridgeSyncProgress;
+  lastChecked?: number;
+  isStartOnLoginEnabled?: boolean;
+  onStartOnLoginChange?: (enabled: boolean) => void | Promise<void>;
   useTranslationContext: () => LocalContextProps;
   onResync?: () => Promise<{ data: undefined; error: Error | undefined }>;
   onTurnOff?: () => void;
 };
 
-export function RunningView({ accountEmail, connection, syncProgress, useTranslationContext, onResync, onTurnOff }: Readonly<Props>) {
-  const { translate } = useTranslationContext();
+export function RunningView({
+  accountEmail,
+  connection,
+  syncProgress,
+  lastChecked,
+  isStartOnLoginEnabled,
+  onStartOnLoginChange,
+  useTranslationContext,
+  onResync,
+  onTurnOff,
+}: Readonly<Props>) {
+  const { translate, language } = useTranslationContext();
   return (
-    <RunningMailBridgeProvider value={{ accountEmail, connection, syncProgress, translate, onResync, onTurnOff }}>
-      <RunningViewContent />
+    <RunningMailBridgeProvider value={{ accountEmail, connection, syncProgress, lastChecked, translate, language, onResync, onTurnOff }}>
+      <RunningViewContent isStartOnLoginEnabled={isStartOnLoginEnabled} onStartOnLoginChange={onStartOnLoginChange} />
     </RunningMailBridgeProvider>
   );
 }
 
-function RunningViewContent() {
+function RunningViewContent({
+  isStartOnLoginEnabled,
+  onStartOnLoginChange,
+}: Readonly<Pick<Props, 'isStartOnLoginEnabled' | 'onStartOnLoginChange'>>) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   return (
     <section className="relative h-full min-h-0 w-full overflow-y-auto overscroll-contain px-5 py-6">
       <BridgeStatusSection onOpenSettings={() => setIsSettingsOpen(true)} />
       <ClientSetup />
-      {isSettingsOpen && <BridgeSettingsModal onClose={() => setIsSettingsOpen(false)} />}
+      {isSettingsOpen && (
+        <BridgeSettingsModal
+          isStartOnLoginEnabled={isStartOnLoginEnabled}
+          onStartOnLoginChange={onStartOnLoginChange}
+          onClose={() => setIsSettingsOpen(false)}
+        />
+      )}
     </section>
   );
 }
