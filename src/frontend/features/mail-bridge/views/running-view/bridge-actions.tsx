@@ -107,4 +107,4 @@ function getResyncButtonPresentation({ state, labels, busy }: Readonly<{ state: 
     return { label: labels.failed, icon: <Warning size={18} /> };
   }
   return { label: labels.idle, icon: <ResyncIcon size={18} /> };
-  }
+}

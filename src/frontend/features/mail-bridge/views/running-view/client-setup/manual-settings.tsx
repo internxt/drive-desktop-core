@@ -4,8 +4,8 @@ import type { ReactNode } from 'react';
 import { CopyToClipboardButton } from '@/frontend/components';
 import type { TranslationFn } from '@/frontend/core/i18n/i18n.types';
 
-import type { MailBridgeConnection } from '../../../mail-bridge.types';
 import { TrayArrowIcon } from '../../../icons/tray-arrow-icon';
+import type { MailBridgeConnection } from '../../../mail-bridge.types';
 
 type Props = { connection: MailBridgeConnection; useTranslation: TranslationFn };
 type SettingField = { label: string; value: string; copyValue: string };
