@@ -12,7 +12,7 @@ type Props = {
   startOnLoginDescription: string;
   onActivate: () => void;
   isStartOnLoginEnabled?: boolean;
-  onStartOnLoginChange?: (enabled: boolean) => void;
+  onStartOnLoginChange?: (enabled: boolean) => void | Promise<void>;
 };
 
 export function ActivationPanel({
@@ -28,9 +28,14 @@ export function ActivationPanel({
   const [localStartOnLoginEnabled, setLocalStartOnLoginEnabled] = useState(false);
   const startOnLoginEnabled = isStartOnLoginEnabled ?? localStartOnLoginEnabled;
 
-  function handleStartOnLoginChange(enabled: boolean) {
-    if (isStartOnLoginEnabled === undefined) setLocalStartOnLoginEnabled(enabled);
-    onStartOnLoginChange?.(enabled);
+  async function handleStartOnLoginChange(enabled: boolean) {
+    try {
+      await onStartOnLoginChange?.(enabled);
+      if (isStartOnLoginEnabled === undefined) setLocalStartOnLoginEnabled(enabled);
+      return { data: undefined, error: undefined };
+    } catch (error) {
+      return { data: undefined, error: error instanceof Error ? error : new Error('Could not update Mail Bridge startup preference') };
+    }
   }
 
   return (
@@ -47,7 +52,7 @@ export function ActivationPanel({
         <Checkbox
           label={startOnLoginTitle}
           checked={startOnLoginEnabled}
-          onClick={() => handleStartOnLoginChange(!startOnLoginEnabled)}
+          onClick={() => void handleStartOnLoginChange(!startOnLoginEnabled)}
           customClassName="font-semibold"
         />
         <p className="text-gray-60 ml-7 mt-1 text-sm leading-relaxed">{startOnLoginDescription}</p>

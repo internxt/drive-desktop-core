@@ -104,7 +104,7 @@ function SettingsColumn({
           key={label}
           className="border-gray-20 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-center gap-3 border-b py-3 text-sm">
           <span className="text-gray-60 truncate">{label}</span>
-          <span className="truncate text-right font-medium text-gray-100" title={value}>
+          <span className="truncate text-right font-mono text-gray-100" title={value}>
             {value}
           </span>
           <CopyToClipboardButton

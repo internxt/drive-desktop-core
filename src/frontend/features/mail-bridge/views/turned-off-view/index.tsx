@@ -9,7 +9,7 @@ type Props = {
   useTranslationContext: () => LocalContextProps;
   onActivate: () => void;
   isStartOnLoginEnabled?: boolean;
-  onStartOnLoginChange?: (enabled: boolean) => void;
+  onStartOnLoginChange?: (enabled: boolean) => void | Promise<void>;
 };
 
 export function TurnedOffView({
