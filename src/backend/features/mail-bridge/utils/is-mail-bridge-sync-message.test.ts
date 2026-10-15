@@ -9,7 +9,7 @@ describe('isMailBridgeSyncMessage', () => {
     { type: 'sync_finished', finished: { downloaded: 1, total: 2, code: 'sync-failed' } },
   ];
 
-  it.each(syncMessages)('recognizes a $type message as sync activity', (message) => {
+  it.each(syncMessages)('should recognize a $type message as sync activity', (message) => {
     expect(isMailBridgeSyncMessage(message)).toBe(true);
   });
 
@@ -18,7 +18,7 @@ describe('isMailBridgeSyncMessage', () => {
     { type: 'error', error: { code: 'session-expired' } },
   ];
 
-  it.each(otherMessages)('rejects a $type message as sync activity', (message) => {
+  it.each(otherMessages)('should reject a $type message as sync activity', (message) => {
     expect(isMailBridgeSyncMessage(message)).toBe(false);
   });
 });

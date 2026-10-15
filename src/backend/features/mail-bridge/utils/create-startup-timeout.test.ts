@@ -11,7 +11,7 @@ describe('createStartupTimeout', () => {
     vi.useRealTimers();
   });
 
-  it('returns a timeout that reports failure only when the startup deadline expires', async () => {
+  it('should return a timeout that reports failure only when the startup deadline expires', async () => {
     const created = createStartupTimeout();
     if (Result.isError(created)) throw created.error;
 
@@ -27,7 +27,7 @@ describe('createStartupTimeout', () => {
     expect(settled).toHaveBeenCalledTimes(1);
   });
 
-  it('cancels the timer without settling the timeout promise', async () => {
+  it('should cancel the timer without settling the timeout promise', async () => {
     const created = createStartupTimeout();
     if (Result.isError(created)) throw created.error;
 
@@ -41,7 +41,7 @@ describe('createStartupTimeout', () => {
     expect(vi.getTimerCount()).toBe(0);
   });
 
-  it('returns the original error when timer creation fails', () => {
+  it('should return the original error when timer creation fails', () => {
     const error = new Error('Timer unavailable');
     vi.spyOn(globalThis, 'setTimeout').mockImplementation(() => {
       throw error;
@@ -53,7 +53,7 @@ describe('createStartupTimeout', () => {
     expect(result.error).toBe(error);
   });
 
-  it('wraps non-Error timer creation failures and preserves the cause', () => {
+  it('should wrap non-Error timer creation failures and preserves the cause', () => {
     vi.spyOn(globalThis, 'setTimeout').mockImplementation(() => {
       // Exercise normalization of non-Error failures from the timer API.
       // eslint-disable-next-line no-throw-literal, @typescript-eslint/only-throw-error
