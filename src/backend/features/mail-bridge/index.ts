@@ -32,3 +32,11 @@ export type {
   MailBridgeSyncProgress,
   MailBridgeSessionPreparationErrorCode,
 } from './constants';
+
+export type { MailBridgeStatus, MailBridgeRuntime, MailBridgeResources } from './mail-bridge.types';
+export { listenForMailBridgeControlMessages } from './services/mail-bridge-control-messages.service';
+export { waitForMailBridgeConnection, waitForMailBridgeReady } from './services/mail-bridge-startup.service';
+export { getMailBridgeEnvironment } from './services/get-mail-bridge-environment.service';
+export { stopMailBridgeResources } from './services/stop-mail-bridge';
+export { isMailBridgeStopped } from './utils/is-mail-bridge-stopped';
+export { captureMailBridgeStartupStderr } from './services/capture-mail-bridge-startup-stderr';
