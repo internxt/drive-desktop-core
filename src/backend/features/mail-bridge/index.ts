@@ -42,3 +42,7 @@ export { getMailBridgeEnvironment } from './services/get-mail-bridge-environment
 export { stopMailBridgeResources } from './services/stop-mail-bridge';
 export { isMailBridgeStopped } from './utils/is-mail-bridge-stopped';
 export { captureMailBridgeStartupStderr } from './services/capture-mail-bridge-startup-stderr';
+export { generateRandomPassword } from './utils/generate-random-password';
+export { mapStoredMailBridgeCredentials } from './mappers/map-stored-mail-bridge-credentials';
+export { encryptMailBridgeCredentials } from './utils/encrypt-mail-bridge-credentials';
+export { decryptMailBridgeCredentials } from './utils/decrypt-mail-bridge-credentials';
