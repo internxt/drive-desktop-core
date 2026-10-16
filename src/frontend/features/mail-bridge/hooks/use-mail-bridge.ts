@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type {
-  MailBridgeStatus,
-  MailBridgeSyncProgress,
-} from '../../../../backend/features/mail-bridge';
+import type { MailBridgeStatus, MailBridgeSyncProgress } from '../../../../backend/features/mail-bridge';
 import { Result } from '../../../../common/result';
 import type { MailBridgeApi } from '../mail-bridge-api.types';
 import type { MailBridgeViewModel } from '../mail-bridge.types';
@@ -106,10 +103,7 @@ export function useMailBridge(api: MailBridgeApi): UseMailBridgeResult {
         lastChecked: current.status === 'running' ? current.lastChecked : undefined,
       }));
       const revision = syncProgressRevision.current;
-      const [email, progress] = await Promise.all([
-        api.getEmail(),
-        api.getSyncProgress(),
-      ]);
+      const [email, progress] = await Promise.all([api.getEmail(), api.getSyncProgress()]);
       applyMailAccountEmail(email);
       if (revision === syncProgressRevision.current) setSyncProgress(progress);
     } catch {
@@ -140,9 +134,7 @@ export function useMailBridge(api: MailBridgeApi): UseMailBridgeResult {
   async function resync() {
     try {
       const result = await api.resync();
-      return result.error
-        ? { data: undefined, error: new Error(result.error.message) }
-        : { data: undefined, error: undefined };
+      return result.error ? { data: undefined, error: new Error(result.error.message) } : { data: undefined, error: undefined };
     } catch {
       return { data: undefined, error: new Error(unexpectedMailBridgeError) };
     }
