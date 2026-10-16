@@ -33,7 +33,14 @@ export type {
   MailBridgeSessionPreparationErrorCode,
 } from './constants';
 
-export type { MailBridgeStatus, MailBridgeRuntime, MailBridgeResources } from './mail-bridge.types';
+export type {
+  MailBridgeStatus,
+  MailBridgeRuntime,
+  MailBridgeResources,
+  MailBridgePlatform,
+  StartMailBridgeProps,
+  MailBridgeService,
+} from './mail-bridge.types';
 export { listenForMailBridgeControlMessages } from './services/mail-bridge-control-messages.service';
 export { waitForMailBridgeConnection, waitForMailBridgeReady } from './services/mail-bridge-startup.service';
 export { getMailBridgeEnvironment } from './services/get-mail-bridge-environment.service';
@@ -44,3 +51,5 @@ export { generateRandomPassword } from './utils/generate-random-password';
 export { mapStoredMailBridgeCredentials } from './mappers/map-stored-mail-bridge-credentials';
 export { encryptMailBridgeCredentials } from './utils/encrypt-mail-bridge-credentials';
 export { decryptMailBridgeCredentials } from './utils/decrypt-mail-bridge-credentials';
+export { startMailBridge } from './services/start-mail-bridge';
+export { createMailBridgeService } from './services/mail-bridge.service';
