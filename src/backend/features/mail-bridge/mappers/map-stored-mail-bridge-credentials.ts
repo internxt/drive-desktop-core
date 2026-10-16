@@ -4,7 +4,7 @@ import type { MailBridgeClientCredentials } from '../constants';
 /**
  * Validates the parsed, decrypted credentials before they are used by the bridge.
  * Requires an object with string username and password fields.
- * 
+ *
  * @param value - The unvalidated value parsed from the stored credentials JSON.
  * @returns Typed mail-client credentials, or an error when their structure is invalid.
  */

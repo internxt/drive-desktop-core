@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
 /* eslint-disable sonarjs/no-hardcoded-passwords */
-import type { MailBridgeConnectionSettings } from '../../../../backend/features/mail-bridge';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { vi } from 'vitest';
+
+import type { MailBridgeConnectionSettings } from '../../../../backend/features/mail-bridge';
 import type { MailBridgeApi } from '../mail-bridge-api.types';
 import { useMailBridge } from './use-mail-bridge';
 
@@ -71,9 +72,7 @@ describe('use-mail-bridge', () => {
       await email.promise;
     });
     // Then
-    await vi.waitFor(() =>
-      expect(result.current.viewModel).toMatchObject({ status: 'running', syncProgress: progress }),
-    );
+    await vi.waitFor(() => expect(result.current.viewModel).toMatchObject({ status: 'running', syncProgress: progress }));
     expect(api.resync).not.toHaveBeenCalled();
   });
 
@@ -81,9 +80,7 @@ describe('use-mail-bridge', () => {
     // Given
     const email = Promise.withResolvers<{ data: string; error: undefined }>();
     api.getEmail = vi.fn(() => email.promise);
-    api.getStatus = vi
-      .fn()
-      .mockResolvedValue({ status: 'stopped', error: undefined });
+    api.getStatus = vi.fn().mockResolvedValue({ status: 'stopped', error: undefined });
     const { result } = renderHook(() => useMailBridge(api));
     const onStatus = vi.mocked(api.onStatusChanged).mock.calls[0]![0];
     const onProgress = vi.mocked(api.onSyncProgressChanged).mock.calls[0]![0];
@@ -141,9 +138,7 @@ describe('use-mail-bridge', () => {
 
     const { result } = renderHook(() => useMailBridge(api));
 
-    await vi.waitFor(() =>
-      expect(result.current.viewModel).toEqual({ status: 'error', error: 'Mail service is unavailable' }),
-    );
+    await vi.waitFor(() => expect(result.current.viewModel).toEqual({ status: 'error', error: 'Mail service is unavailable' }));
   });
 
   it('loads and changes the start-on-login preference', async () => {
