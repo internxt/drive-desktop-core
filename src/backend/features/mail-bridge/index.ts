@@ -41,6 +41,10 @@ export type {
   StartMailBridgeProps,
   MailBridgeService,
   MailBridgeCredentialsStore,
+  CreateMailBridgeStateDirectoryProps,
+  SpawnMailBridgeProps,
+  MailBridgeClientConfig,
+  CreateMailBridgeSessionProps,
 } from './mail-bridge.types';
 export { listenForMailBridgeControlMessages } from './services/mail-bridge-control-messages.service';
 export { waitForMailBridgeConnection, waitForMailBridgeReady } from './services/mail-bridge-startup.service';
@@ -57,3 +61,6 @@ export { createMailBridgeService } from './services/mail-bridge.service';
 export { retrieveMailBridgeCredentials } from './retrieve-mail-bridge-credentials';
 export { storeCredentials } from './store-credentials';
 export { getOrCreateMailBridgeCredentials } from './get-or-create-mail-bridge-credentials';
+export { createMailBridgeStateDirectory, spawnMailBridge } from './services/mail-bridge-process.service';
+export { getMailBridgeEmail } from './services/get-mail-bridge-email.service';
+export { createMailBridgeSession } from './create-mail-bridge-session';
