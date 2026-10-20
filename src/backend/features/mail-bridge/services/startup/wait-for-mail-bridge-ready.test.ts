@@ -33,7 +33,9 @@ describe('waitForMailBridgeReady', () => {
 
   function expectCleanedUp() {
     expect(cancel).toHaveBeenCalledTimes(1);
-    expect(vi.mocked(waitForMailBridgeExit).mock.calls[0][0].signal.aborted).toBe(true);
+    const exitCall = vi.mocked(waitForMailBridgeExit).mock.calls[0];
+    expect(exitCall).toBeDefined();
+    expect(exitCall?.[0].signal.aborted).toBe(true);
   }
 
   it('should return communication data and cancel the losing waits', async () => {

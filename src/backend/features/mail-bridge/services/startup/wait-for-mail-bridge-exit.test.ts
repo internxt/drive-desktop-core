@@ -30,7 +30,7 @@ describe('waitForMailBridgeExit', () => {
   }
 
   it('should report an already exited process without registering listeners', async () => {
-    child.exitCode = 1;
+    Object.defineProperty(child, 'exitCode', { value: 1 });
 
     const result = await wait();
 
