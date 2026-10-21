@@ -1,6 +1,7 @@
 import { Result } from '@/common/result';
 
-import { FileSizeLimitAdapter, revalidateFileSizeLimit, wasFileSizeLimitRevalidatedRecently } from './revalidate-file-size-limit';
+import { FileSizeLimitAdapter } from '../file-size-limit.types';
+import { revalidateFileSizeLimit, wasFileSizeLimitRevalidatedRecently } from './revalidate-file-size-limit';
 import { validateUploadFileSize } from './validate-upload-file-size';
 
 type Props = FileSizeLimitAdapter & {

@@ -2,12 +2,7 @@ import { logger } from '@/backend/core/logger/logger';
 import { Result } from '@/common/result';
 
 import { FILE_SIZE_LIMIT_REVALIDATION_INTERVAL_MS } from '../constants';
-
-export type FileSizeLimitAdapter = {
-  getStoredLimit: () => number;
-  saveLimit: ({ limit }: { limit: number }) => void;
-  fetchLimit: () => Promise<Result<number, Error>>;
-};
+import { FileSizeLimitAdapter } from '../file-size-limit.types';
 
 type Props = Pick<FileSizeLimitAdapter, 'saveLimit' | 'fetchLimit'>;
 

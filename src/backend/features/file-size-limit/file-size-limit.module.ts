@@ -3,8 +3,7 @@ import { resetFileSizeLimitRevalidation, revalidateFileSizeLimit } from './servi
 import { validateUploadFileSize } from './services/validate-upload-file-size';
 
 export { ABSOLUTE_UPLOAD_FILE_SIZE_LIMIT } from './constants';
-export type { FileSizeLimitAdapter } from './services/revalidate-file-size-limit';
-export type { UploadFileSizeValidation } from './services/validate-upload-file-size';
+export type { FileSizeLimitAdapter, UploadFileSizeValidation } from './file-size-limit.types';
 export const FileSizeLimitModule = {
   checkUploadFileSize,
   revalidateFileSizeLimit,

@@ -1,13 +1,5 @@
 import { ABSOLUTE_UPLOAD_FILE_SIZE_LIMIT } from '../constants';
-
-export type UploadFileSizeValidation =
-  | { allowed: true }
-  | {
-      allowed: false;
-      reason: 'PLAN_LIMIT_EXCEEDED' | 'ABSOLUTE_CAP_EXCEEDED';
-      maxFileSize: number;
-      showUpgradeCta: boolean;
-    };
+import { UploadFileSizeValidation } from '../file-size-limit.types';
 
 type Props = {
   size: number;
