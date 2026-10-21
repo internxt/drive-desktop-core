@@ -1,4 +1,5 @@
 export const MAX_ALLOWED_PORT = 65_535;
+export const startupTimeoutMs = 30_000;
 export const maxControlFrameSize = 1 << 20;
 export const mailBridgeReleaseTag = 'v0.0.5';
 
