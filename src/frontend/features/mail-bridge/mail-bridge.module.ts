@@ -1,3 +1,4 @@
+import { useMailBridge } from './hooks/use-mail-bridge';
 import type { MailBridgeViewModel } from './mail-bridge.types';
 import { LockedView } from './views/locked-view';
 import { MailBridgeView } from './views/mail-bridge-view';
@@ -8,6 +9,10 @@ export const MailBridgeModule = {
   createInitialViewModel(): MailBridgeViewModel {
     return { status: 'stopped', error: null };
   },
+  useMailBridge,
   MailBridgeView,
   LockedView,
 };
+
+export type { MailBridgeApi } from './mail-bridge-api.types';
+export type { UseMailBridgeResult } from './mail-bridge.types';
