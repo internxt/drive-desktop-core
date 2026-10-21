@@ -1,3 +1,5 @@
+import type { Result } from '../../../common/result';
+
 export type MailBridgeStatus = 'stopped' | 'starting' | 'running' | 'error';
 export type MailBridgeConnection = {
   hostname: string;
@@ -27,8 +29,6 @@ export type MailBridgeViewModel =
       lastChecked?: number;
     }
   | { status: 'error'; error: string };
-import type { Result } from '../../../common/result';
-
 
 export type UseMailBridgeResult = {
   viewModel: MailBridgeViewModel;
