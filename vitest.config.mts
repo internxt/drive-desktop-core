@@ -10,7 +10,7 @@ export default defineConfig({
       reportOnFailure: true,
     },
     clearMocks: true,
-    exclude: [...configDefaults.exclude, 'build/**', '**/*.helper.test.ts', '**/*.infra.test.ts'],
+    exclude: [...configDefaults.exclude, '**/build/**', '**/*.helper.test.ts', '**/*.infra.test.ts'],
     globals: true,
     reporters: ['verbose'],
     root: './',

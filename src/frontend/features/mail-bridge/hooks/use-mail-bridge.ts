@@ -3,19 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { MailBridgeStatus, MailBridgeSyncProgress } from '../../../../backend/features/mail-bridge';
 import { Result } from '../../../../common/result';
 import type { MailBridgeApi } from '../mail-bridge-api.types';
-import type { MailBridgeViewModel } from '../mail-bridge.types';
-
-export type UseMailBridgeResult = {
-  viewModel: MailBridgeViewModel;
-  accountEmail: string | undefined;
-  isLoadingInitialStatus: boolean;
-  isStartOnLoginEnabled: boolean;
-  setStartOnLogin: (enabled: boolean) => Promise<void>;
-  activate: () => Promise<void>;
-  turnOff: () => Promise<Result<undefined, Error>>;
-  retry: () => Promise<void>;
-  resync: () => Promise<Result<undefined, Error>>;
-};
+import type { MailBridgeViewModel, UseMailBridgeResult } from '../mail-bridge.types';
 
 const unexpectedMailBridgeError = 'unexpected-mail-bridge-error';
 
