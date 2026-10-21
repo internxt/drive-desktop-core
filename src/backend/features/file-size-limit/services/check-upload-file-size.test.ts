@@ -45,6 +45,7 @@ describe('check-upload-file-size', () => {
     const res = await checkUploadFileSize(props);
     // Then
     expect(res).toMatchObject({ allowed: false, reason: 'PLAN_LIMIT_EXCEEDED', maxFileSize: 10 });
+    call(wasRevalidatedRecentlyMock).toStrictEqual({ getLastRevalidatedAt: props.getLastRevalidatedAt });
     calls(revalidateFileSizeLimitMock).toHaveLength(0);
   });
 
@@ -53,7 +54,11 @@ describe('check-upload-file-size', () => {
     const res = await checkUploadFileSize(props);
     // Then
     expect(res).toStrictEqual({ allowed: true });
-    call(revalidateFileSizeLimitMock).toStrictEqual({ saveLimit: props.saveLimit, fetchLimit: props.fetchLimit });
+    call(revalidateFileSizeLimitMock).toStrictEqual({
+      saveLimit: props.saveLimit,
+      saveLastRevalidatedAt: props.saveLastRevalidatedAt,
+      fetchLimit: props.fetchLimit,
+    });
   });
 
   it('should reject the file if it does not fit the limit returned by the backend', async () => {

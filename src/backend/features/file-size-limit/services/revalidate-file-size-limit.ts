@@ -4,33 +4,29 @@ import { Result } from '@/common/result';
 import { FILE_SIZE_LIMIT_REVALIDATION_INTERVAL_MS } from '../constants';
 import { FileSizeLimitAdapter } from '../file-size-limit.types';
 
-type Props = Pick<FileSizeLimitAdapter, 'saveLimit' | 'fetchLimit'>;
+type Props = Pick<FileSizeLimitAdapter, 'saveLimit' | 'saveLastRevalidatedAt' | 'fetchLimit'>;
 
 let revalidating: Promise<Result<number, Error>> | undefined;
-let lastRevalidatedAt: number | undefined;
 
 /**
  * v1.5.0 Victor Fernandez
  * The plan change notification cannot be relied on, so the limit is asked again to the backend, the source of truth,
  * before rejecting a file. Overlapping calls share the request in progress.
  */
-export function revalidateFileSizeLimit({ saveLimit, fetchLimit }: Props) {
-  revalidating ??= fetchAndSaveLimit({ saveLimit, fetchLimit }).finally(() => {
+export function revalidateFileSizeLimit({ saveLimit, saveLastRevalidatedAt, fetchLimit }: Props) {
+  revalidating ??= fetchAndSaveLimit({ saveLimit, saveLastRevalidatedAt, fetchLimit }).finally(() => {
     revalidating = undefined;
   });
 
   return revalidating;
 }
 
-export function wasFileSizeLimitRevalidatedRecently() {
+export function wasFileSizeLimitRevalidatedRecently({ getLastRevalidatedAt }: Pick<FileSizeLimitAdapter, 'getLastRevalidatedAt'>) {
+  const lastRevalidatedAt = getLastRevalidatedAt();
   return lastRevalidatedAt !== undefined && Date.now() - lastRevalidatedAt < FILE_SIZE_LIMIT_REVALIDATION_INTERVAL_MS;
 }
 
-export function resetFileSizeLimitRevalidation() {
-  lastRevalidatedAt = undefined;
-}
-
-async function fetchAndSaveLimit({ saveLimit, fetchLimit }: Props) {
+async function fetchAndSaveLimit({ saveLimit, saveLastRevalidatedAt, fetchLimit }: Props) {
   try {
     const res = await fetchLimit();
 
@@ -39,7 +35,7 @@ async function fetchAndSaveLimit({ saveLimit, fetchLimit }: Props) {
       return res;
     }
 
-    lastRevalidatedAt = Date.now();
+    saveLastRevalidatedAt({ timestamp: Date.now() });
     saveLimit({ limit: res.data });
     logger.debug({ tag: 'SYNC-ENGINE', msg: 'User file size limit revalidated', maxUploadFileSize: res.data });
     return res;

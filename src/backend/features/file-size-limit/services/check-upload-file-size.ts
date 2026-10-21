@@ -13,14 +13,25 @@ type Props = FileSizeLimitAdapter & {
  * The backend is asked at most once every 15 minutes and only when the stored limit rejects the file, so most uploads
  * never trigger a request. If the backend cannot be reached the file is rejected with the stored limit.
  */
-export async function checkUploadFileSize({ size, getStoredLimit, saveLimit, fetchLimit }: Props) {
+export async function checkUploadFileSize({
+  size,
+  getStoredLimit,
+  saveLimit,
+  getLastRevalidatedAt,
+  saveLastRevalidatedAt,
+  fetchLimit,
+}: Props) {
   const validation = validateUploadFileSize({ size, maxUploadFileSize: getStoredLimit() });
 
-  if (validation.allowed || validation.reason === 'ABSOLUTE_CAP_EXCEEDED' || wasFileSizeLimitRevalidatedRecently()) {
+  if (
+    validation.allowed ||
+    validation.reason === 'ABSOLUTE_CAP_EXCEEDED' ||
+    wasFileSizeLimitRevalidatedRecently({ getLastRevalidatedAt })
+  ) {
     return validation;
   }
 
-  const res = await revalidateFileSizeLimit({ saveLimit, fetchLimit });
+  const res = await revalidateFileSizeLimit({ saveLimit, saveLastRevalidatedAt, fetchLimit });
 
   if (Result.isError(res)) return validation;
 
