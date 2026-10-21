@@ -63,6 +63,7 @@ export { createMailBridgeService } from './services/mail-bridge.service';
 export { retrieveMailBridgeCredentials } from './retrieve-mail-bridge-credentials';
 export { storeCredentials } from './store-credentials';
 export { getOrCreateMailBridgeCredentials } from './get-or-create-mail-bridge-credentials';
-export { createMailBridgeStateDirectory, spawnMailBridge } from './services/mail-bridge-process.service';
+export { createMailBridgeStateDirectory } from './services/process/create-mail-bridge-state-directory';
+export { spawnMailBridge } from './services/process/spawn-mail-bridge';
 export { getMailBridgeEmail } from './services/get-mail-bridge-email.service';
 export { createMailBridgeSession } from './create-mail-bridge-session';

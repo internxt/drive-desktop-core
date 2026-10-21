@@ -1,47 +1,12 @@
 import { ChildProcess, spawn } from 'node:child_process';
-import { mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
 
-import { Result } from '../../../../common/result';
-import type { SpawnMailBridgeProps } from '../mail-bridge.types';
-import { createMailBridgeStateDirectory, spawnMailBridge } from './mail-bridge-process.service';
+import { Result } from '../../../../../common/result';
+import type { SpawnMailBridgeProps } from '../../mail-bridge.types';
+import { spawnMailBridge } from './spawn-mail-bridge';
 
 vi.mock('node:child_process', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:child_process')>();
   return { ...actual, spawn: vi.fn() };
-});
-vi.mock('node:fs/promises', () => ({ mkdir: vi.fn() }));
-
-describe('createMailBridgeStateDirectory', () => {
-  beforeEach(() => {
-    vi.mocked(mkdir).mockReset().mockResolvedValue(undefined);
-  });
-
-  it('creates private account directories beneath the supplied app data path', async () => {
-    const first = await createMailBridgeStateDirectory({ baseDirectory: '/app-data', accountId: 'first-account' });
-    const second = await createMailBridgeStateDirectory({ baseDirectory: '/app-data', accountId: 'second-account' });
-
-    expect(first).toEqual(Result.ok(join('/app-data', 'mail-bridge', 'first-account')));
-    expect(second).toEqual(Result.ok(join('/app-data', 'mail-bridge', 'second-account')));
-    expect(first.data).not.toBe(second.data);
-    expect(mkdir).toHaveBeenCalledWith(first.data, { recursive: true, mode: 0o700 });
-    expect(mkdir).toHaveBeenCalledWith(second.data, { recursive: true, mode: 0o700 });
-  });
-
-  it('preserves filesystem errors', async () => {
-    const error = new Error('Permission denied');
-    vi.mocked(mkdir).mockRejectedValue(error);
-
-    expect(await createMailBridgeStateDirectory({ baseDirectory: '/app-data', accountId: 'account' })).toEqual(Result.err(error));
-  });
-
-  it('returns an Error when directory creation rejects with an unknown value', async () => {
-    vi.mocked(mkdir).mockRejectedValue('unknown failure');
-
-    expect(await createMailBridgeStateDirectory({ baseDirectory: '/app-data', accountId: 'account' })).toEqual(
-      Result.err(new Error('Could not create the Mail Bridge state directory')),
-    );
-  });
 });
 
 describe('spawnMailBridge', () => {
