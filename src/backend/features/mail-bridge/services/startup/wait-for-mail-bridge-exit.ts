@@ -2,7 +2,7 @@ import type { ChildProcess } from 'node:child_process';
 import { once } from 'node:events';
 
 import { Result } from '../../../../../common/result';
-import { createBridgeExitError } from '../../utils/create-bridge-exit-error';
+import { createBridgeExitError } from './create-bridge-exit-error';
 
 /** Waits for process exit, returning startup details or the original process/cancellation error. */
 export async function waitForMailBridgeExit({

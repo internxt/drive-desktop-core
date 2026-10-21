@@ -2,8 +2,8 @@ import type { ChildProcess } from 'node:child_process';
 import type { Server, Socket } from 'node:net';
 
 import { Result } from '../../../../../common/result';
-import { createStartupTimeout } from '../../utils/create-startup-timeout';
-import { waitForControlConnection } from '../communication.service';
+import { waitForControlConnection } from '../communication/communication.service';
+import { createStartupTimeout } from './create-startup-timeout';
 import { waitForMailBridgeExit } from './wait-for-mail-bridge-exit';
 
 type WaitForMailBridgeConnectionProps = {

@@ -1,4 +1,4 @@
-import { startMailBridge as startRuntime } from '../start-mail-bridge';
+import { startMailBridge as startRuntime } from '../startup/start-mail-bridge';
 import { createMailBridgeRuntimeCallbacks } from './create-mail-bridge-runtime-callbacks';
 import { failStartup } from './fail-startup';
 import type { MailBridgeStartupAttempt, MailBridgeStartupContext, StartNewMailBridgeProps } from './lifecycle.types';

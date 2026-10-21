@@ -2,7 +2,7 @@ import type { Socket } from 'node:net';
 
 import { logger } from '../../../../core/logger/logger';
 import type { MailBridgeResources, MailBridgeStatus } from '../../mail-bridge.types';
-import { stopMailBridgeResources } from '../stop-mail-bridge';
+import { stopMailBridgeResources } from '../process/stop-mail-bridge';
 import type { MailBridgeLifecycleActions } from './lifecycle.types';
 
 type HandleUnexpectedExitProps = MailBridgeLifecycleActions & {
