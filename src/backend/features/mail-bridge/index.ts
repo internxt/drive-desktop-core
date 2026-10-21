@@ -42,7 +42,9 @@ export type {
   MailBridgeService,
 } from './mail-bridge.types';
 export { listenForMailBridgeControlMessages } from './services/mail-bridge-control-messages.service';
-export { waitForMailBridgeConnection, waitForMailBridgeReady } from './services/mail-bridge-startup.service';
+export { waitForMailBridgeConnection } from './services/startup/wait-for-mail-bridge-connection';
+export { waitForMailBridgeReady } from './services/startup/wait-for-mail-bridge-ready';
+export { waitForMailBridgeExit } from './services/startup/wait-for-mail-bridge-exit';
 export { getMailBridgeEnvironment } from './services/get-mail-bridge-environment.service';
 export { stopMailBridgeResources } from './services/stop-mail-bridge';
 export { isMailBridgeStopped } from './utils/is-mail-bridge-stopped';

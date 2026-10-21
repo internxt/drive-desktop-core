@@ -3,7 +3,6 @@ import type { Server, Socket } from 'node:net';
 
 import type { Result } from '../../../common/result';
 import type { ControlMessage, MailBridgeConnectionSettings, MailBridgeSession, MailBridgeSyncProgress } from './constants';
-
 export type MailBridgeStatus =
   | { status: 'stopped' | 'starting'; error: undefined }
   | { status: 'running'; error: undefined; connection: MailBridgeConnectionSettings; lastChecked?: number }
