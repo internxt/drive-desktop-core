@@ -1,16 +1,13 @@
-import type { Socket } from 'node:net';
-
 import { Result } from '../../../../common/result';
 import { logger } from '../../../core/logger/logger';
-import type { ControlMessage, MailBridgeConnectionSettings, MailBridgeSession, MailBridgeSyncProgress } from '../constants';
-import type { MailBridgeService, MailBridgeResources, MailBridgeRuntime, MailBridgeStatus, MailBridgePlatform } from '../mail-bridge.types';
+import type { MailBridgeConnectionSettings, MailBridgeSession, MailBridgeSyncProgress } from '../constants';
+import type { MailBridgeService, MailBridgeStatus, MailBridgePlatform } from '../mail-bridge.types';
 import { isMailBridgeStopped } from '../utils/is-mail-bridge-stopped';
 import { sendControlMessage } from './communication.service';
 import { createMailBridgeStartupContext } from './lifecycle/create-mail-bridge-startup-context';
 import type { MailBridgeLifecycleState } from './lifecycle/lifecycle.types';
 import { startNewMailBridge } from './lifecycle/start-new-mail-bridge';
 import { sendMailBridgeSessionUpdate } from './send-mail-bridge-session-update';
-import { startMailBridge as startRuntime } from './start-mail-bridge';
 import { stopMailBridgeResources } from './stop-mail-bridge';
 
 /**
