@@ -1,4 +1,5 @@
 import type { Socket } from 'node:net';
+
 import { Result } from '../../../../common/result';
 import { logger } from '../../../core/logger/logger';
 import type { ControlMessage, MailBridgeConnectionSettings, MailBridgeSession, MailBridgeSyncProgress } from '../constants';
