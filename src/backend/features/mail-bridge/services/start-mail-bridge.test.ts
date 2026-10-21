@@ -6,8 +6,9 @@ import { Result } from '../../../../common/result';
 import type { MailBridgePlatform, StartMailBridgeProps } from '../mail-bridge.types';
 import { createConnectionSettings, createControlServer, sendControlMessage } from './communication.service';
 import { listenForMailBridgeControlMessages } from './mail-bridge-control-messages.service';
-import { waitForMailBridgeConnection, waitForMailBridgeReady } from './mail-bridge-startup.service';
 import { startMailBridge } from './start-mail-bridge';
+import { waitForMailBridgeConnection } from './startup/wait-for-mail-bridge-connection';
+import { waitForMailBridgeReady } from './startup/wait-for-mail-bridge-ready';
 import { stopMailBridgeResources } from './stop-mail-bridge';
 
 vi.mock('./communication.service', () => ({
@@ -16,7 +17,8 @@ vi.mock('./communication.service', () => ({
   createConnectionSettings: vi.fn(),
 }));
 vi.mock('./capture-mail-bridge-startup-stderr', () => ({ captureMailBridgeStartupStderr: () => () => undefined }));
-vi.mock('./mail-bridge-startup.service', () => ({ waitForMailBridgeConnection: vi.fn(), waitForMailBridgeReady: vi.fn() }));
+vi.mock('./startup/wait-for-mail-bridge-connection', () => ({ waitForMailBridgeConnection: vi.fn() }));
+vi.mock('./startup/wait-for-mail-bridge-ready', () => ({ waitForMailBridgeReady: vi.fn() }));
 vi.mock('./mail-bridge-control-messages.service', () => ({ listenForMailBridgeControlMessages: vi.fn() }));
 vi.mock('./stop-mail-bridge', () => ({ stopMailBridgeResources: vi.fn() }));
 

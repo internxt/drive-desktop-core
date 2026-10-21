@@ -9,7 +9,8 @@ import type { MailBridgeResources, MailBridgeRuntime, MailBridgePlatform, StartM
 import { captureMailBridgeStartupStderr } from './capture-mail-bridge-startup-stderr';
 import { createConnectionSettings, createControlServer, sendControlMessage } from './communication.service';
 import { listenForMailBridgeControlMessages } from './mail-bridge-control-messages.service';
-import { waitForMailBridgeConnection, waitForMailBridgeReady } from './mail-bridge-startup.service';
+import { waitForMailBridgeConnection } from './startup/wait-for-mail-bridge-connection';
+import { waitForMailBridgeReady } from './startup/wait-for-mail-bridge-ready';
 import { stopMailBridgeResources } from './stop-mail-bridge';
 
 /**
