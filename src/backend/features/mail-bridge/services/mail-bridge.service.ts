@@ -36,7 +36,7 @@ export function createMailBridgeService(platform: MailBridgePlatform): MailBridg
 
   async function startMailBridge(session: MailBridgeSession): Promise<Result<MailBridgeConnectionSettings, Error>> {
     if (state.status.status === 'running' && state.runtime) {
-      logger.debug({ msg: 'Mail Bridge is already running' });
+      logger.debug({ tag: 'MAIL-BRIDGE', msg: 'Mail Bridge is already running' });
       return Result.ok(state.runtime.connection);
     }
     if (startup) {

@@ -40,6 +40,7 @@ export type {
   MailBridgePlatform,
   StartMailBridgeProps,
   MailBridgeService,
+  MailBridgeCredentialsStore,
 } from './mail-bridge.types';
 export { listenForMailBridgeControlMessages } from './services/mail-bridge-control-messages.service';
 export { waitForMailBridgeConnection } from './services/startup/wait-for-mail-bridge-connection';
@@ -55,3 +56,6 @@ export { encryptMailBridgeCredentials } from './utils/encrypt-mail-bridge-creden
 export { decryptMailBridgeCredentials } from './utils/decrypt-mail-bridge-credentials';
 export { startMailBridge } from './services/start-mail-bridge';
 export { createMailBridgeService } from './services/mail-bridge.service';
+export { retrieveMailBridgeCredentials } from './retrieve-mail-bridge-credentials';
+export { storeCredentials } from './store-credentials';
+export { getOrCreateMailBridgeCredentials } from './get-or-create-mail-bridge-credentials';

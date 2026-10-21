@@ -53,3 +53,10 @@ export type MailBridgeService = {
   subscribeToMailBridgeStatus: (listener: (status: MailBridgeStatus) => void) => () => void;
   subscribeToMailBridgeSyncProgress: (listener: (progress: MailBridgeSyncProgress | undefined) => void) => () => void;
 };
+
+/** Account-scoped storage supplied by desktop. only encrypted values cross this boundary. */
+export type MailBridgeCredentialsStore = {
+  read: () => Result<string | undefined, Error>;
+  /** Persists the encrypted payload, throwing when the write fails. */
+  write: (encryptedCredentials: string) => void;
+};
