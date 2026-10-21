@@ -1,11 +1,13 @@
 import type { Socket } from 'node:net';
-
 import { Result } from '../../../../common/result';
 import { logger } from '../../../core/logger/logger';
 import type { ControlMessage, MailBridgeConnectionSettings, MailBridgeSession, MailBridgeSyncProgress } from '../constants';
 import type { MailBridgeService, MailBridgeResources, MailBridgeRuntime, MailBridgeStatus, MailBridgePlatform } from '../mail-bridge.types';
 import { isMailBridgeStopped } from '../utils/is-mail-bridge-stopped';
 import { sendControlMessage } from './communication.service';
+import { createMailBridgeStartupContext } from './lifecycle/create-mail-bridge-startup-context';
+import type { MailBridgeLifecycleState } from './lifecycle/lifecycle.types';
+import { startNewMailBridge } from './lifecycle/start-new-mail-bridge';
 import { sendMailBridgeSessionUpdate } from './send-mail-bridge-session-update';
 import { startMailBridge as startRuntime } from './start-mail-bridge';
 import { stopMailBridgeResources } from './stop-mail-bridge';
@@ -19,22 +21,25 @@ import { stopMailBridgeResources } from './stop-mail-bridge';
  * @returns Lifecycle operations and subscriptions for this service instance.
  */
 export function createMailBridgeService(platform: MailBridgePlatform): MailBridgeService {
-  let runtime: MailBridgeRuntime | undefined;
-  let resources: MailBridgeResources = {};
+  const state: MailBridgeLifecycleState = {
+    runtime: undefined,
+    resources: {},
+    status: { status: 'stopped', error: undefined },
+    lastChecked: undefined,
+    stopping: false,
+    lifecycleGeneration: 0,
+  };
   let startup: ReturnType<typeof startNewMailBridge> | undefined;
   let startupCancellation: AbortController | undefined;
-  let status: MailBridgeStatus = { status: 'stopped', error: undefined };
   let syncProgress: MailBridgeSyncProgress | undefined;
-  let lastChecked: number | undefined;
-  let stopping = false;
-  let lifecycleGeneration = 0;
   const statusListeners = new Set<(nextStatus: MailBridgeStatus) => void>();
   const syncProgressListeners = new Set<(progress: MailBridgeSyncProgress | undefined) => void>();
+  const startupContext = createMailBridgeStartupContext(platform, state, { setStatus, setSyncProgress });
 
   async function startMailBridge(session: MailBridgeSession): Promise<Result<MailBridgeConnectionSettings, Error>> {
-    if (status.status === 'running' && runtime) {
-      logger.debug({ msg: 'Mail Bridge is already running' });
-      return Result.ok(runtime.connection);
+    if (state.status.status === 'running' && state.runtime) {
+      logger.debug({ tag: 'MAIL-BRIDGE', msg: 'Mail Bridge is already running' });
+      return Result.ok(state.runtime.connection);
     }
     if (startup) {
       logger.debug({ msg: 'Mail Bridge startup already in progress' });
@@ -42,9 +47,9 @@ export function createMailBridgeService(platform: MailBridgePlatform): MailBridg
     }
 
     logger.debug({ msg: 'Starting Mail Bridge' });
-    const generation = ++lifecycleGeneration;
+    const generation = ++state.lifecycleGeneration;
     startupCancellation = new AbortController();
-    const nextStartup = startNewMailBridge({ session, signal: startupCancellation.signal, generation });
+    const nextStartup = startNewMailBridge({ session, signal: startupCancellation.signal, generation }, startupContext);
     startup = nextStartup;
     try {
       return await nextStartup;
@@ -58,19 +63,18 @@ export function createMailBridgeService(platform: MailBridgePlatform): MailBridg
 
   async function stopMailBridge(): Promise<Result<undefined, Error>> {
     logger.debug({ msg: 'Stopping Mail Bridge' });
-    stopping = true;
-    lifecycleGeneration += 1;
+    state.stopping = true;
+    state.lifecycleGeneration += 1;
     const cancelledStartup = startup;
     startupCancellation?.abort();
-    const stopped = await stopMailBridgeResources(resources);
-    resources = {};
-    runtime = undefined;
+    const stopped = await stopMailBridgeResources(state.resources);
+    startupContext.clearRuntimeResources();
     await cancelledStartup;
     if (startup === cancelledStartup) {
       startup = undefined;
       startupCancellation = undefined;
     }
-    stopping = false;
+    state.stopping = false;
     if (stopped.error) {
       logger.error({ msg: 'Mail Bridge failed to stop', error: stopped.error });
       setStatus({ status: 'error', error: stopped.error.message });
@@ -83,25 +87,25 @@ export function createMailBridgeService(platform: MailBridgePlatform): MailBridg
   }
 
   async function resyncMailBridge(): Promise<Result<undefined, Error>> {
-    if (!runtime || isMailBridgeStopped({ status, runtime })) {
+    if (!state.runtime || isMailBridgeStopped({ status: state.status, runtime: state.runtime })) {
       logger.warn({ msg: 'Mail Bridge resync requested while stopped' });
       return Result.err(new Error('Mail Bridge is not running'));
     }
     logger.debug({ msg: 'Requesting Mail Bridge resync' });
-    const result = await sendControlMessage({ socket: runtime.socket, message: { type: 'resync' } });
+    const result = await sendControlMessage({ socket: state.runtime.socket, message: { type: 'resync' } });
     if (result.error) logger.error({ msg: 'Mail Bridge resync request failed', error: result.error });
     return result;
   }
 
   async function updateMailBridgeAccessToken({ token }: { token: string }): Promise<Result<undefined, Error>> {
-    if (!runtime || isMailBridgeStopped({ status, runtime })) {
+    if (!state.runtime || isMailBridgeStopped({ status: state.status, runtime: state.runtime })) {
       return Result.ok(undefined);
     }
-    return await sendMailBridgeSessionUpdate({ socket: runtime.socket, token });
+    return await sendMailBridgeSessionUpdate({ socket: state.runtime.socket, token });
   }
 
   function getMailBridgeStatus(): MailBridgeStatus {
-    return status;
+    return state.status;
   }
 
   function getMailBridgeSyncProgress(): MailBridgeSyncProgress | undefined {
@@ -118,102 +122,10 @@ export function createMailBridgeService(platform: MailBridgePlatform): MailBridg
     return () => syncProgressListeners.delete(listener);
   }
 
-  async function startNewMailBridge({
-    session,
-    signal,
-    generation,
-  }: {
-    session: MailBridgeSession;
-    signal: AbortSignal;
-    generation: number;
-  }): Promise<Result<MailBridgeConnectionSettings, Error>> {
-    lastChecked = undefined;
-    setStatus({ status: 'starting', error: undefined });
-
-    let started;
-    try {
-      started = await startRuntime(
-        {
-          session,
-          signal,
-          onResourcesChange: (nextResources) => updateResources({ nextResources, generation }),
-          onControlMessage: (input) => handleControlMessage({ ...input, generation }),
-          onUnexpectedExit: (input) => handleUnexpectedExit({ ...input, generation }),
-        },
-        platform,
-      );
-    } catch (error) {
-      return failStartup({
-        error: error instanceof Error ? error : new Error('Mail Bridge could not start'),
-        generation,
-      });
-    }
-    if (signal.aborted || generation !== lifecycleGeneration) return Result.err(new Error('Mail Bridge startup was cancelled'));
-    if (started.error) return failStartup({ error: started.error, generation });
-    if (getMailBridgeStatus().status !== 'starting') {
-      return failStartup({ error: new Error('Mail Bridge stopped before becoming ready'), generation });
-    }
-    runtime = started.data;
-    resources = started.data;
-    setStatus({ status: 'running', error: undefined, connection: started.data.connection, lastChecked });
-    logger.debug({ msg: 'Mail Bridge started' });
-    return Result.ok(started.data.connection);
-  }
-
-  function handleControlMessage({ socket, message, generation }: { socket: Socket; message: ControlMessage; generation: number }): void {
-    if (generation !== lifecycleGeneration) return;
-    if (runtime?.socket !== socket && status.status !== 'starting') return;
-    if (message.type === 'sync_started') {
-      logger.debug({ msg: 'Mail Bridge sync started', totalMessages: message.started.total });
-      return setSyncProgress({ percentage: 0, completedMessages: 0, totalMessages: message.started.total });
-    }
-    if (message.type === 'sync_progress') {
-      return setSyncProgress({
-        percentage: message.progress.percent,
-        completedMessages: message.progress.downloaded,
-        totalMessages: message.progress.total,
-      });
-    }
-    if (message.type === 'sync_finished') {
-      if (message.finished.code) logger.error({ msg: 'Mail Bridge sync failed', code: message.finished.code });
-      else logger.debug({ msg: 'Mail Bridge sync finished' });
-      lastChecked = message.finished.code ? undefined : Date.now();
-      if (status.status === 'running') setStatus({ ...status, lastChecked });
-      setSyncProgress(undefined);
-    }
-  }
-
-  function handleUnexpectedExit({ socket, error, generation }: { socket: Socket; error: Error; generation: number }): void {
-    if (generation !== lifecycleGeneration) return;
-    if (stopping || (runtime?.socket !== socket && status.status !== 'starting')) return;
-    const resourcesToStop = resources;
-    runtime = undefined;
-    resources = {};
-    setSyncProgress(undefined);
-    void stopMailBridgeResources(resourcesToStop);
-    logger.error({ msg: 'Mail Bridge stopped unexpectedly', error });
-    setStatus({ status: 'error', error: error.message });
-  }
-
-  function updateResources({ nextResources, generation }: { nextResources: MailBridgeResources; generation: number }): void {
-    if (generation !== lifecycleGeneration) return;
-    resources = nextResources;
-  }
-
-  function failStartup({ error, generation }: { error: Error; generation: number }): Result<never, Error> {
-    if (generation !== lifecycleGeneration) return Result.err(error);
-    runtime = undefined;
-    resources = {};
-    setSyncProgress(undefined);
-    logger.error({ msg: 'Mail Bridge failed to start', error });
-    setStatus({ status: 'error', error: error.message });
-    return Result.err(error);
-  }
-
   function setStatus(nextStatus: MailBridgeStatus): void {
-    status = nextStatus;
+    state.status = nextStatus;
     for (const listener of statusListeners) {
-      listener(status);
+      listener(state.status);
     }
   }
 

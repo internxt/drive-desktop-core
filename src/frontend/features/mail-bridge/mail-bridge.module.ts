@@ -15,4 +15,4 @@ export const MailBridgeModule = {
 };
 
 export type { MailBridgeApi } from './mail-bridge-api.types';
-export type { UseMailBridgeResult } from './hooks/use-mail-bridge';
+export type { UseMailBridgeResult } from './mail-bridge.types';
