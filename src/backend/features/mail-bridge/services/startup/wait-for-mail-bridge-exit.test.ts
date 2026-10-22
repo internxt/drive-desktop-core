@@ -1,10 +1,10 @@
 import { ChildProcess } from 'node:child_process';
 
 import { Result } from '../../../../../common/result';
-import { createBridgeExitError } from '../../utils/create-bridge-exit-error';
+import { createBridgeExitError } from './create-bridge-exit-error';
 import { waitForMailBridgeExit } from './wait-for-mail-bridge-exit';
 
-vi.mock('../../utils/create-bridge-exit-error', () => ({ createBridgeExitError: vi.fn() }));
+vi.mock('./create-bridge-exit-error', () => ({ createBridgeExitError: vi.fn() }));
 
 describe('waitForMailBridgeExit', () => {
   let child: ChildProcess;

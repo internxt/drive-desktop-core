@@ -2,13 +2,13 @@ import { ChildProcess } from 'node:child_process';
 import { Socket } from 'node:net';
 
 import { Result } from '../../../../../common/result';
-import { createStartupTimeout } from '../../utils/create-startup-timeout';
-import { waitForReadyMessage } from '../communication.service';
+import { waitForReadyMessage } from '../communication/communication.service';
+import { createStartupTimeout } from './create-startup-timeout';
 import { waitForMailBridgeExit } from './wait-for-mail-bridge-exit';
 import { waitForMailBridgeReady } from './wait-for-mail-bridge-ready';
 
-vi.mock('../../utils/create-startup-timeout', () => ({ createStartupTimeout: vi.fn() }));
-vi.mock('../communication.service', () => ({ waitForReadyMessage: vi.fn() }));
+vi.mock('./create-startup-timeout', () => ({ createStartupTimeout: vi.fn() }));
+vi.mock('../communication/communication.service', () => ({ waitForReadyMessage: vi.fn() }));
 vi.mock('./wait-for-mail-bridge-exit', () => ({ waitForMailBridgeExit: vi.fn() }));
 
 describe('waitForMailBridgeReady', () => {

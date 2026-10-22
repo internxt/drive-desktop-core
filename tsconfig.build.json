@@ -5,5 +5,5 @@
     "noEmit": false,
     "outDir": "build"
   },
-  "exclude": ["**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }
