@@ -1,11 +1,11 @@
 import { Socket } from 'node:net';
 
 import { Result } from '../../../../../common/result';
-import { stopMailBridgeResources } from '../stop-mail-bridge';
+import { stopMailBridgeResources } from '../process/stop-mail-bridge';
 import { createMailBridgeRuntimeCallbacks } from './create-mail-bridge-runtime-callbacks';
 import type { MailBridgeRuntimeCallbacks, MailBridgeStartupContext, MailBridgeStartupState } from './lifecycle.types';
 
-vi.mock('../stop-mail-bridge', () => ({ stopMailBridgeResources: vi.fn() }));
+vi.mock('../process/stop-mail-bridge', () => ({ stopMailBridgeResources: vi.fn() }));
 
 describe('createMailBridgeRuntimeCallbacks', () => {
   let state: MailBridgeStartupState;

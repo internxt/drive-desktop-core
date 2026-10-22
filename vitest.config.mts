@@ -1,5 +1,5 @@
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
@@ -10,7 +10,7 @@ export default defineConfig({
       reportOnFailure: true,
     },
     clearMocks: true,
-    exclude: ['**/*.helper.test.ts', '**/*.infra.test.ts', '**/node_modules/**', '**/build/**'],
+    exclude: [...configDefaults.exclude, '**/build/**', '**/*.helper.test.ts', '**/*.infra.test.ts'],
     globals: true,
     reporters: ['verbose'],
     root: './',

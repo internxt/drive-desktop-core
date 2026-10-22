@@ -4,13 +4,13 @@ import { Server, Socket } from 'node:net';
 import { Result } from '../../../../../common/result';
 import type { MailBridgeSession } from '../../constants';
 import type { MailBridgeRuntime } from '../../mail-bridge.types';
-import { startMailBridge as startRuntime } from '../start-mail-bridge';
-import { stopMailBridgeResources } from '../stop-mail-bridge';
+import { stopMailBridgeResources } from '../process/stop-mail-bridge';
+import { startMailBridge as startRuntime } from '../startup/start-mail-bridge';
 import type { MailBridgeStartupContext, MailBridgeStartupState } from './lifecycle.types';
 import { startNewMailBridge } from './start-new-mail-bridge';
 
-vi.mock('../start-mail-bridge', () => ({ startMailBridge: vi.fn() }));
-vi.mock('../stop-mail-bridge', () => ({ stopMailBridgeResources: vi.fn() }));
+vi.mock('../startup/start-mail-bridge', () => ({ startMailBridge: vi.fn() }));
+vi.mock('../process/stop-mail-bridge', () => ({ stopMailBridgeResources: vi.fn() }));
 
 describe('startNewMailBridge', () => {
   let context: MailBridgeStartupContext;

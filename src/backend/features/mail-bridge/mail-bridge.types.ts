@@ -60,3 +60,36 @@ export type MailBridgeCredentialsStore = {
   /** Persists the encrypted payload, throwing when the write fails. */
   write: (encryptedCredentials: string) => void;
 };
+
+/** Host paths used to create the bridge's per-account state directory. */
+export type CreateMailBridgeStateDirectoryProps = {
+  baseDirectory: string;
+  accountId: string;
+};
+
+/** Resolved executable, environment, and control paths supplied by the desktop app. */
+export type SpawnMailBridgeProps = {
+  executablePath: string;
+  workingDirectory?: string;
+  endpoint: string;
+  stateDirectory: string;
+  environment: NodeJS.ProcessEnv;
+};
+
+/** Authenticated Mail client settings supplied by the host application. */
+export type MailBridgeClientConfig = {
+  gatewayUrl: string;
+  clientName: string;
+  clientVersion: string;
+  desktopHeader: string;
+  token: string;
+};
+
+/** Account and authentication snapshot used to prepare a secret bridge session. */
+export type CreateMailBridgeSessionProps = {
+  accountId: string;
+  email: string;
+  mnemonic: string;
+  clientConfig: MailBridgeClientConfig;
+  credentialsStore: MailBridgeCredentialsStore;
+};

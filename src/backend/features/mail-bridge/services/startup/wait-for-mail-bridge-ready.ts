@@ -3,8 +3,8 @@ import type { Socket } from 'node:net';
 
 import { Result } from '../../../../../common/result';
 import type { MailBridgeReadyMessage } from '../../constants';
-import { createStartupTimeout } from '../../utils/create-startup-timeout';
-import { waitForReadyMessage } from '../communication.service';
+import { waitForReadyMessage } from '../communication/communication.service';
+import { createStartupTimeout } from './create-startup-timeout';
 import { waitForMailBridgeExit } from './wait-for-mail-bridge-exit';
 
 type WaitForMailBridgeReadyProps = {
