@@ -397,6 +397,7 @@ export const en = {
       INVALID_WINDOWS_NAME: String.raw`Windows does not allow names that include \ / : * ? " < > | or end with a space or a dot`,
       NETWORK_CONNECTIVITY_ERROR: 'Network connectivity error.',
       NOT_ENOUGH_SPACE: 'You have not enough space to complete the operation',
+      PINNED_FILE_NOT_DOWNLOADED: 'Could not finish downloading. Mark as "Always keep on this device" again to retry',
       SERVER_INTERNAL_ERROR: 'Server internal error.',
       UPLOAD_FAILED: 'File could not be uploaded',
     },

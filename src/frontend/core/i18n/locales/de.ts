@@ -399,6 +399,8 @@ export const de: Translation = {
       INVALID_WINDOWS_NAME: String.raw`Windows erlaubt keine Namen, die \ / : * ? " < > | enthalten oder mit einem Leerzeichen oder Punkt enden`,
       NETWORK_CONNECTIVITY_ERROR: 'Netzwerkverbindungsfehler.',
       NOT_ENOUGH_SPACE: 'Sie haben nicht genügend Platz, um den Vorgang abzuschließen',
+      PINNED_FILE_NOT_DOWNLOADED:
+        'Download konnte nicht abgeschlossen werden. Erneut „Immer auf diesem Gerät behalten“ wählen, um es noch einmal zu versuchen',
       SERVER_INTERNAL_ERROR: 'Interner Serverfehler.',
       UPLOAD_FAILED: 'Die Datei konnte nicht hochgeladen werden',
     },

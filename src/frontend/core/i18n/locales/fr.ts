@@ -402,6 +402,8 @@ export const fr: Translation = {
       INVALID_WINDOWS_NAME: String.raw`Windows ne permet pas les noms contenant \ / : * ? " < > | ou se terminant par un espace ou un point`,
       NETWORK_CONNECTIVITY_ERROR: 'Erreur de connectivité réseau',
       NOT_ENOUGH_SPACE: "Vous n'avez pas assez d'espace pour compléter l'opération",
+      PINNED_FILE_NOT_DOWNLOADED:
+        "Le téléchargement n'a pas pu se terminer. Choisissez à nouveau « Toujours conserver sur cet appareil » pour réessayer",
       SERVER_INTERNAL_ERROR: 'Erreur de serveur interne',
       UPLOAD_FAILED: "Le fichier n'a pas pu être téléversé",
     },
