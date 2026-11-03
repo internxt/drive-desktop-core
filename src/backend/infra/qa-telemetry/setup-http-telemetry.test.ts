@@ -1,6 +1,5 @@
-import http from 'node:http';
-
 import type { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import http from 'node:http';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { attachHttpTelemetryInterceptor } from './attach-http-telemetry-interceptor';

@@ -1,5 +1,5 @@
-import { writeTelemetryEntry } from './write-telemetry-entry';
 import type { HttpTelemetryPayload } from './qa-telemetry.types';
+import { writeTelemetryEntry } from './write-telemetry-entry';
 
 type AppendFileFn = (path: string, data: string, callback: (err: Error | null) => void) => void;
 

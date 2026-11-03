@@ -2,8 +2,8 @@ import http from 'node:http';
 import https from 'node:https';
 
 import { isTelemetryEnabled } from './is-telemetry-enabled';
-import { recordHttpTelemetry } from './record-http-telemetry';
 import type { HttpTelemetryPayload } from './qa-telemetry.types';
+import { recordHttpTelemetry } from './record-http-telemetry';
 
 type RecordHandler = (props: HttpTelemetryPayload) => void;
 
@@ -43,8 +43,7 @@ function extractRequestDetails(args: unknown[], isHttps: boolean) {
     if (typeof opts.socketPath === 'string') socketPath = opts.socketPath;
 
     const protocol = typeof opts.protocol === 'string' ? opts.protocol : isHttps ? 'https:' : 'http:';
-    const host =
-      typeof opts.hostname === 'string' ? opts.hostname : typeof opts.host === 'string' ? opts.host : 'localhost';
+    const host = typeof opts.hostname === 'string' ? opts.hostname : typeof opts.host === 'string' ? opts.host : 'localhost';
     const defaultPort = isHttps ? 443 : 80;
     const port = opts.port && Number(opts.port) !== defaultPort ? `:${opts.port}` : '';
     const path = typeof opts.path === 'string' ? opts.path : '/';

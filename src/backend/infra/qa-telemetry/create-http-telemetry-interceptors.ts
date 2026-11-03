@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
-import { recordHttpTelemetry } from './record-http-telemetry';
 import type { HttpTelemetryPayload } from './qa-telemetry.types';
+import { recordHttpTelemetry } from './record-http-telemetry';
 
 type RecordHandler = (props: HttpTelemetryPayload) => void;
 

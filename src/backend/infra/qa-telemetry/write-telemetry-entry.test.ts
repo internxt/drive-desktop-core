@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-import { writeTelemetryEntry } from './write-telemetry-entry';
 import { QA_TELEMETRY_FILENAME } from './qa-telemetry.constants';
+import { writeTelemetryEntry } from './write-telemetry-entry';
 
 describe('writeTelemetryEntry', () => {
   const originalEnv = { ...process.env };
