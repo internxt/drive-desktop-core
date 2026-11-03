@@ -398,6 +398,8 @@ export const en = {
       NETWORK_CONNECTIVITY_ERROR: 'Network connectivity error.',
       NOT_ENOUGH_SPACE: 'You have not enough space to complete the operation',
       PINNED_FILE_NOT_DOWNLOADED: 'Could not finish downloading. Mark as "Always keep on this device" again to retry',
+      RECOVERY_SYNC_NOT_PRESERVED:
+        'Recovery sync could not safely move this item out of your Drive folder, so it was left in place. Run recovery sync again to retry',
       SERVER_INTERNAL_ERROR: 'Server internal error.',
       UPLOAD_FAILED: 'File could not be uploaded',
     },

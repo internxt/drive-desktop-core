@@ -403,6 +403,8 @@ export const es: Translation = {
       NOT_ENOUGH_SPACE: 'No tienes suficiente espacio para completar la operación',
       PINNED_FILE_NOT_DOWNLOADED:
         'No se pudo terminar de descargar. Vuelve a marcar «Mantener siempre en este dispositivo» para reintentarlo',
+      RECOVERY_SYNC_NOT_PRESERVED:
+        'La recuperación no pudo mover este elemento fuera de tu carpeta de Drive de forma segura, así que se ha dejado en su sitio. Vuelve a ejecutar la recuperación para reintentarlo',
       SERVER_INTERNAL_ERROR: 'Error interno del servidor',
       UPLOAD_FAILED: 'No se ha podido subir el archivo',
     },
