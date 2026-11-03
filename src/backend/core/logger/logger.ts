@@ -1,7 +1,7 @@
 import ElectronLog from 'electron-log';
 import { inspect } from 'node:util';
 
-type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS' | 'CLEANER' | 'MAIL-BRIDGE';
+type TTag = 'AUTH' | 'BACKUPS' | 'SYNC-ENGINE' | 'ANTIVIRUS' | 'NODE-WIN' | 'PRODUCTS' | 'CLEANER' | 'MAIL-BRIDGE' | 'RECOVERY-SYNC';
 type TLevel = 'debug' | 'warn' | 'error';
 
 export type TLoggerBody = {
@@ -60,6 +60,8 @@ function getTagStr(tag?: TTag): string {
       return 'prod';
     case 'MAIL-BRIDGE':
       return 'mail';
+    case 'RECOVERY-SYNC':
+      return 'reco';
     case undefined:
     default:
       return '    ';
