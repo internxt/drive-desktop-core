@@ -21,7 +21,7 @@ describe('get-client-compatibility-texts', () => {
 
   it('should recommend updating when the version is deprecated', () => {
     // When
-    const texts = getClientCompatibilityTexts({ state: { status: 'deprecated', sunsetAt: new Date(2026, 11, 1) }, language: 'en' });
+    const texts = getClientCompatibilityTexts({ state: { status: 'deprecated', sunsetAt: '2026-12-01T00:00:00.000Z' }, language: 'en' });
     // Then
     expect(texts).toStrictEqual({
       title: 'Update recommended',
