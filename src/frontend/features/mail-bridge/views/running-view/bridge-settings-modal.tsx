@@ -53,7 +53,7 @@ export function BridgeSettingsModal({ onClose, isStartOnLoginEnabled = false, on
             onClick={() => setStartOnLoginEnabled(!startOnLoginEnabled)}
             customClassName="font-semibold"
           />
-          <p className="text-gray-60 mt-1 ml-7 text-sm">{translate('mailBridge.runningView.settings.startOnLoginDescription')}</p>
+          <p className="text-gray-60 ml-7 mt-1 text-sm">{translate('mailBridge.runningView.settings.startOnLoginDescription')}</p>
         </div>
         <div className="border-gray-20 flex justify-end gap-3 border-t px-7 py-4">
           <button

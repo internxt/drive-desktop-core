@@ -1,4 +1,5 @@
 import { join, win32 } from 'node:path';
+
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { QA_TELEMETRY_FILENAME } from './qa-telemetry.constants';
@@ -61,26 +62,29 @@ describe('writeTelemetryEntry', () => {
     expect(mockAppend).not.toHaveBeenCalled();
   });
 
-  it.runIf(process.platform === 'win32')('should append entry using AppData logs path on Windows', () => {
-    process.env.NODE_ENV = 'development';
-    const mockAppend = vi.fn((_path, _data, cb) => cb(null));
-    const logsPath = win32.join('C:', 'Users', 'test', 'AppData', 'Roaming', 'internxt', 'logs');
+  it.runIf(process.platform === 'win32')(
+    'should append entry using AppData logs path on Windows',
+    () => {
+      process.env.NODE_ENV = 'development';
+      const mockAppend = vi.fn((_path, _data, cb) => cb(null));
+      const logsPath = win32.join('C:', 'Users', 'test', 'AppData', 'Roaming', 'internxt', 'logs');
 
-    writeTelemetryEntry({
-      entry: {
-        category: 'HTTP',
-        timestamp: '2026-10-07T12:00:00.000Z',
-        method: 'GET',
-        url: '/api/files',
-        durationMs: 120.5,
-        status: 200,
-      },
-      logsPath,
-      appendFn: mockAppend,
-    });
+      writeTelemetryEntry({
+        entry: {
+          category: 'HTTP',
+          timestamp: '2026-10-07T12:00:00.000Z',
+          method: 'GET',
+          url: '/api/files',
+          durationMs: 120.5,
+          status: 200,
+        },
+        logsPath,
+        appendFn: mockAppend,
+      });
 
-    expect(mockAppend).toHaveBeenCalledTimes(1);
-    const [targetPath] = mockAppend.mock.calls[0]!;
-    expect(targetPath).toBe(win32.join(logsPath, QA_TELEMETRY_FILENAME));
-  });
+      expect(mockAppend).toHaveBeenCalledTimes(1);
+      const [targetPath] = mockAppend.mock.calls[0]!;
+      expect(targetPath).toBe(win32.join(logsPath, QA_TELEMETRY_FILENAME));
+    },
+  );
 });

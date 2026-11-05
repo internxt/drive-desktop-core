@@ -60,7 +60,7 @@ export function SectionDetailMenu({
   return (
     <div
       className={
-        'border-gray-10 bg-surface dark:bg-gray-5 absolute top-0 right-0 z-10 h-full transform border-l shadow-sm transition-transform duration-300 ease-in-out'
+        'border-gray-10 bg-surface dark:bg-gray-5 absolute right-0 top-0 z-10 h-full transform border-l shadow-sm transition-transform duration-300 ease-in-out'
       }
       style={{ width: '75%' }}>
       <SectionDetailHeader
