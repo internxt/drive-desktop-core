@@ -82,6 +82,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users/pre-created-users/setup-email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resend the account setup email of a paid, pending account
+         * @description Responds the same way whether or not the email has a pending account setup
+         */
+        post: operations["UserController_resendAccountSetupEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/pre-created-users/register": {
         parameters: {
             query?: never;
@@ -93,6 +113,23 @@ export interface paths {
         put?: never;
         /** Register Pre Created User */
         post: operations["UserController_registerPreCreatedUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/pre-created-users/complete-setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Complete the account setup of a pre-created user */
+        post: operations["UserController_completeAccountSetup"];
         delete?: never;
         options?: never;
         head?: never;
@@ -593,6 +630,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * @deprecated
+         * @description Deprecated in favor of GET /folders/sync
+         */
         get: operations["FolderController_getFolders"];
         put?: never;
         /**
@@ -953,6 +994,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * @deprecated
+         * @description Deprecated in favor of GET /files/sync
+         */
         get: operations["FileController_getFiles"];
         put?: never;
         /** Create File */
@@ -1157,7 +1202,11 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Delete file from storage by fileId */
+        /**
+         * Delete file from storage by fileId
+         * @deprecated
+         * @description Deprecated, use network directly: DELETE /buckets/:bucketId/files/:fileId. Only deletes from network, never from Drive.
+         */
         delete: operations["FileController_deleteFileByFileId"];
         options?: never;
         head?: never;
@@ -3191,6 +3240,34 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/gateway/users/pre-create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a pre-created user
+         * @description Get the pre-created user in payments so we can be sure it exists
+         */
+        get: operations["GatewayController_getPreCreatedUserForCheckout"];
+        put?: never;
+        /**
+         * Get or pre-create the user of a new customer starting a checkout
+         * @description Pre-creates the user with the network user uuid, or returns the existing pre-created user, so it can be repeated. A user pre-created by a share invitation or with a cancelled plan starts the checkout again. It does not send any email
+         */
+        post: operations["GatewayController_createPreCreateUserForCheckout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update the pre-created user
+         * @description Update the pre-created user with the network user uuid. It does not send any email
+         */
+        patch: operations["GatewayController_updatePreCreatedUserForCheckout"];
+        trace?: never;
+    };
     "/gateway/users/{uuid}": {
         parameters: {
             query?: never;
@@ -3204,8 +3281,31 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        /** Update user plan and storage */
+        /**
+         * Update user plan and storage
+         * @description Updates a registered user, or a pre-created one while it has not completed the account setup
+         */
         patch: operations["GatewayController_updateUser"];
+        trace?: never;
+    };
+    "/gateway/users/{uuid}/setup-email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send the account setup email once the payment is confirmed
+         * @description Sends the email only once, while the pre-created user is awaiting the payment. It does nothing if it was already sent, if the plan was cancelled or for registered users
+         */
+        post: operations["GatewayController_sendAccountSetupEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/gateway/users/failed-payment": {
@@ -3309,6 +3409,23 @@ export interface paths {
         };
         /** Readiness probe — checks services */
         get: operations["HealthController_ready"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/clients/compatibility": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get the compatibility status of the requesting client version */
+        get: operations["ClientVersionController_getCompatibility"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3506,6 +3623,13 @@ export interface components {
             /** @description Keys, if provided, will update the user keys. This object replaces the need for privateKey and encryptVersion. */
             keys: components["schemas"]["KeysDto"];
         };
+        ResendAccountSetupEmailDto: {
+            /**
+             * @description Email used to pay for the account
+             * @example hello@internxt.com
+             */
+            email: string;
+        };
         RegisterPreCreatedUserDto: {
             /**
              * @description Name of the new user
@@ -3563,6 +3687,59 @@ export interface components {
              * @example 0f8fad5b-d9cb-469f-a165-70867728950e
              */
             invitationId: Record<string, never>;
+        };
+        CompleteAccountSetupDto: {
+            /**
+             * @description Name of the new user
+             * @example Internxt
+             */
+            name: Record<string, never>;
+            /**
+             * @description Last name of the new user
+             * @example Lastname
+             */
+            lastname: Record<string, never>;
+            /**
+             * @description Hashed password
+             * @example $2a$08$4SN2l.8dM0fSUTzni3i61u047Sr/R3ocJYxbxmKdEmGJcVOj1sHIi
+             */
+            password: Record<string, never>;
+            /**
+             * @description The mnemonic used to derive encryption keys
+             * @example test test test test test test test test test test test test test test test test test test test test test test test test
+             */
+            mnemonic: Record<string, never>;
+            /**
+             * @description Salt
+             * @example salt
+             */
+            salt: string;
+            /**
+             * @deprecated
+             * @example
+             */
+            privateKey: string;
+            /**
+             * @deprecated
+             * @example
+             */
+            publicKey: string;
+            /**
+             * @deprecated
+             * @example
+             */
+            revocationKey: string;
+            /** @example  */
+            referrer: Record<string, never>;
+            /** @example  */
+            registerCompleted: Record<string, never>;
+            /** @description Keys, if provided, will update the user keys. This object replaces the need for privateKey and encryptVersion. */
+            keys: components["schemas"]["KeysDto"];
+            /**
+             * @description Token received in the account setup email link
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+             */
+            token: string;
         };
         PreCreateUserDto: {
             /**
@@ -3776,10 +3953,11 @@ export interface components {
              */
             private: string;
             /**
+             * @deprecated
              * @description Key used for revocation
              * @example revocation_key
              */
-            revocationKey: string;
+            revocationKey?: string;
         };
         RecoverAccountKeysPairDto: {
             /**
@@ -4015,6 +4193,10 @@ export interface components {
         };
         ThumbnailDto: {
             id: number;
+            /**
+             * @deprecated
+             * @description Always 0. Use fileUuid
+             */
             fileId: number;
             fileUuid: string;
             maxWidth: number;
@@ -4390,12 +4572,6 @@ export interface components {
             type?: string;
         };
         CreateThumbnailDto: {
-            /**
-             * @deprecated
-             * @description The ID of the file. Deprecated in favor of fileUuid
-             * @example 12345
-             */
-            fileId?: number;
             /**
              * @description The UUID of the file
              * @example ebe586db-eb56-429f-a037-6ba712b40c3c
@@ -5521,6 +5697,29 @@ export interface components {
              */
             ownerId: string;
         };
+        UpdatePreCreatedUserDto: {
+            /**
+             * @description UUID of the pre-created user
+             * @example f9d113e3-8267-4419-a309-9b601f4f6f9b
+             */
+            uuid: string;
+            /**
+             * @description UUID of the tier
+             * @example a1b2c3d4-e5f6-7890-abcd-ef1234567890
+             */
+            tierId?: string;
+            /**
+             * @description Extra space to add to user in bytes
+             * @example 3298534883328
+             */
+            maxSpaceBytes?: number;
+            /**
+             * @description The status of the pre-created user
+             * @example awaiting_payment
+             * @enum {string}
+             */
+            status?: "awaiting_payment" | "pending_setup" | "cancelled";
+        };
         UpdateUserDto: {
             /**
              * @description New max storage space in bytes
@@ -5532,6 +5731,32 @@ export interface components {
              * @example a1b2c3d4-e5f6-7890-abcd-ef1234567890
              */
             tierId?: string;
+        };
+        CreatePreCreatedUserDto: {
+            /**
+             * @description Email of the customer starting a checkout
+             * @example user@internxt.com
+             */
+            email: string;
+        };
+        PreCreateUserForCheckoutResponseDto: {
+            /**
+             * @description UUID shared by the pre-created user and the network user
+             * @example 87204d6b-c4a7-4f38-bd99-f7f47964a643
+             */
+            uuid: string;
+            /**
+             * @description The status of the pre-created user
+             * @example awaiting_payment
+             */
+            status?: string;
+        };
+        SendAccountSetupEmailDto: {
+            /**
+             * @description Name of the purchased plan, shown in the account setup email
+             * @example Premium
+             */
+            planName: string;
         };
         FailedPaymentDto: {
             /**
@@ -5570,6 +5795,15 @@ export interface components {
             feature: string;
             /** @example true */
             value: string;
+        };
+        ClientCompatibilityResponseDto: {
+            /** @enum {string} */
+            status: "up_to_date" | "update_recommended" | "deprecated" | "unsupported";
+            message: string | null;
+            /** @example 2.8.1 */
+            recommendedVersion: string | null;
+            /** Format: date-time */
+            sunsetAt: string | null;
         };
     };
     responses: never;
@@ -5702,6 +5936,28 @@ export interface operations {
             };
         };
     };
+    UserController_resendAccountSetupEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResendAccountSetupEmailDto"];
+            };
+        };
+        responses: {
+            /** @description Request accepted */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     UserController_registerPreCreatedUser: {
         parameters: {
             query?: never;
@@ -5724,6 +5980,42 @@ export interface operations {
             };
             /** @description Missing required fields */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    UserController_completeAccountSetup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CompleteAccountSetupDto"];
+            };
+        };
+        responses: {
+            /** @description Creates the user keeping the pre-created uuid and plan */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing required fields */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The token is invalid, expired or already used */
+            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6812,7 +7104,7 @@ export interface operations {
                 updatedAt?: string;
                 /** @description Cursor token to fetch the next page of results */
                 cursor?: string;
-                /** @description Page size, max 1000 */
+                /** @description Page size, max 250. Values up to 1000 are still accepted for backward compatibility but capped to 250; they will be rejected in the future */
                 limit?: number;
                 /** @description Folder status filter */
                 status?: "EXISTS" | "TRASHED" | "DELETED";
@@ -7041,7 +7333,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["FolderDto"];
+                };
             };
         };
     };
@@ -7054,11 +7348,6 @@ export interface operations {
                 offset: number;
                 /** @description File status filter */
                 status: "EXISTS" | "TRASHED" | "DELETED" | "ALL";
-                /**
-                 * @deprecated
-                 * @description Bucket ID filter
-                 */
-                bucket?: string;
                 /** @description Field to sort by */
                 sort?: "updatedAt" | "uuid";
                 /** @description Sort order */
@@ -7347,7 +7636,7 @@ export interface operations {
                 updatedAt?: string;
                 /** @description Cursor token to fetch the next page of results */
                 cursor?: string;
-                /** @description Page size, max 1000 */
+                /** @description Page size, max 250. Values up to 1000 are still accepted for backward compatibility but capped to 250; they will be rejected in the future */
                 limit?: number;
                 /** @description File status filter */
                 status?: "EXISTS" | "TRASHED" | "DELETED";
@@ -8414,7 +8703,7 @@ export interface operations {
                 updatedAt?: string;
                 /** @description Cursor token to fetch the next page of results */
                 cursor?: string;
-                /** @description Page size, max 1000 */
+                /** @description Page size, max 250. Values up to 1000 are still accepted for backward compatibility but capped to 250; they will be rejected in the future */
                 limit?: number;
                 /** @description File status filter */
                 status?: "EXISTS" | "TRASHED" | "DELETED";
@@ -8502,7 +8791,7 @@ export interface operations {
                 updatedAt?: string;
                 /** @description Cursor token to fetch the next page of results */
                 cursor?: string;
-                /** @description Page size, max 1000 */
+                /** @description Page size, max 250. Values up to 1000 are still accepted for backward compatibility but capped to 250; they will be rejected in the future */
                 limit?: number;
                 /** @description Folder status filter */
                 status?: "EXISTS" | "TRASHED" | "DELETED";
@@ -9398,6 +9687,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
+                /** @description Part of the item name to search for */
                 search: string;
                 workspaceId: string;
             };
@@ -9486,6 +9776,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
+                /** @description Part of the item name to search for */
                 search: string;
             };
             cookie?: never;
@@ -10252,6 +10543,13 @@ export interface operations {
                     "application/json": components["schemas"]["LoginAccessResponseDto"];
                 };
             };
+            /** @description The account is blocked */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     AuthController_logout: {
@@ -10623,6 +10921,89 @@ export interface operations {
             };
         };
     };
+    GatewayController_getPreCreatedUserForCheckout: {
+        parameters: {
+            query: {
+                /** @description Email of the pre-created user */
+                email: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description UUID of the pre-created user and whether its setup is pending */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreCreateUserForCheckoutResponseDto"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GatewayController_createPreCreateUserForCheckout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePreCreatedUserDto"];
+            };
+        };
+        responses: {
+            /** @description UUID of the pre-created user and whether its setup is pending */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreCreateUserForCheckoutResponseDto"];
+                };
+            };
+            /** @description The user is already registered */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GatewayController_updatePreCreatedUserForCheckout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePreCreatedUserDto"];
+            };
+        };
+        responses: {
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     GatewayController_updateUser: {
         parameters: {
             query?: never;
@@ -10640,6 +11021,38 @@ export interface operations {
         };
         responses: {
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GatewayController_sendAccountSetupEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description User UUID */
+                uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendAccountSetupEmailDto"];
+            };
+        };
+        responses: {
+            /** @description The setup email is sent or not needed */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -10789,6 +11202,28 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    ClientVersionController_getCompatibility: {
+        parameters: {
+            query?: never;
+            header: {
+                "internxt-version": string;
+                "internxt-client": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientCompatibilityResponseDto"];
+                };
             };
         };
     };
