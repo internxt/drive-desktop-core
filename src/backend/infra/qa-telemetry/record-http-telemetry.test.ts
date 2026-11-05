@@ -28,7 +28,7 @@ describe('recordHttpTelemetry', () => {
     });
 
     expect(mockAppend).toHaveBeenCalledTimes(1);
-    const serialized = String(mockAppend.mock.calls[0][1]);
+    const [, serialized] = mockAppend.mock.calls[0]!;
     const parsed = JSON.parse(serialized);
 
     expect(parsed).toMatchObject({

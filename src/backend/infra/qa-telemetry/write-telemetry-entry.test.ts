@@ -35,10 +35,10 @@ describe('writeTelemetryEntry', () => {
     });
 
     expect(mockAppend).toHaveBeenCalledTimes(1);
-    const callArgs = mockAppend.mock.calls[0];
-    expect(callArgs[0]).toBe(join('internxt', 'logs', QA_TELEMETRY_FILENAME));
-    expect(callArgs[1]).toContain('"category":"HTTP"');
-    expect(callArgs[1]).toContain('"durationMs":120.5');
+    const [targetPath, serialized] = mockAppend.mock.calls[0]!;
+    expect(targetPath).toBe(join('internxt', 'logs', QA_TELEMETRY_FILENAME));
+    expect(serialized).toContain('"category":"HTTP"');
+    expect(serialized).toContain('"durationMs":120.5');
   });
 
   it('should not append entry when telemetry is disabled', () => {
@@ -83,8 +83,8 @@ describe('writeTelemetryEntry', () => {
       });
 
       expect(mockAppend).toHaveBeenCalledTimes(1);
-      const callArgs = mockAppend.mock.calls[0];
-      expect(callArgs[0]).toBe(win32.join(logsPath, QA_TELEMETRY_FILENAME));
+      const [targetPath] = mockAppend.mock.calls[0]!;
+      expect(targetPath).toBe(win32.join(logsPath, QA_TELEMETRY_FILENAME));
     },
   );
 });
