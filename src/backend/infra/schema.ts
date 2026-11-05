@@ -1874,7 +1874,10 @@ export interface paths {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
             cookie?: never;
         };
         /** Get delta of workspace files created by the user since a date */
@@ -1913,7 +1916,10 @@ export interface paths {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
             cookie?: never;
         };
         /** Get delta of workspace folders created by the user since a date */
@@ -8703,7 +8709,10 @@ export interface operations {
                 status?: "EXISTS" | "TRASHED" | "DELETED";
             };
             header?: never;
-            path?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -8788,7 +8797,10 @@ export interface operations {
                 status?: "EXISTS" | "TRASHED" | "DELETED";
             };
             header?: never;
-            path?: never;
+            path: {
+                // CAUTION: Manually added because the generated contract omitted the required workspaceId path parameter.
+                workspaceId: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
