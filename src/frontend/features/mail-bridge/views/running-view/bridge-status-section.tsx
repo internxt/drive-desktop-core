@@ -28,7 +28,7 @@ export function BridgeStatusSection({ onOpenSettings }: Readonly<Props>) {
           lastChecked={lastChecked}
         />
       </div>
-      <p className="text-gray-60 mt-2 overflow-x-auto whitespace-nowrap font-mono text-sm">
+      <p className="text-gray-60 mt-2 overflow-x-auto font-mono text-sm whitespace-nowrap">
         {accountEmail} · {connection.hostname} · IMAP {connection.imapPort} · SMTP {connection.smtpPort}
       </p>
       <div className="border-primary/30 mt-4 border-t pt-4" role="status" aria-live="polite">

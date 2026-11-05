@@ -41,7 +41,7 @@ export function BridgeActions({
       <button
         type="button"
         onClick={onTurnOff}
-        className="border-gray-20 bg-gray-5 flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border px-4 text-sm font-semibold text-gray-100">
+        className="border-gray-20 bg-gray-5 flex h-10 shrink-0 items-center gap-2 rounded-lg border px-4 text-sm font-semibold whitespace-nowrap text-gray-100">
         <TurnOffIcon size={18} />
         {turnOffLabel}
       </button>
@@ -92,7 +92,7 @@ function ResyncButton({
       onClick={() => void resync()}
       disabled={busy}
       aria-busy={busy}
-      className="border-gray-20 bg-gray-5 flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border px-4 text-sm font-semibold text-gray-100 disabled:cursor-wait disabled:opacity-70">
+      className="border-gray-20 bg-gray-5 flex h-10 shrink-0 items-center gap-2 rounded-lg border px-4 text-sm font-semibold whitespace-nowrap text-gray-100 disabled:cursor-wait disabled:opacity-70">
       {presentation.icon}
       {presentation.label}
     </button>

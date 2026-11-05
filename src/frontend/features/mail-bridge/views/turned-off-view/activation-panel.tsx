@@ -55,7 +55,7 @@ export function ActivationPanel({
           onClick={() => void handleStartOnLoginChange(!startOnLoginEnabled)}
           customClassName="font-semibold"
         />
-        <p className="text-gray-60 ml-7 mt-1 text-sm leading-relaxed">{startOnLoginDescription}</p>
+        <p className="text-gray-60 mt-1 ml-7 text-sm leading-relaxed">{startOnLoginDescription}</p>
       </div>
     </div>
   );

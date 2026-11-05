@@ -8,7 +8,7 @@ export function BridgeIdentity({ title }: Readonly<Props>) {
       <span className="text-green shrink-0">
         <RunningStatusIcon size={14} />
       </span>
-      <h1 className="whitespace-nowrap font-semibold text-gray-100">{title}</h1>
+      <h1 className="font-semibold whitespace-nowrap text-gray-100">{title}</h1>
     </div>
   );
 }
