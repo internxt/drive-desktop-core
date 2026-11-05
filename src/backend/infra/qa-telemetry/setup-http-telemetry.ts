@@ -33,16 +33,14 @@ function attachRequestTelemetryHandlers({
   method,
   url,
   startTime,
-  recordHandler,
 }: {
   clientRequest: http.ClientRequest;
   method: string;
   url: string;
   startTime: number;
-  recordHandler: RecordHandler;
 }) {
   clientRequest.once('response', (response: http.IncomingMessage) => {
-    recordHandler({
+    activeRecordHandler({
       method,
       url,
       durationMs: performance.now() - startTime,
@@ -51,7 +49,7 @@ function attachRequestTelemetryHandlers({
   });
 
   clientRequest.once('error', (error: Error) => {
-    recordHandler({
+    activeRecordHandler({
       method,
       url,
       durationMs: performance.now() - startTime,
@@ -61,7 +59,7 @@ function attachRequestTelemetryHandlers({
   });
 }
 
-function patchHttpModule(mod: HttpModule, isHttps: boolean, recordHandler: RecordHandler) {
+function patchHttpModule(mod: HttpModule, isHttps: boolean) {
   const originalRequest = mod.request;
 
   mod.request = function (this: unknown, ...args: Parameters<typeof originalRequest>) {
@@ -79,7 +77,6 @@ function patchHttpModule(mod: HttpModule, isHttps: boolean, recordHandler: Recor
       method,
       url,
       startTime,
-      recordHandler,
     });
 
     return clientRequest;
@@ -111,7 +108,7 @@ function extractElectronNetRequestDetails(options: unknown) {
   return { method, url };
 }
 
-function patchElectronNet(recordHandler: RecordHandler) {
+function patchElectronNet() {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const electron = require('electron') as typeof import('electron');
@@ -127,7 +124,7 @@ function patchElectronNet(recordHandler: RecordHandler) {
       const clientRequest = originalNetRequest(options);
 
       clientRequest.on('response', (response: { statusCode?: number }) => {
-        recordHandler({
+        activeRecordHandler({
           method,
           url,
           durationMs: performance.now() - startTime,
@@ -136,7 +133,7 @@ function patchElectronNet(recordHandler: RecordHandler) {
       });
 
       clientRequest.on('error', (err: Error) => {
-        recordHandler({
+        activeRecordHandler({
           method,
           url,
           durationMs: performance.now() - startTime,
@@ -152,7 +149,7 @@ function patchElectronNet(recordHandler: RecordHandler) {
   }
 }
 
-function patchGlobalFetch(recordHandler: RecordHandler) {
+function patchGlobalFetch() {
   if (typeof globalThis.fetch !== 'function') {
     return;
   }
@@ -165,7 +162,7 @@ function patchGlobalFetch(recordHandler: RecordHandler) {
 
     try {
       const response = await originalFetch.call(this, input, init);
-      recordHandler({
+      activeRecordHandler({
         method,
         url,
         durationMs: performance.now() - startTime,
@@ -173,7 +170,7 @@ function patchGlobalFetch(recordHandler: RecordHandler) {
       });
       return response;
     } catch (error) {
-      recordHandler({
+      activeRecordHandler({
         method,
         url,
         durationMs: performance.now() - startTime,
@@ -203,9 +200,9 @@ export function setupHttpTelemetry({ logsPath, onRecord }: Props) {
   ];
 
   for (const [mod, isHttps] of modules) {
-    patchHttpModule(mod, isHttps, activeRecordHandler);
+    patchHttpModule(mod, isHttps);
   }
 
-  patchElectronNet(activeRecordHandler);
-  patchGlobalFetch(activeRecordHandler);
+  patchElectronNet();
+  patchGlobalFetch();
 }
