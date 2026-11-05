@@ -1,6 +1,8 @@
+import { join } from 'node:path';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { recordHttpTelemetry } from './record-http-telemetry';
+import type { AppendFileFn } from './write-telemetry-entry';
 
 describe('recordHttpTelemetry', () => {
   const originalEnv = { ...process.env };
@@ -16,14 +18,16 @@ describe('recordHttpTelemetry', () => {
 
   it('should record HTTP telemetry with category and timestamp', () => {
     process.env.NODE_ENV = 'development';
-    const mockAppend = vi.fn((_path, _data, cb) => cb(null));
+    const mockAppend = vi.fn<AppendFileFn>((_path, _data, cb) => {
+      cb(null);
+    });
 
     recordHttpTelemetry({
       method: 'POST',
       url: '/api/folders',
       durationMs: 250,
       status: 201,
-      logsPath: '/tmp/logs',
+      logsPath: join('internxt', 'logs'),
       appendFn: mockAppend,
     });
 

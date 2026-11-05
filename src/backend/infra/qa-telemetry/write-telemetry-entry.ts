@@ -5,7 +5,7 @@ import { getTelemetryFilePath } from './get-telemetry-file-path';
 import { isTelemetryEnabled } from './is-telemetry-enabled';
 import type { HttpTelemetryEntry } from './qa-telemetry.types';
 
-type AppendFileFn = (path: string, data: string, callback: (err: Error | null) => void) => void;
+export type AppendFileFn = (path: string, data: string, callback: (err: Error | null) => void) => void;
 
 type Props = {
   entry: HttpTelemetryEntry;

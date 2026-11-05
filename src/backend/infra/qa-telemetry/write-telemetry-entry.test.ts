@@ -2,6 +2,7 @@ import { join, win32 } from 'node:path';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { QA_TELEMETRY_FILENAME } from './qa-telemetry.constants';
+import type { AppendFileFn } from './write-telemetry-entry';
 import { writeTelemetryEntry } from './write-telemetry-entry';
 
 describe('writeTelemetryEntry', () => {
@@ -18,7 +19,9 @@ describe('writeTelemetryEntry', () => {
 
   it('should append entry to file when telemetry is enabled', () => {
     process.env.NODE_ENV = 'development';
-    const mockAppend = vi.fn((_path, _data, cb) => cb(null));
+    const mockAppend = vi.fn<AppendFileFn>((_path, _data, cb) => {
+      cb(null);
+    });
 
     writeTelemetryEntry({
       entry: {
@@ -63,7 +66,9 @@ describe('writeTelemetryEntry', () => {
 
   it.runIf(process.platform === 'win32')('should append entry using AppData logs path on Windows', () => {
     process.env.NODE_ENV = 'development';
-    const mockAppend = vi.fn((_path, _data, cb) => cb(null));
+    const mockAppend = vi.fn<AppendFileFn>((_path, _data, cb) => {
+      cb(null);
+    });
     const logsPath = win32.join('C:', 'Users', 'test', 'AppData', 'Roaming', 'internxt', 'logs');
 
     writeTelemetryEntry({

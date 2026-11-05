@@ -1,5 +1,6 @@
 import type { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import http from 'node:http';
+import { join } from 'node:path';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { attachHttpTelemetryInterceptor } from './attach-http-telemetry-interceptor';
@@ -8,7 +9,7 @@ import { setupHttpTelemetry } from './setup-http-telemetry';
 
 describe('setupHttpTelemetry', () => {
   const originalEnv = { ...process.env };
-  const logsPath = '/tmp/qa-telemetry-logs';
+  const logsPath = join('internxt', 'qa-telemetry-logs');
 
   beforeEach(() => {
     process.env = { ...originalEnv };
