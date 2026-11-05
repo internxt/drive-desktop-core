@@ -542,4 +542,16 @@ export const es: Translation = {
     ctaUpgrade: 'Mejorar plan',
     plan: '{{planName}} -> hasta {{planMaxFileSize}}',
   },
+  clientCompatibility: {
+    unsupported: {
+      title: 'Actualización obligatoria',
+      description:
+        'Esta versión ya no es compatible. La actualización es obligatoria: la sincronización y otras funciones están detenidas hasta que actualice.',
+    },
+    deprecated: {
+      title: 'Actualización recomendada',
+      description: 'Hay una nueva versión disponible. Le recomendamos actualizar lo antes posible para no perderse los últimos cambios.',
+    },
+    update: 'Actualizar ahora',
+  },
 };
