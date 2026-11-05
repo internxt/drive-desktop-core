@@ -1,4 +1,4 @@
-import type { ClientCompatibilityState } from '@/backend/features/client-compatibility/client-compatibility.types';
+import type { ClientCompatibilityState } from '@/backend/features/client-compatibility';
 import { I18nModule, Language } from '@/frontend/core/i18n';
 
 export type ClientCompatibilityTexts = {

@@ -1,29 +1,15 @@
-export const CLIENT_COMPATIBILITY_STATUSES = ['up_to_date', 'update_recommended', 'deprecated', 'unsupported'] as const;
+import { components } from '@/backend/infra/schema';
 
-export type ClientCompatibilityStatus = (typeof CLIENT_COMPATIBILITY_STATUSES)[number];
+export type ClientCompatibility = components['schemas']['ClientCompatibilityResponseDto'];
 
-export type ClientCompatibility = {
-  status: ClientCompatibilityStatus;
-  message?: string;
-  recommendedVersion?: string;
-  sunsetAt?: Date;
-};
-
-export type ClientCompatibilityRequest = {
-  baseUrl: string;
-  clientName: string;
-  clientVersion: string;
-};
+export type ClientCompatibilityStatus = ClientCompatibility['status'];
 
 /**
- * Mirrors the backend status.
+ * Mirrors the backend response, so the response can be used as is.
  * - up_to_date: the app works normally.
  * - update_recommended / deprecated: the app works normally but the user is asked to update.
- * - unsupported: the backend rejects this version, so sync and every request must stop until the user updates.
+ * - unsupported: the backend rejects this version, so every feature must stop until the user updates.
+ *
+ * Only `status` is required because a request rejected with the unsupported version error code does not carry the rest.
  */
-export type ClientCompatibilityState =
-  | { status: 'up_to_date' }
-  | { status: 'update_recommended' | 'deprecated'; sunsetAt?: Date; recommendedVersion?: string }
-  | { status: 'unsupported'; recommendedVersion?: string };
-
-export type ClientCompatibilityListener = (state: ClientCompatibilityState) => void;
+export type ClientCompatibilityState = Pick<ClientCompatibility, 'status'> & Partial<Omit<ClientCompatibility, 'status'>>;

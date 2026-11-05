@@ -1,4 +1,4 @@
-import type { ClientCompatibilityState } from '@/backend/features/client-compatibility/client-compatibility.types';
+import type { ClientCompatibilityState } from '@/backend/features/client-compatibility';
 import { Banner, BannerVariant } from '@/frontend/components/banner';
 import { Language } from '@/frontend/core/i18n';
 
