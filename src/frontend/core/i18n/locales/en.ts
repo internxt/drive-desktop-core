@@ -544,6 +544,8 @@ export const en = {
     deprecated: {
       title: 'Update recommended',
       description: "A new version is available. We recommend updating as soon as possible so you don't miss out on the latest changes.",
+      descriptionWithDate:
+        'A new version is available. This version will stop working on {{date}}, so we recommend updating as soon as possible.',
     },
     update: 'Update now',
   },

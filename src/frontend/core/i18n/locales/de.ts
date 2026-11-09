@@ -550,6 +550,8 @@ export const de: Translation = {
       title: 'Update empfohlen',
       description:
         'Eine neue Version ist verfügbar. Wir empfehlen, so bald wie möglich zu aktualisieren, um die neuesten Änderungen nicht zu verpassen.',
+      descriptionWithDate:
+        'Eine neue Version ist verfügbar. Diese Version funktioniert ab dem {{date}} nicht mehr. Wir empfehlen daher, so bald wie möglich zu aktualisieren.',
     },
     update: 'Jetzt aktualisieren',
   },
