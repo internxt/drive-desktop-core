@@ -554,6 +554,8 @@ export const fr: Translation = {
       title: 'Mise à jour recommandée',
       description:
         'Une nouvelle version est disponible. Nous vous recommandons de mettre à jour dès que possible pour ne pas manquer les dernières nouveautés.',
+      descriptionWithDate:
+        'Une nouvelle version est disponible. Cette version cessera de fonctionner le {{date}}, nous vous recommandons donc de mettre à jour dès que possible.',
     },
     update: 'Mettre à jour',
   },

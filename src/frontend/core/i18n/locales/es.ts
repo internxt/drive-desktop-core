@@ -551,6 +551,8 @@ export const es: Translation = {
     deprecated: {
       title: 'Actualización recomendada',
       description: 'Hay una nueva versión disponible. Le recomendamos actualizar lo antes posible para no perderse los últimos cambios.',
+      descriptionWithDate:
+        'Hay una nueva versión disponible. Esta versión dejará de funcionar el {{date}}, por lo que le recomendamos actualizar lo antes posible.',
     },
     update: 'Actualizar ahora',
   },
