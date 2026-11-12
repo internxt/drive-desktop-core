@@ -5,5 +5,10 @@ export { getTelemetryFilePath } from './get-telemetry-file-path';
 export { writeTelemetryEntry } from './write-telemetry-entry';
 export { recordHttpTelemetry } from './record-http-telemetry';
 export { setupHttpTelemetry } from './setup-http-telemetry';
-export { createHttpTelemetryInterceptors } from './create-http-telemetry-interceptors';
-export { attachHttpTelemetryInterceptor } from './attach-http-telemetry-interceptor';
+export {
+  createHttpTelemetryInstrumentation,
+  type HttpTelemetryAxiosHandlers,
+  type HttpTelemetryInstrumentation,
+  type OpenApiFetchTelemetryMiddleware,
+} from './create-http-telemetry-instrumentation';
+export { attachHttpClientTelemetry } from './attach-http-client-telemetry';
