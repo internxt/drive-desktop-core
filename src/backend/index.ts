@@ -15,4 +15,4 @@ export { SyncModule, synchronizeRemoteItems } from './features/sync';
 export type { SynchronizationPage, SynchronizationPageRequest } from './features/sync';
 export * from './features/mail-bridge';
 export * from './infra/schema';
-export type { UserDto } from './infra/drive-api.dto';
+export type { UserDto, DriveItemStatus } from './infra/drive-api.dto';
