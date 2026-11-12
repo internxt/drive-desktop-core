@@ -2,9 +2,7 @@ import type { AssertEqual } from '../../core/utils/assert-equal.types';
 import { DriveItemStatus } from '../../infra/drive-item-status';
 import type { operations } from '../../infra/schema';
 
-type FilesSyncQueryStatus = NonNullable<
-  operations['FileController_getFilesSync']['parameters']['query']
->['status'];
+type FilesSyncQueryStatus = NonNullable<operations['FileController_getFilesSync']['parameters']['query']>['status'];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- keeps sync query status aligned with DriveItemStatus
 type _FilesSyncQueryStatusMatchesDriveItemStatus = AssertEqual<DriveItemStatus, FilesSyncQueryStatus>;

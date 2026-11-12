@@ -1,5 +1,6 @@
 import type { AssertEqual } from '@/backend/core/utils/assert-equal.types';
-import {  DriveItemStatus } from './drive-item-status';
+
+import { DriveItemStatus } from './drive-item-status';
 import type { components } from './schema';
 
 export type UserDto = components['schemas']['UserDto'];
