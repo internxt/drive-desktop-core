@@ -546,4 +546,19 @@ export const fr: Translation = {
     ctaUpgrade: 'Mettre à jour le plan',
     plan: "{{planName}} -> jusqu'à {{planMaxFileSize}}",
   },
+  clientCompatibility: {
+    unsupported: {
+      title: 'Mise à jour obligatoire',
+      description:
+        "Cette version n'est plus prise en charge. La mise à jour est obligatoire : la synchronisation et les autres fonctionnalités sont arrêtées jusqu'à la mise à jour.",
+    },
+    deprecated: {
+      title: 'Mise à jour recommandée',
+      description:
+        'Une nouvelle version est disponible. Nous vous recommandons de mettre à jour dès que possible pour ne pas manquer les dernières nouveautés.',
+      descriptionWithDate:
+        'Une nouvelle version est disponible. Cette version cessera de fonctionner le {{date}}, nous vous recommandons donc de mettre à jour dès que possible.',
+    },
+    update: 'Mettre à jour',
+  },
 };

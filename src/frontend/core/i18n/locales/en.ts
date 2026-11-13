@@ -538,4 +538,17 @@ export const en = {
     ctaUpgrade: 'Upgrade plan',
     plan: '{{planName}} -> up to {{planMaxFileSize}}',
   },
+  clientCompatibility: {
+    unsupported: {
+      title: 'Update required',
+      description: 'This version is no longer supported. Updating is mandatory: sync and other features are stopped until you update.',
+    },
+    deprecated: {
+      title: 'Update recommended',
+      description: "A new version is available. We recommend updating as soon as possible so you don't miss out on the latest changes.",
+      descriptionWithDate:
+        'A new version is available. This version will stop working on {{date}}, so we recommend updating as soon as possible.',
+    },
+    update: 'Update now',
+  },
 };

@@ -1,3 +1,4 @@
+export { Banner, BannerVariant } from './banner';
 export { Button } from './button';
 export { Checkbox } from './checkbox';
 export { CopyToClipboardButton } from './copy-to-clipboard-button';
