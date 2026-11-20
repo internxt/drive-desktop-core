@@ -76,9 +76,7 @@ describe('attachHttpClientTelemetry', () => {
   it('should throw when client is not axios nor openapi-fetch', () => {
     process.env.NODE_ENV = 'development';
 
-    expect(() =>
-      attachHttpClientTelemetry({ client: {} as unknown as AxiosInstance, logsPath }),
-    ).toThrow(
+    expect(() => attachHttpClientTelemetry({ client: {} as unknown as AxiosInstance, logsPath })).toThrow(
       'HTTP telemetry: unsupported client (expected AxiosInstance or openapi-fetch client with .use())',
     );
   });
