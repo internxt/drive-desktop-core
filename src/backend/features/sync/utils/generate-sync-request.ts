@@ -1,4 +1,5 @@
 import { Result } from '../../../../common/result';
+import { DriveItemStatus } from '../../../infra/drive-item-status';
 import type { SynchronizationPageRequest } from '../constants';
 import { isUpdatedAtEpoch } from './is-updated-at-epoch';
 
@@ -19,7 +20,7 @@ export function generateSyncRequest({
     const request: SynchronizationPageRequest = {
       updatedAt,
       limit,
-      status: isUpdatedAtEpoch(updatedAt) ? 'EXISTS' : undefined,
+      status: isUpdatedAtEpoch(updatedAt) ? DriveItemStatus.EXISTS : undefined,
     };
 
     return Result.ok(request);
@@ -32,7 +33,7 @@ export function generateSyncRequest({
   const request: SynchronizationPageRequest = {
     cursor,
     limit,
-    status: isUpdatedAtEpoch(updatedAt) ? 'EXISTS' : undefined,
+    status: isUpdatedAtEpoch(updatedAt) ? DriveItemStatus.EXISTS : undefined,
   };
 
   return Result.ok(request);

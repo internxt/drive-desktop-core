@@ -1,3 +1,4 @@
+import { DriveItemStatus } from '@/backend/infra/drive-item-status';
 import { Result } from '@/common/result';
 
 import { generateSyncRequest } from './generate-sync-request';
@@ -11,7 +12,7 @@ describe('generate-sync-request', () => {
       limit: 1000,
     });
 
-    expect(result).toStrictEqual(Result.ok({ updatedAt: '1970-01-01T00:00:00.000Z', limit: 1000, status: 'EXISTS' }));
+    expect(result).toStrictEqual(Result.ok({ updatedAt: '1970-01-01T00:00:00.000Z', limit: 1000, status: DriveItemStatus.EXISTS }));
   });
 
   it('does not add a status to an initial checkpoint request', () => {
@@ -33,7 +34,7 @@ describe('generate-sync-request', () => {
       limit: 1000,
     });
 
-    expect(result).toStrictEqual(Result.ok({ cursor: 'cursor-1', limit: 1000, status: 'EXISTS' }));
+    expect(result).toStrictEqual(Result.ok({ cursor: 'cursor-1', limit: 1000, status: DriveItemStatus.EXISTS }));
   });
 
   it('does not add status EXISTS to cursor requests when from is passed', () => {

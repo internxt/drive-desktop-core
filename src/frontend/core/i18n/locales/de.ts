@@ -401,6 +401,8 @@ export const de: Translation = {
       NOT_ENOUGH_SPACE: 'Sie haben nicht genügend Platz, um den Vorgang abzuschließen',
       PINNED_FILE_NOT_DOWNLOADED:
         'Download konnte nicht abgeschlossen werden. Erneut „Immer auf diesem Gerät behalten“ wählen, um es noch einmal zu versuchen',
+      RECOVERY_SYNC_NOT_PRESERVED:
+        'Die Wiederherstellung konnte dieses Element nicht sicher aus deinem Drive-Ordner verschieben, daher wurde es nicht verändert. Starte die Wiederherstellung erneut, um es nochmals zu versuchen',
       SERVER_INTERNAL_ERROR: 'Interner Serverfehler.',
       UPLOAD_FAILED: 'Die Datei konnte nicht hochgeladen werden',
     },
@@ -550,6 +552,8 @@ export const de: Translation = {
       title: 'Update empfohlen',
       description:
         'Eine neue Version ist verfügbar. Wir empfehlen, so bald wie möglich zu aktualisieren, um die neuesten Änderungen nicht zu verpassen.',
+      descriptionWithDate:
+        'Eine neue Version ist verfügbar. Diese Version funktioniert ab dem {{date}} nicht mehr. Wir empfehlen daher, so bald wie möglich zu aktualisieren.',
     },
     update: 'Jetzt aktualisieren',
   },
