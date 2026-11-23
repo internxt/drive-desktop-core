@@ -15,5 +15,6 @@ export { SyncModule, synchronizeRemoteItems } from './features/sync';
 export type { SynchronizationPage, SynchronizationPageRequest } from './features/sync';
 export * from './features/mail-bridge';
 export * from './infra/schema';
+export * from './infra/qa-telemetry';
 export type { UserDto } from './infra/drive-api.dto';
 export { DriveItemStatus, isDriveItemStatus, toDriveItemStatus } from './infra/drive-item-status';
