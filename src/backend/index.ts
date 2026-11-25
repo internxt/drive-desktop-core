@@ -16,5 +16,5 @@ export type { SynchronizationPage, SynchronizationPageRequest } from './features
 export * from './features/mail-bridge';
 export * from './infra/schema';
 export * from './infra/qa-telemetry';
-export type { UserDto } from './infra/drive-api.dto';
+export type { FileSyncDto, FolderSyncDto, UserDto } from './infra/drive-api.dto';
 export { DriveItemStatus, isDriveItemStatus, toDriveItemStatus } from './infra/drive-item-status';
